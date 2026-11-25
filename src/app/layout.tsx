@@ -9,7 +9,7 @@ const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-serif" });
 export const metadata: Metadata = {
   title: "T2SAIM Günlük Stratejik İstihbarat Brifingi",
   description:
-    "Türkiye ve küresel sistem odaklı günlük açık kaynak (OSINT), makro-ekonomi, oyun teorisi ve kurumsal risk analizi bülteni.",
+    "Türkiye ve küresel sistem odaklı günlük açık kaynak (OSINT), makro-ekonomi, oyun teorisi, EWS 23 ülke takvimi ve kurumsal risk analizi bülteni.",
 };
 
 export default function RootLayout({
@@ -20,38 +20,45 @@ export default function RootLayout({
   return (
     <html lang="tr" className={`${inter.variable} ${newsreader.variable}`}>
       <body className="min-h-screen flex flex-col">
-        <header className="border-b border-[#e2dfd7] bg-white/90 backdrop-blur sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+        <header className="border-b border-[#e2dfd7] bg-white/95 backdrop-blur sticky top-0 z-30">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
             <Link href="/" className="group flex flex-col">
-              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#8b1e3f] font-semibold">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] text-[#8b1e3f] font-semibold">
                 T2SAIM · OSINT &amp; STRATEJİK ÖNGÖRÜ
               </span>
-              <span className="font-serif-editorial text-2xl sm:text-3xl font-bold text-[#1e3a5f] group-hover:opacity-85 transition-opacity">
+              <span className="font-serif-editorial text-xl sm:text-3xl font-bold text-[#1e3a5f] group-hover:opacity-85 transition-opacity">
                 Günlük Stratejik İstihbarat
               </span>
             </Link>
-            <div className="flex items-center gap-3 text-xs font-mono text-[#4a5568]">
-              <span className="px-2.5 py-1 rounded bg-[#f3f1eb] border border-[#e2dfd7]">
-                ICD 203/206 · NATO 6×6
-              </span>
-              <span className="hidden sm:inline px-2.5 py-1 rounded bg-[#1e3a5f] text-white">
-                VERITAS PER SE
-              </span>
-            </div>
+
+            <nav className="flex items-center gap-2 sm:gap-3 text-xs font-mono">
+              <Link
+                href="/"
+                className="px-3 py-1.5 rounded-lg bg-[#f3f1eb] hover:bg-[#e7e4dc] text-[#1e3a5f] font-semibold transition-colors"
+              >
+                Günlük Brifing
+              </Link>
+              <Link
+                href="/ews-takvim"
+                className="px-3 py-1.5 rounded-lg bg-[#1e3a5f] hover:bg-[#162c48] text-white font-semibold transition-colors"
+              >
+                EWS 23 Ülke Takvimi
+              </Link>
+            </nav>
           </div>
         </header>
 
-        <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
+        <main className="flex-1 max-w-6xl w-full mx-auto px-3.5 sm:px-6 py-6 sm:py-8">
           {children}
         </main>
 
-        <footer className="border-t border-[#e2dfd7] bg-white mt-16">
+        <footer className="border-t border-[#e2dfd7] bg-white mt-14">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-[#64748b]">
             <p>
               T2SAIM Günlük Stratejik İstihbarat Bülteni · Çift Katmanlı Durumsal Mimari
             </p>
             <p className="font-mono">
-              Her gün 07:00 UTC+3 veri kesimiyle güncellenir.
+              Her gün 07:00 UTC+3 veri kesimiyle güncellenir · VERITAS PER SE
             </p>
           </div>
         </footer>

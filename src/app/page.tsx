@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { getAllReports } from "@/lib/reports";
-import { ArrowRight, Calendar, ShieldAlert, TrendingUp } from "lucide-react";
+import { getEws23Countries } from "@/lib/ews";
+import {
+  ArchitectureSchema,
+  PrioritySignalChart,
+  ScenarioDonutChart,
+} from "@/components/ReportVisuals";
+import { ArrowRight, Calendar, Globe2, ShieldAlert } from "lucide-react";
 
 export default function HomePage() {
   const reports = getAllReports();
   const latest = reports[0];
-  const archive = reports.slice(1);
+  const ewsCountries = getEws23Countries();
+  const topRisk = ewsCountries.slice(0, 4);
 
   if (!latest) {
     return (
@@ -13,18 +20,15 @@ export default function HomePage() {
         <h1 className="font-serif-editorial text-2xl font-bold text-[#1e3a5f]">
           Henüz yayımlanmış rapor bulunmuyor
         </h1>
-        <p className="text-sm text-[#4a5568] mt-2">
-          İlk günlük stratejik istihbarat raporu üretildiğinde burada görünecektir.
-        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       {/* Manşet - Son Rapor */}
-      <section className="bg-white border border-[#e2dfd7] rounded-xl p-6 sm:p-10 shadow-sm">
-        <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[#8b1e3f] mb-4">
+      <section className="bg-white border border-[#e2dfd7] rounded-xl p-5 sm:p-10 shadow-sm space-y-6">
+        <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[#8b1e3f]">
           <span className="px-2.5 py-0.5 rounded bg-[#8b1e3f] text-white font-semibold">
             SON BÜLTEN
           </span>
@@ -34,71 +38,83 @@ export default function HomePage() {
           </span>
         </div>
 
-        <h1 className="font-serif-editorial text-2xl sm:text-4xl font-bold text-[#121417] leading-tight mb-4">
+        <h1 className="font-serif-editorial text-2xl sm:text-4xl font-bold text-[#121417] leading-tight">
           {latest.headline || latest.title}
         </h1>
 
-        <p className="text-base sm:text-lg text-[#374151] leading-relaxed mb-6">
+        <p className="text-base sm:text-lg text-[#374151] leading-relaxed">
           {latest.blufPreview}
         </p>
 
-        {/* Senaryo Olasılıkları Şeridi */}
-        {latest.scenarios.length > 0 && (
-          <div className="bg-[#faf9f6] border border-[#e2dfd7] rounded-lg p-5 mb-6">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#1e3a5f] font-bold mb-3">
-              <TrendingUp className="w-4 h-4" />
-              Güncel Senaryo Olasılıkları (1–6 Ay Ufku)
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {latest.scenarios.map((sc, idx) => {
-                const barColors = [
-                  "bg-[#1e3a5f]",
-                  "bg-[#8b1e3f]",
-                  "bg-[#2d6a4f]",
-                ];
-                return (
-                  <div
-                    key={sc.name}
-                    className="bg-white border border-[#e2dfd7] rounded-md p-3.5"
-                  >
-                    <div className="flex justify-between items-baseline gap-2 mb-1.5">
-                      <span className="text-xs font-semibold text-[#1f2937] line-clamp-1">
-                        {sc.name}
-                      </span>
-                      <span className="font-mono text-sm font-bold text-[#1e3a5f]">
-                        %{sc.probability}
-                      </span>
-                    </div>
-                    <div className="w-full h-2 bg-[#efede7] rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ${barColors[idx % barColors.length]}`}
-                        style={{ width: `${sc.probability}%` }}
-                      />
-                    </div>
-                    <span className="text-[11px] font-mono text-[#64748b] mt-1.5 block">
-                      ICD 203: {sc.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Grafikler: Senaryo Donut + P1/P2 Önem Eşiği */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <ScenarioDonutChart scenarios={latest.scenarios} />
+          <PrioritySignalChart signals={latest.signals} />
+        </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-[#efede7]">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-[#efede7]">
           <div className="flex items-center gap-2 text-xs text-[#64748b]">
-            <ShieldAlert className="w-4 h-4 text-[#1e3a5f]" />
-            <span>8 Bölümlü Tam Brifing · Mini-ACH · Oyun Teorisi · Entman Matrisi</span>
+            <ShieldAlert className="w-4 h-4 text-[#1e3a5f] shrink-0" />
+            <span>
+              Kısaltma açıklamaları (hover/dokunmatik) · Tıklanabilir kaynakça
+            </span>
           </div>
           <Link
             href={`/rapor/${latest.slug}`}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1e3a5f] text-white text-sm font-semibold hover:bg-[#162c48] transition-colors"
+            className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#1e3a5f] text-white text-sm font-semibold hover:bg-[#162c48] transition-colors"
           >
             Tam Raporu Oku
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>
+
+      {/* EWS 23 Ülke Kriz Takvimi Özeti */}
+      {topRisk.length > 0 && (
+        <section className="bg-white border border-[#e2dfd7] rounded-xl p-5 sm:p-7 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <Globe2 className="w-5 h-5 text-[#8b1e3f]" />
+              <h2 className="font-serif-editorial text-xl font-bold text-[#1e3a5f]">
+                EWS 23 Ülke Günlük Kriz Takvimi (En Yüksek Riskli 4 Ülke)
+              </h2>
+            </div>
+            <Link
+              href="/ews-takvim"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#8b1e3f] hover:underline"
+            >
+              23 Ülke Takvimini Aç
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {topRisk.map((c) => (
+              <div
+                key={c.iso3}
+                className="rounded-lg border border-[#e2dfd7] bg-[#faf9f6] p-4"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-sm text-[#121417]">
+                    {c.countryName}
+                  </span>
+                  <span className="font-mono text-sm font-bold text-[#8b1e3f]">
+                    {c.forward1yScore.toFixed(2)}
+                  </span>
+                </div>
+                <div className="text-[10px] font-mono text-[#64748b] mb-2">
+                  2025: {c.v270Score2025.toFixed(2)} (+{c.deltaScore.toFixed(2)})
+                </div>
+                <div className="text-xs text-[#374151] line-clamp-2">
+                  {c.primaryCrisisLabel}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Mimari Akış Şeması */}
+      <ArchitectureSchema />
 
       {/* Arşiv */}
       <section className="space-y-4">
@@ -137,12 +153,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
-      {archive.length === 0 && (
-        <p className="text-xs text-[#64748b] italic">
-          Her sabah 07:00 UTC+3 sonrası üretilen yeni bültenler otomatik olarak arşiv akışına eklenecektir.
-        </p>
-      )}
     </div>
   );
 }

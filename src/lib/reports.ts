@@ -8,6 +8,12 @@ export interface ScenarioItem {
   label: string;
 }
 
+export interface PrioritySignalItem {
+  level: string;
+  score: number;
+  title: string;
+}
+
 export interface IntelligenceReport {
   slug: string;
   date: string;
@@ -16,6 +22,7 @@ export interface IntelligenceReport {
   headline: string;
   blufPreview: string;
   scenarios: ScenarioItem[];
+  signals: PrioritySignalItem[];
   htmlContent: string;
   toc: { id: string; text: string }[];
 }
@@ -35,16 +42,11 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-function enhanceEpistemicTags(html: string): string {
-  return html
-    .replace(
-      /\[OLGU\]/g,
-      '<span class="badge badge-fact">OLGU</span>'
-    )
-    .replace(
-      /\[İDDİA\]/g,
-      '<span class="badge badge-claim">İDDİA</span>'
-    )
+function enhanceReportHtml(html: string): string {
+  // 1. Epistemik ve NATO etiketlerini rozete cevir
+  let out = html
+    .replace(/\[OLGU\]/g, '<span class="badge badge-fact">OLGU</span>')
+    .replace(/\[İDDİA\]/g, '<span class="badge badge-claim">İDDİA</span>')
     .replace(
       /\[(TEMEL VARSAYIM|VARSAYIM)\]/g,
       '<span class="badge badge-assumption">$1</span>'
@@ -55,17 +57,39 @@ function enhanceEpistemicTags(html: string): string {
     )
     .replace(
       /\[NATO:\s*([A-F][1-6])\]/g,
-      '<span class="badge badge-nato">NATO: $1</span>'
+      '<span class="badge badge-nato" data-abbr="NATO">NATO: $1</span>'
     )
     .replace(
       /\[Analitik Güven:\s*([^\]]+)\]/g,
       '<span class="badge badge-confidence">Analitik Güven: $1</span>'
-    )
-    .replace(
-      /<table>/g,
-      '<div class="table-wrap"><table>'
-    )
+    );
+
+  // 2. Metin ici [1], [2] gibi kaynak referanslarini tiklanabilir #kaynak-N linkine cevir
+  out = out.replace(
+    /\[(\d{1,2})\](?!\()/g,
+    '<a href="#kaynak-$1" class="citation-link" title="Kaynak $1\'e git">[$1]</a>'
+  );
+
+  // 3. Bolum 8 Kaynakca <ol> icindeki <li> ogelerine id="kaynak-N" ekle
+  const kaynakIdx = out.indexOf('id="8-denetlenmis-kaynakca');
+  if (kaynakIdx !== -1) {
+    const before = out.slice(0, kaynakIdx);
+    let after = out.slice(kaynakIdx);
+    let refCounter = 1;
+    after = after.replace(/<li>/g, () => {
+      const id = `kaynak-${refCounter}`;
+      refCounter += 1;
+      return `<li id="${id}" class="source-item">`;
+    });
+    out = before + after;
+  }
+
+  // 4. Tablolari responsive yatay kaydirmali sarmalayiciya al
+  out = out
+    .replace(/<table>/g, '<div class="table-wrap"><table>')
     .replace(/<\/table>/g, "</table></div>");
+
+  return out;
 }
 
 function parseScenarios(raw: string): ScenarioItem[] {
@@ -81,6 +105,21 @@ function parseScenarios(raw: string): ScenarioItem[] {
     });
   }
   return scenarios;
+}
+
+function parsePrioritySignals(raw: string): PrioritySignalItem[] {
+  const signals: PrioritySignalItem[] = [];
+  const regex =
+    /\|\s*\*\*(P[1-3])\s*\((\d+)\/15\)\*\*\s*\|\s*([^|]+)\|/g;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(raw)) !== null) {
+    signals.push({
+      level: match[1],
+      score: Number(match[2]),
+      title: match[3].replace(/\[\d+\]/g, "").trim(),
+    });
+  }
+  return signals;
 }
 
 export function getAllReports(): IntelligenceReport[] {
@@ -112,7 +151,12 @@ export function getAllReports(): IntelligenceReport[] {
       for (let i = blufIdx + 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (line && !line.startsWith("|") && !line.startsWith("#")) {
-          blufPreview = line.replace(/\[(?:OLGU|ANALİTİK YARGI|İDDİA|VARSAYIM|TEMEL VARSAYIM)\]\s*/g, "");
+          blufPreview = line
+            .replace(
+              /\[(?:OLGU|ANALİTİK YARGI|İDDİA|VARSAYIM|TEMEL VARSAYIM)\]\s*/g,
+              ""
+            )
+            .replace(/\[\d+\]/g, "");
           break;
         }
       }
@@ -121,7 +165,8 @@ export function getAllReports(): IntelligenceReport[] {
     const toc: { id: string; text: string }[] = [];
     const renderer = new marked.Renderer();
     renderer.heading = ({ tokens, depth }) => {
-      const text = tokens.map((t) => ("text" in t ? t.text : "")).join("") || "";
+      const text =
+        tokens.map((t) => ("text" in t ? t.text : "")).join("") || "";
       const id = slugify(text);
       if (depth === 2) {
         toc.push({ id, text });
@@ -130,8 +175,11 @@ export function getAllReports(): IntelligenceReport[] {
     };
 
     const bodyWithoutH1 = lines.slice(1).join("\n");
-    const rawHtml = marked.parse(bodyWithoutH1, { renderer, async: false }) as string;
-    const htmlContent = enhanceEpistemicTags(rawHtml);
+    const rawHtml = marked.parse(bodyWithoutH1, {
+      renderer,
+      async: false,
+    }) as string;
+    const htmlContent = enhanceReportHtml(rawHtml);
 
     return {
       slug,
@@ -141,6 +189,7 @@ export function getAllReports(): IntelligenceReport[] {
       headline,
       blufPreview,
       scenarios: parseScenarios(raw),
+      signals: parsePrioritySignals(raw),
       htmlContent,
       toc,
     };
