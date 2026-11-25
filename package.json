@@ -9,6 +9,7 @@
     "sync-reports": "node scripts/sync-reports.mjs"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^2.1.0",
     "lucide-react": "^0.468.0",
     "marked": "^15.0.0",
     "next": "^15.1.0",
