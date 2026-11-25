@@ -30,6 +30,11 @@ export default function RootLayout({
               <span className="font-serif-editorial text-xl sm:text-3xl font-bold text-[#1e3a5f] group-hover:opacity-85 transition-opacity">
                 Günlük Stratejik İstihbarat
               </span>
+              <span className="font-serif-editorial italic text-xs sm:text-sm tracking-wide mt-0.5">
+                <span className="text-[#8b1e3f]">In memoriam</span>{" "}
+                <span className="text-[#1e3a5f] font-semibold">Erkut Ersoy</span>{" "}
+                <span className="text-[#8b1e3f]">— cum reverentia et gratitudine</span>
+              </span>
             </Link>
 
             <nav className="flex items-center gap-2 sm:gap-3 text-xs font-mono">
