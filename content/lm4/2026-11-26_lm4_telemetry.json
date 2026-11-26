@@ -1,0 +1,244 @@
+{
+  "protocol": "LM-BIGA v1.2 + LM-4 Birlesik Medya & Adli Dilbilim",
+  "date": "2026-11-26",
+  "generated_utc": "2026-11-26T02:44:04Z",
+  "gdelt_attention_lock": {
+    "count": 62,
+    "mean": 0.016,
+    "std": 0.127,
+    "latest": 0.0,
+    "z_score": -0.127,
+    "attention_lock": false
+  },
+  "gdelt_timeline_tail": [
+    {
+      "date": "20261124T010000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T020000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T030000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T040000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T050000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T060000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T070000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T200000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T210000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T220000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261124T230000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T000000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T010000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T020000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T030000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T040000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T050000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T060000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T090000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T100000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261125T140000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261126T000000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261126T010000Z",
+      "value": 0.0
+    },
+    {
+      "date": "20261126T020000Z",
+      "value": 0.0
+    }
+  ],
+  "d08_coordinated_clusters": [
+    {
+      "anchor_title": "İstanbul Valisi Gül'den sokakta kalan vatandaşların 112'ye bildirilmesi çağrısı — İstanbul Valisi Davut Gül, kentte hava sıcaklığının gece 2 dereceye kadar düşmesinin beklendiğine işaret ederek, sokakta kalan ve barınmaya ihtiyaç duyan vatandaşların 112 Acil Çağrı Merkezi'ne bildirilmesi çağrısında bulundu.",
+      "domain_count": 2,
+      "domains": [
+        "aa.com.tr",
+        "yenisafak.com"
+      ],
+      "sample_urls": [
+        "https://www.aa.com.tr/tr/gundem/istanbul-valisi-gulden-sokakta-kalan-vatandaslarin-112ye-bildirilmesi-cagrisi/4138067",
+        "https://www.yenisafak.com/gundem/vali-gulden-112-cagrisi-sokakta-kalanlar-bildirilsin-4876595"
+      ],
+      "timestamps": [
+        "Wed, 25 Nov 2026 23:39:12 +0300",
+        "Thu, 26 Nov 2026 00:21:14 +0300"
+      ]
+    },
+    {
+      "anchor_title": "Sağlık Bakanı Memişoğlu Çin'in Ankara Büyükelçisi Xuebin ile görüştü — Sağlık Bakanı Kemal Memişoğlu, Çin'in Ankara Büyükelçisi Jiang Xuebin ile bir araya geldi.",
+      "domain_count": 2,
+      "domains": [
+        "aa.com.tr",
+        "sabah.com.tr"
+      ],
+      "sample_urls": [
+        "https://www.aa.com.tr/tr/gundem/saglik-bakani-memisoglu-cinin-ankara-buyukelcisi-xuebin-ile-gorustu/4138063",
+        "https://www.sabah.com.tr/gundem/2026/11/25/saglik-bakani-memisoglu-cinin-ankara-buyukelcisi-xuebin-ile-gorustu"
+      ],
+      "timestamps": [
+        "Wed, 25 Nov 2026 23:33:20 +0300",
+        "Wed, 25 Nov 2026 18:20:01 +0300"
+      ]
+    }
+  ],
+  "lm4_lf_scan": {
+    "lexicons_loaded": [
+      "core_manipulation_v1.json",
+      "feto_jargon_lexicon.json",
+      "erdoganizm_akp_propaganda_lexicon.json"
+    ],
+    "pattern_count": 130,
+    "total_articles_scanned": 135,
+    "total_pattern_hits": 2,
+    "weighted_manipulation_score": 1.5,
+    "hits_by_category": {
+      "Devlet-Beka & Milli İrade Çerçevelemesi": 2
+    },
+    "samples": [
+      {
+        "pattern_id": "ER-02",
+        "term": "terörsüz türkiye",
+        "category": "Devlet-Beka & Milli İrade Çerçevelemesi",
+        "risk_weight": 0.75,
+        "domain": "sabah.com.tr",
+        "title": "Terörsüz Türkiye için kritik eşik! Külliye'de İzleme Komisyonu toplantısı! Yeni Parti tarihi sürece sırtını döndü — Meclis'te kurulacak olan İzleme Komisyonu ile Terörsüz Türkiye sürecinde önemli bir adım daha atılmış olacak. AK Partili üst düzey yöneticiler, Cumhurbaşkanı Yardımcısı Cevdet Yılmaz'ın başkanlığında Külliye'de... Devamı için tıklayınız",
+        "url": "https://www.sabah.com.tr/gundem/2026/11/25/terorsuz-turkiye-icin-kritik-esik-izleme-komisyonu-kulliyede-toplacak-yeni-parti-tarihi-surece-sirtini-dondu",
+        "seendate": "Wed, 25 Nov 2026 18:27:53 +0300"
+      },
+      {
+        "pattern_id": "ER-02",
+        "term": "terörsüz türkiye",
+        "category": "Devlet-Beka & Milli İrade Çerçevelemesi",
+        "risk_weight": 0.75,
+        "domain": "yenisafak.com",
+        "title": "Partilere izleme komisyonu çağrısı: 30 Kasım'a kadar üye isimlerini verin — TBMM Başkanı Numan Kurtulmuş, Terörsüz Türkiye süreci kapsamında kurulacak İzleme Komisyonu için siyasi parti gruplarına yazı gönderdi. Komisyon için partilerden görevlendirecekleri milletvekillerinin isimleri istendi.",
+        "url": "https://www.yenisafak.com/gundem/partilere-izleme-komisyonu-cagrisi-30-kasima-kadar-uye-isimlerini-verin-4876616",
+        "seendate": "Thu, 26 Nov 2026 04:00:00 +0300"
+      }
+    ]
+  },
+  "diplomatic_seismograph": [],
+  "boomerang_foreign_feed": [
+    {
+      "title": "How Much Is the Dental Implants Turkey Cost in 2027 ? Prices & All - Inclusive Packages",
+      "domain": "mensxp.com",
+      "seendate": "20261126T014500Z",
+      "url": "https://www.mensxp.com/buzz-on-web/latest/186966-how-much-is-the-dental-implants-turkey-cost-in-2027-prices-all-inclusive-packages.html"
+    },
+    {
+      "title": "تحركات تركية قطرية لإنقاذ اتفاق غزة .. هل ينجح  مجلس السلام  في كبح التصعيد الإسرائيلي ومنع تهجير الفلسطينيين ؟ ",
+      "domain": "fj-p.com",
+      "seendate": "20261126T011500Z",
+      "url": "https://www.fj-p.com/438623/%D8%AA%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%AA%D8%B1%D9%83%D9%8A%D8%A9-%D9%82%D8%B7%D8%B1%D9%8A%D8%A9-%D9%84%D8%A5%D9%86%D9%82%D8%A7%D8%B0-%D8%A7%D8%AA%D9%81%D8%A7%D9%82-%D8%BA%D8%B2%D8%A9-%D9%87/"
+    },
+    {
+      "title": "Spain heads to the polls : What at stake ? ",
+      "domain": "europesun.com",
+      "seendate": "20261126T011500Z",
+      "url": "http://www.europesun.com/news/279454568/spain-heads-to-the-polls-what-at-stake"
+    },
+    {
+      "title": "PODCAST : Ottawa pushes back as Canada - U . S . trade dispute strains defence ties",
+      "domain": "620ckrm.com",
+      "seendate": "20261126T004500Z",
+      "url": "https://www.620ckrm.com/2026/11/25/podcast-ottawa-pushes-back-as-canada-u-s-trade-dispute-strains-defence-ties/"
+    },
+    {
+      "title": "Turkey  Budget  Myth : Alcohol Now Costs Double the EU Average",
+      "domain": "english.pravda.ru",
+      "seendate": "20261125T003000Z",
+      "url": "https://english.pravda.ru/news/society/174207-turkey-alcohol-costs-eu/"
+    },
+    {
+      "title": "索羅斯是誰 ？ 曾被指 「 搞垮半個亞洲 」 跨國金援爭議一次看 | 國際 | 三立新聞網 SETN . COM",
+      "domain": "setn.com",
+      "seendate": "20261125T003000Z",
+      "url": "https://www.setn.com/news/1944362"
+    },
+    {
+      "title": "Akali - BJP Alliance : ਸ਼੍ਰੋਮਣੀ ਅਕਾਲੀ ਦਲ ਅਤੇ ਭਾਜਪਾ ਮੁੜ ਇਕੱਠੇ",
+      "domain": "punjabitribuneonline.com",
+      "seendate": "20261124T234500Z",
+      "url": "https://www.punjabitribuneonline.com/news/nation/akali-bjp-alliance-shiromani-akali-dal-and-bjp-together-again/"
+    },
+    {
+      "title": "AK Party Yazıcı resigns from senior leadership posts",
+      "domain": "dailysabah.com",
+      "seendate": "20261124T223000Z",
+      "url": "https://www.dailysabah.com/politics/ak-partys-yazici-resigns-from-senior-leadership-posts/news"
+    },
+    {
+      "title": "Reuters : Πεδίο σύγκρουσης ξένων δυνάμεων η Μεσόγειος - Τι δείχνει η ουκρανική επίθεση ανοιχτά της Λιβύης",
+      "domain": "skaikritis.gr",
+      "seendate": "20261124T223000Z",
+      "url": "https://www.skaikritis.gr/reuters-pedio-sygkrousis-xenon-dynameon-i-mesogeios-ti-deichnei-i-oukraniki-epithesi-anoichta-tis-livyis/"
+    },
+    {
+      "title": "Reuters : Το χρόνιο πολιτικό αδιέξοδο στη Λιβύη και οι ξένες παρεμβάσεις - Γιατί η σύγκρουση απειλεί ξανά την ευρύτερη περιοχή",
+      "domain": "iefimerida.gr",
+      "seendate": "20261124T223000Z",
+      "url": "https://www.iefimerida.gr/kosmos/reuters-libyi-xenes-parembaseis-sygkroysi-periohi"
+    }
+  ]
+}

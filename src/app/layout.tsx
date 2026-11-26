@@ -37,12 +37,18 @@ export default function RootLayout({
               </span>
             </Link>
 
-            <nav className="flex items-center gap-2 sm:gap-3 text-xs font-mono">
+            <nav className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono">
               <Link
                 href="/"
                 className="px-3 py-1.5 rounded-lg bg-[#f3f1eb] hover:bg-[#e7e4dc] text-[#1e3a5f] font-semibold transition-colors"
               >
                 Günlük Brifing
+              </Link>
+              <Link
+                href="/lm4-adli"
+                className="px-3 py-1.5 rounded-lg bg-[#fdf2f4] hover:bg-[#fbe3e8] text-[#8b1e3f] border border-[#f5c6d0] font-semibold transition-colors"
+              >
+                LM-4 Adli Medya
               </Link>
               <Link
                 href="/ews-takvim"
