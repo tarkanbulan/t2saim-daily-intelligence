@@ -1,9 +1,9 @@
 {
   "2026-11-26_lm4_telemetry.json": {
-    "sha256": "8689677eadfc4dab674b8aa6ddfaa66da7ed2bfe743a5232160d3a6079528657",
-    "generated_utc": "2026-11-26T02:44:04Z",
+    "sha256": "be38073fe85b56e4f2950481ca3e9cdee9d48c1a9d359bd8d0d4355a4e699c2e",
+    "generated_utc": "2026-11-26T04:01:37Z",
     "articles_scanned": 135,
     "d08_clusters": 2,
-    "z_score": -0.127
+    "z_score": 0.0
   }
 }
