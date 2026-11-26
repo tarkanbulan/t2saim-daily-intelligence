@@ -56,6 +56,12 @@ export default function RootLayout({
               >
                 EWS 23 Ülke Takvimi
               </Link>
+              <Link
+                href="/special-edition"
+                className="px-3 py-1.5 rounded-lg bg-[#fbf8f1] hover:bg-[#f3ebda] text-[#6b4c1e] border border-[#e2d4b7] font-semibold transition-colors"
+              >
+                Özel Dosya
+              </Link>
             </nav>
           </div>
         </header>

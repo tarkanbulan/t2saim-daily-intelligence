@@ -14,6 +14,13 @@ export interface PrioritySignalItem {
   title: string;
 }
 
+export interface MarketMetricItem {
+  indicator: string;
+  value: string;
+  delta: string;
+  note: string;
+}
+
 export interface IntelligenceReport {
   slug: string;
   date: string;
@@ -23,6 +30,7 @@ export interface IntelligenceReport {
   blufPreview: string;
   scenarios: ScenarioItem[];
   signals: PrioritySignalItem[];
+  marketMetrics: MarketMetricItem[];
   htmlContent: string;
   toc: { id: string; text: string }[];
 }
@@ -122,6 +130,27 @@ function parsePrioritySignals(raw: string): PrioritySignalItem[] {
   return signals;
 }
 
+function parseMarketMetrics(raw: string): MarketMetricItem[] {
+  const sec41 = raw.match(/###\s*4\.1\b([\s\S]*?)(?=\n###\s*4\.2|\n##\s*5\.)/);
+  if (!sec41) return [];
+  const rows: MarketMetricItem[] = [];
+  for (const line of sec41[1].split(/\r?\n/)) {
+    if (!line.trim().startsWith("|") || line.includes("---")) continue;
+    const cols = line
+      .split("|")
+      .slice(1, -1)
+      .map((c) => c.trim());
+    if (cols.length < 4 || cols[0].includes("Gösterge")) continue;
+    const indicator = cols[0].replace(/\*\*/g, "").trim();
+    const value = cols[1].replace(/\[\d+\]/g, "").replace(/\*\*/g, "").trim();
+    const delta = cols[2].replace(/\*\*/g, "").trim();
+    const note = cols[3].replace(/\*\*/g, "").trim();
+    if (value.toLowerCase().includes("teyit edilememiştir")) continue;
+    rows.push({ indicator, value, delta, note });
+  }
+  return rows.slice(0, 8);
+}
+
 export function getAllReports(): IntelligenceReport[] {
   if (!fs.existsSync(REPORTS_DIR)) return [];
   const files = fs
@@ -190,6 +219,7 @@ export function getAllReports(): IntelligenceReport[] {
       blufPreview,
       scenarios: parseScenarios(raw),
       signals: parsePrioritySignals(raw),
+      marketMetrics: parseMarketMetrics(raw),
       htmlContent,
       toc,
     };

@@ -1,0 +1,1258 @@
+<!-- Chosen Palette: Warm Forensic Alabaster & Slate Navy (#F8F7F4 arka plan, #FFFFFF kart yüzeyleri, #1E293B ana metin, #1E3A5F kurumsal lacivert vurgu, #B45309 adli/likidite uyarısı, #047857 doğrulanmış kayıt etiketi) -->
+<!-- Application Structure Plan: Raporun yoğun hukuki ve finansal içeriğini doğrusal okuma yükünden kurtarmak amacıyla 5 odaklı modülden oluşan etkileşimli bir analitik gösterge paneli tasarlanmıştır: (1) Kritik Olgu Ayrıştırması (kamuoyunda karıştırılan 3 temel kaydın sekme bazlı doğrulaması), (2) Serbest Fon Büyümesi ve Ağustos-Eylül 2026 SPK Müdahalesi (TSPB/TEFAS dinamik grafikleri, 131 fon tasfiye dağılımı ve Gildencrest Capital sınır ötesi akış diyagramı), (3) Elektronik Para Lisans Zinciri, Dijital Bankalar ve Kapalıçarşı Hibrit Ağı (TCMB denetim oranları ve filtrelenebilir kurum sicili), (4) 2012–2016 Zarrab/Halkbank Koridoru ile 2021–2026 Hibrit Mekanizmasının 6 aşamalı etkileşimli yapısal karşılaştırma laboratuvarı ve (5) 47 kayıttan oluşan aranabilir, filtrelenebilir ve CSV olarak indirilebilir kronolojik veri gezgini. Bu mimari, kullanıcının hem makro trendleri hem de tekil Resmî Gazete/mahkeme kayıtlarını bağlam kopukluğu yaşamadan incelemesini sağlar. -->
+<!-- Visualization & Content Choices: 1) Serbest Fon Büyümesi (2021–2026): Zaman serisi hacim ve net giriş karşılaştırması için Chart.js çubuk/çizgi grafiği (etkileşimli metrik seçici ile). 2) SPK 2026/61 Tasfiye Edilen 131 Fon: Portföy yönetim şirketi ve tasfiye bankası (Ziraat/İş Bankası) karşılaştırması için Chart.js yatay çubuk grafiği. 3) TCMB 2021–2023 Yasa Dışı Bahis Hesap Kapatmaları: Papara (%94,4) ve sektör dağılımı için Chart.js halka (doughnut) grafiği. 4) Yapısal Akış Şemaları ve SDNY Kapanış Süreci: SVG/Mermaid kullanılmadan saf HTML/CSS Tailwind ızgara ve etkileşimli aşama seçicileriyle kurgulandı. 5) Kronolojik Veri Seti: Vanilla JS ile anlık arama, kategori/etiket filtreleme ve istemci taraflı CSV indirme işlevi. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkiye Adli Finans Mekanizmaları İncelemesi (2012–2026)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #1E293B;
+            overflow-x: hidden;
+        }
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 310px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-active {
+            background-color: #1E3A5F;
+            color: #FFFFFF;
+            border-color: #1E3A5F;
+        }
+        .tab-inactive {
+            background-color: #FFFFFF;
+            color: #334155;
+            border-color: #E5E2DC;
+        }
+        .tab-inactive:hover {
+            background-color: #F1EFEA;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#1E3A5F] selection:text-white">
+
+    <header class="sticky top-0 z-40 bg-[#F8F7F4]/95 backdrop-blur border-b border-[#E5E2DC]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#1E3A5F] text-white font-bold text-lg shadow-sm">⚖️</span>
+                    <div>
+                        <h1 class="text-base sm:text-lg font-bold text-[#1E293B] leading-tight">Türkiye Adli Finans Mekanizmaları İncelemesi</h1>
+                        <p class="text-xs text-[#57534E]">Serbest Fonlar, E-Para Lisans Zinciri, Kapalıçarşı &amp; Zarrab/Halkbank Karşılaştırması (2012–2026)</p>
+                    </div>
+                </div>
+                <nav class="flex flex-wrap items-center gap-1.5 text-xs font-medium">
+                    <a href="#olgu-ayristirma" class="px-2.5 py-1.5 rounded-md bg-white border border-[#E5E2DC] text-[#1E293B] hover:bg-[#1E3A5F] hover:text-white transition">1. Olgu Ayrıştırma</a>
+                    <a href="#serbest-fonlar" class="px-2.5 py-1.5 rounded-md bg-white border border-[#E5E2DC] text-[#1E293B] hover:bg-[#1E3A5F] hover:text-white transition">2. Serbest Fonlar &amp; SPK</a>
+                    <a href="#epara-kapalicarsi" class="px-2.5 py-1.5 rounded-md bg-white border border-[#E5E2DC] text-[#1E293B] hover:bg-[#1E3A5F] hover:text-white transition">3. E-Para &amp; Kapalıçarşı</a>
+                    <a href="#yapisal-karsilastirma" class="px-2.5 py-1.5 rounded-md bg-white border border-[#E5E2DC] text-[#1E293B] hover:bg-[#1E3A5F] hover:text-white transition">4. 2012 vs. 2026 Mimari</a>
+                    <a href="#kronolojik-veri" class="px-2.5 py-1.5 rounded-md bg-[#1E3A5F] text-white hover:bg-[#152944] transition">5. Kronolojik Veri Seti</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <section class="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#1E3A5F]/10 text-[#1E3A5F]">
+                    📑 Adli Finans ve Düzenleyici Kurum Kayıtları Sentezi
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-900 border border-amber-200">
+                    🛡️ Hukuki İlke: İdari tedbirler ile kesinleşmemiş ceza yargılaması iddiaları ayrıştırılmıştır
+                </span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-[#1E293B] mb-3">
+                Geleneksel Yaptırım Koridorundan Çok Katmanlı Dijital &amp; Fon Mimarisine Geçiş
+            </h2>
+            <p class="text-sm sm:text-base text-[#475569] leading-relaxed mb-6">
+                2012–2016 döneminde fiziki altın ticareti, hayali insani gıda faturaları ve muhabir bankacılık kanallarına dayanan sınır ötesi fon aktarım mimarisi; 2021–2026 döneminde nitelikli yatırımcı serbest yatırım fonları, elektronik para ve sanal POS kuruluşları, Kapalıçarşı yetkili müesseseleri ile sınır ötesi kripto varlık (<span class="font-mono-code font-semibold text-[#1E293B]">USDT</span>) ve "bıyıklı yabancı" aracı kurum hatlarından oluşan hibrit bir yapıya evrilmiştir. Bu etkileşimli inceleme platformu; TSPB, SPK, TCMB, BDDK, MASAK, TBMM ve ABD Güney New York Bölge Mahkemesi (SDNY) kayıtlarını belge bazında ayrıştırarak sunmaktadır.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="rounded-xl bg-[#F8F7F4] border border-[#E5E2DC] p-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#57534E]">Serbest Fon Büyümesi</span>
+                        <span class="text-base">📈</span>
+                    </div>
+                    <div class="text-2xl font-bold text-[#1E3A5F] font-mono-code">4,98 Trilyon TL</div>
+                    <p class="text-xs text-[#47534E] mt-1">
+                        <span class="font-mono-code">2021-12-31</span>'de <span class="font-mono-code">101,5 Milyar TL</span> iken 4 yılda <span class="font-semibold text-[#1E293B]">49,09 kat</span> artış (TEFAS açık serbest fonlar: <span class="font-mono-code">3,6 Trilyon TL</span>).
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-[#F8F7F4] border border-[#E5E2DC] p-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#57534E]">SPK Eylül 2026 Tasfiyesi</span>
+                        <span class="text-base">🏛️</span>
+                    </div>
+                    <div class="text-2xl font-bold text-[#B45309] font-mono-code">131 Fon / 7 PYŞ</div>
+                    <p class="text-xs text-[#47534E] mt-1">
+                        <span class="font-mono-code">&gt;800 Milyar TL</span> portföy ve <span class="font-mono-code">455.758</span> tekil yatırımcı; <span class="font-mono-code">2026-11-22</span> itibarıyla <span class="font-mono-code">161 Milyar TL</span> yatırımcı ödemesi.
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-[#F8F7F4] border border-[#E5E2DC] p-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#57534E]">E-Para &amp; Bahis Denetimi</span>
+                        <span class="text-base">💳</span>
+                    </div>
+                    <div class="text-2xl font-bold text-[#1E3A5F] font-mono-code">%94,4 Yoğunlaşma</div>
+                    <p class="text-xs text-[#47534E] mt-1">
+                        TCMB <span class="font-mono-code">2021–2023</span> raporunda Papara'da kapatılan <span class="font-mono-code">21.088</span> hesap sektör toplamının %94,4'ü; 2025–2026'da <span class="font-mono-code">18+</span> iptal.
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-[#F8F7F4] border border-[#E5E2DC] p-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#57534E]">SDNY Zarrab / Halkbank</span>
+                        <span class="text-base">🌐</span>
+                    </div>
+                    <div class="text-2xl font-bold text-[#047857] font-mono-code">~20 Milyar USD</div>
+                    <p class="text-xs text-[#47534E] mt-1">
+                        <span class="font-mono-code">2026-03-09</span> DPA ve EY raporu sonrası <span class="font-mono-code">2026-06-17</span>'de Halkbank davası suç ikrarsız ve para cezasız düştü.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="olgu-ayristirma" class="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 shadow-sm">
+            <div class="mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#B45309]">Bölüm 1 • Birincil Kayıt Doğrulama Matrisi</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-[#1E293B] mt-1">Kamuoyunda Sıklıkla Karıştırılan 3 Temel Olgunun Belge Bazında Ayrıştırılması</h2>
+                <p class="text-sm text-[#47534E] mt-2 leading-relaxed">
+                    Bu bölümün amacı, medya ve ikincil yorumlarda birbiriyle karıştırılan üç kritik resmi süreci Resmî Gazete sayıları, mahkeme karar numaraları ve TBMM tutanakları ışığında netleştirmektir. Aşağıdaki sekmeleri kullanarak eski MASAK yöneticilerinin hukuki konumlarını, Papara hakkındaki TCMB kararlarının gerçek yönünü ve SDNY Halkbank davasının kapanış koşullarını <span class="font-semibold text-[#047857]">[VERIFIED]</span> ve <span class="font-semibold text-[#B45309]">[CLAIMED / UNVERIFIED]</span> etiketleriyle inceleyebilirsiniz.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6" id="fact-tabs">
+                <button type="button" data-fact="masak" class="fact-tab-btn tab-active px-4 py-2.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer">
+                    1. Eski MASAK Yöneticileri: Dr. Ramazan Başak vs. Osman Dereli
+                </button>
+                <button type="button" data-fact="papara" class="fact-tab-btn tab-inactive px-4 py-2.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer">
+                    2. Papara TCMB Kararı: 30 Ekim 2025 İptal vs. 21 Ocak 2026 Kaldırma
+                </button>
+                <button type="button" data-fact="halkbank" class="fact-tab-btn tab-inactive px-4 py-2.5 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer">
+                    3. SDNY Halkbank &amp; Zarrab Dosyası: 2026 DPA ve Düşme Kararı
+                </button>
+            </div>
+
+            <div id="fact-detail-container" class="bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5 sm:p-6">
+            </div>
+        </section>
+
+        <section id="serbest-fonlar" class="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 shadow-sm">
+            <div class="mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#1E3A5F]">Bölüm 2 • Sermaye Piyasaları ve Düzenleyici Müdahale</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-[#1E293B] mt-1">Serbest Fon Büyümesi (2021–2026), SPK 2026/54 Rehber Sınırları ve 131 Fonun Tasfiyesi</h2>
+                <p class="text-sm text-[#47534E] mt-2 leading-relaxed">
+                    Bu bölümde serbest yatırım fonlarının dört yılda 49,09 kat büyüyerek 4,98 trilyon TL'ye ulaşma dinamiklerini, SPK'nın 28 Ağustos 2026 tarihli Rehber revizyonuyla getirdiği yoğunlaşma ve kaldıraç sınırlarını ve 17 Eylül 2026 tarihinde 7 portföy yönetim şirketine ait 131 fonun tasfiyeye alınma dağılımını etkileşimli grafikler üzerinden analiz edebilirsiniz. Ayrıca MASAK'ın 21 Kasım 2026 tarihli raporunda tespit ettiği Londra–İsviçre–BIST "bıyıklı yabancı" akış şeması da aşağıda görselleştirilmiştir.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <h3 class="text-base font-bold text-[#1E293B]">Serbest Yatırım Fonları Portföy Gelişimi (2021–2026)</h3>
+                            <div class="inline-flex rounded-lg border border-[#E5E2DC] bg-white p-0.5 text-xs">
+                                <button type="button" id="btn-growth-aum" class="px-2.5 py-1 rounded-md bg-[#1E3A5F] text-white font-medium cursor-pointer">Portföy (Milyar TL)</button>
+                                <button type="button" id="btn-growth-inflow" class="px-2.5 py-1 rounded-md text-[#47534E] font-medium cursor-pointer">Yıllık Net Giriş</button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-[#57534E] mb-4">
+                            Kaynak: TSPB <em>Türkiye Sermaye Piyasası 2025</em> (2021–2025 tüm serbest fonlar) ve Paramedya/TEFAS (2026-08-29 TEFAS açık serbest fonlar: <span class="font-mono-code font-semibold">3.600 Milyar TL</span>).
+                        </p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="freeFundsGrowthChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-3 rounded-lg bg-white border border-[#E5E2DC] text-xs text-[#334155]">
+                        <strong>Vaka Örneği (Tera TLY Fonu):</strong> 2025 yılında BIST 100 endeksi <span class="font-mono-code">%14,6</span> yükselirken <em>Tera Portföy Birinci Serbest Fon (TLY)</em> <span class="font-mono-code font-bold text-[#B45309]">%4.233</span> getiri bildirmiş; fon büyüklüğü <span class="font-mono-code">889 Milyon TL</span>'den <span class="font-mono-code">35,3 Milyar TL</span>'ye, yatırımcı sayısı <span class="font-mono-code">11</span>'den <span class="font-mono-code">43.228</span>'e çıkmıştır <span class="text-[#047857] font-semibold">[VERIFIED]</span>.
+                    </div>
+                </div>
+
+                <div class="bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <h3 class="text-base font-bold text-[#1E293B]">SPK 2026/61 Kararı: Tasfiye Edilen 131 Fon</h3>
+                            <select id="liquidator-filter" class="rounded-lg border border-[#E5E2DC] bg-white px-2.5 py-1 text-xs font-medium text-[#1E293B] cursor-pointer">
+                                <option value="all">Tüm Tasfiye Yetkilileri (131 Fon)</option>
+                                <option value="ziraat">Ziraat Bankası Yetkili (125 Fon)</option>
+                                <option value="isbank">Türkiye İş Bankası Yetkili (6 Fon)</option>
+                            </select>
+                        </div>
+                        <p class="text-xs text-[#57534E] mb-4">
+                            <span class="font-mono-code">2026-09-17</span> tarihli SPK <span class="font-mono-code">2026/60</span> ve <span class="font-mono-code">2026/61</span> Bültenleri (<span class="font-mono-code">57/1706–1708</span> s.k.) ile 7 PYŞ'nin <span class="font-mono-code">131</span> fonu (<span class="font-mono-code">455.758</span> yatırımcı, <span class="font-mono-code">&gt;800 Milyar TL</span>) tasfiyeye alınmıştır.
+                        </p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="liquidatedFundsChart"></canvas>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                        <div class="p-2 rounded-lg bg-white border border-[#E5E2DC]">
+                            <div class="text-[11px] text-[#57534E]">Yoğunlaşma Tavanı</div>
+                            <div class="text-xs font-bold font-mono-code text-[#1E3A5F]">%5 / %20</div>
+                        </div>
+                        <div class="p-2 rounded-lg bg-white border border-[#E5E2DC]">
+                            <div class="text-[11px] text-[#57534E]">FDO Pay Sınırı</div>
+                            <div class="text-xs font-bold font-mono-code text-[#1E3A5F]">%8 – %2</div>
+                        </div>
+                        <div class="p-2 rounded-lg bg-white border border-[#E5E2DC]">
+                            <div class="text-[11px] text-[#57534E]">Kaldıraç / TPP</div>
+                            <div class="text-xs font-bold font-mono-code text-[#B45309]">Maks. %20</div>
+                        </div>
+                        <div class="p-2 rounded-lg bg-white border border-[#E5E2DC]">
+                            <div class="text-[11px] text-[#57534E]">OTC Ters Repo</div>
+                            <div class="text-xs font-bold font-mono-code text-[#B45309]">BIST30 / %105</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5 sm:p-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-[#1E293B]">MASAK 21 Kasım 2026 Raporu: Sınır Ötesi "Bıyıklı Yabancı" ve Kredi Kaldıracı Mimarisi</h3>
+                        <p class="text-xs text-[#57534E] mt-0.5">Londra (Gildencrest Capital) ve İsviçre (Century City) üzerinden Borsa İstanbul sığ paylarına yönlendirilen fon döngüsü <span class="text-[#047857] font-semibold">[VERIFIED]</span></p>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-md bg-white border border-[#E5E2DC] text-xs font-mono-code font-semibold text-[#1E3A5F]">
+                        9 Ülkede ~13 Milyar TL Varlık Donduruldu
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-stretch">
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-[#1E3A5F]/10 text-[#1E3A5F] mb-2">1. Yurt Dışı Paravan Yapı</span>
+                            <h4 class="text-sm font-bold text-[#1E293B]">Gildencrest Capital (Londra)</h4>
+                            <p class="text-xs text-[#47534E] mt-1.5 leading-relaxed">
+                                2011'de <em>Tera Europe</em> olarak kurulup 2024'te adı değiştirilen şirketin bağlı birimleri kağıt üzerinde eski şoför/çalışanlar üzerine kaydedilip fiilen İstanbul'dan yönetildi.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-[#E5E2DC] text-[11px] font-mono-code text-[#1E3A5F]">
+                            9 Yılda 21 Milyar TL Banka Trafiği
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-[#1E3A5F]/10 text-[#1E3A5F] mb-2">2. İsviçre &amp; BIST Emir Hattı</span>
+                            <h4 class="text-sm font-bold text-[#1E293B]">Century City &amp; "Bıyıklı Yabancı"</h4>
+                            <p class="text-xs text-[#47534E] mt-1.5 leading-relaxed">
+                                Londra'dan İsviçre'deki yapılara aktarılan emirler, yabancı kurumsal yatırımcı görünümüyle BIST'teki fiili dolaşımı düşük (sığ) 51 hisseye yönlendirildi.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-[#E5E2DC] text-[11px] font-mono-code text-[#1E3A5F]">
+                            11,9 Milyar TL Tera • 6,3 Milyar TL 19 Kişi
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900 mb-2">3. Fon Kaldıracı &amp; NAD Şişirme</span>
+                            <h4 class="text-sm font-bold text-[#1E293B]">TEFAS Fonları &amp; OTC Ters Repo</h4>
+                            <p class="text-xs text-[#47534E] mt-1.5 leading-relaxed">
+                                Sığ hisselerdeki yapay fiyat artışları serbest fonların Net Aktif Değerini (NAD) yükseltti; Takasbank Para Piyasası ve borsa dışı ters repo ile likidite sağlandı.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-[#E5E2DC] text-[11px] font-mono-code text-[#B45309]">
+                            1–16 Eylül: 401 Milyar TL Çıkış
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-900 mb-2">4. Sınır Ötesi Çıkış &amp; Bloke</span>
+                            <h4 class="text-sm font-bold text-[#1E293B]">İsviçre, Bahamalar &amp; 9 Ülke</h4>
+                            <p class="text-xs text-[#47534E] mt-1.5 leading-relaxed">
+                                Yurt dışı hesaplarda <span class="font-mono-code">7,8 Milyar TL</span> kâr biriktirildi; Kasım 2026'da Bahamalar'a <span class="font-mono-code">504 Milyon TL</span> pay aktarılırken <span class="font-mono-code">1,95 Milyar TL</span> MASAK'ça bloke edildi.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-[#E5E2DC] text-[11px] font-mono-code text-[#047857]">
+                            29 Ülkeden 48 MASAK Bilgi Talebi
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="epara-kapalicarsi" class="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 shadow-sm">
+            <div class="mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#B45309]">Bölüm 3 • Fintek Denetimi, Dijital Bankalar ve Kapalıçarşı Ağı</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-[#1E293B] mt-1">Elektronik Para Lisans Zinciri (2021–2026) ve Kapalıçarşı – Kripto (USDT) Dönüşüm Hattı</h2>
+                <p class="text-sm text-[#47534E] mt-2 leading-relaxed">
+                    Bu bölüm, 6493 sayılı Kanun kapsamındaki elektronik para kuruluşları ve 5411 sayılı Kanun kapsamındaki dijital katılım bankalarının 2025–2026 dönemindeki adli ve idari süreçlerini incelemektedir. Sol tarafta TCMB Denetim Raporu'nun yasa dışı bahis kaynaklı hesap kapatma yoğunlaşması ve Kapalıçarşı iddianamesi metrikleri, sağ tarafta ise kuruluş bazında filtreleyebileceğiniz resmi lisans ve kayyım sicili yer almaktadır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-[#1E293B] mb-1">TCMB Denetim Raporu (2021–2023): Yasa Dışı Bahis Hesap Kapatma Payı</h3>
+                        <p class="text-xs text-[#57534E] mb-4">
+                            <span class="font-mono-code">2025-10-11</span> tarihli Papara iddianamesinde yer alan TCMB verilerine göre sektör genelinde yasa dışı bahis nedeniyle kapatılan hesapların <span class="font-semibold text-[#1E293B]">%94,4</span>'ü (<span class="font-mono-code">21.088</span> hesap) tek kuruluşta toplanmıştır <span class="text-[#047857] font-semibold">[VERIFIED]</span>.
+                        </p>
+                    </div>
+                    <div class="chart-container" style="height: 260px;">
+                        <canvas id="emoneyAuditChart"></canvas>
+                    </div>
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="p-2.5 rounded-lg bg-white border border-[#E5E2DC] flex items-center justify-between">
+                            <span class="text-[#47534E]">Papara MASAK Raporu (<span class="font-mono-code">26.012</span> Hesap / <span class="font-mono-code">102</span> Site)</span>
+                            <span class="font-mono-code font-bold text-[#1E3A5F]">12,88 Milyar TL</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-white border border-[#E5E2DC] flex items-center justify-between">
+                            <span class="text-[#47534E]">Kapalıçarşı İddianamesi (<span class="font-mono-code">369</span> Paravan Şirket / M80)</span>
+                            <span class="font-mono-code font-bold text-[#B45309]">504 Şüpheli</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-white border border-[#E5E2DC] flex items-center justify-between">
+                            <span class="text-[#47534E]">2023 MASAK Raporu (<span class="font-mono-code">241</span> Paravan Şirket Akışı)</span>
+                            <span class="font-mono-code font-bold text-[#1E3A5F]">14,20 Milyar TL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5 flex flex-col">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-[#1E293B]">Kuruluş Bazında Lisans, İptal ve TMSF Devir Sicili</h3>
+                            <p class="text-xs text-[#57534E]">Kategori seçerek kuruluşların Resmî Gazete kararlarını filtreleyin</p>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 text-xs" id="entity-filter-group">
+                            <button type="button" data-efilter="all" class="efilter-btn tab-active px-2.5 py-1 rounded-md border font-medium cursor-pointer">Tümü (7)</button>
+                            <button type="button" data-efilter="revoked" class="efilter-btn tab-inactive px-2.5 py-1 rounded-md border font-medium cursor-pointer">İzni İptal Edilenler</button>
+                            <button type="button" data-efilter="lifted" class="efilter-btn tab-inactive px-2.5 py-1 rounded-md border font-medium cursor-pointer">İptali Kaldırılan / Devir</button>
+                            <button type="button" data-efilter="digitalbank" class="efilter-btn tab-inactive px-2.5 py-1 rounded-md border font-medium cursor-pointer">Dijital Bankalar</button>
+                        </div>
+                    </div>
+
+                    <div id="entity-cards-list" class="space-y-3 overflow-y-auto max-h-[460px] pr-1">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="yapisal-karsilastirma" class="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 shadow-sm">
+            <div class="mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#1E3A5F]">Bölüm 4 • Adli Finans Evrimi (2012–2016 vs. 2021–2026)</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-[#1E293B] mt-1">Yapısal Köprü: Geleneksel Yaptırım Delme Koridoru ile Hibrit Fon &amp; Kripto Ağının Karşılaştırması</h2>
+                <p class="text-sm text-[#47534E] mt-2 leading-relaxed">
+                    Bu bölüm, SDNY duruşma tutanakları (<em>United States v. Atilla</em>) ve Halkbank iddianamesinde belgelenen 2012–2016 dönemi mimarisi ile 2021–2026 döneminin serbest fon, elektronik para, aylık 12 ton altın ithalat kotası, Kapalıçarşı yetkili müesseseleri ve <span class="font-mono-code">USDT</span> ağını 6 yapısal aşamada karşılaştırmaktadır. Aşağıdaki aşama düğmelerine tıklayarak her bir katmanın kurumsal aktörlerini yan yana inceleyebilir, alt bölümde ise Halkbank davasının 2019–2026 hukuki kapanış sürecini takip edebilirsiniz.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 mb-5" id="stage-selector">
+                <button type="button" data-stage="all" class="stage-btn tab-active px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">Tüm Aşamalar (6/6)</button>
+                <button type="button" data-stage="0" class="stage-btn tab-inactive px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">1. Düzenleyici Arbitraj</button>
+                <button type="button" data-stage="1" class="stage-btn tab-inactive px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">2. Yerleştirme (Placement)</button>
+                <button type="button" data-stage="2" class="stage-btn tab-inactive px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">3. Katmanlaştırma (Layering)</button>
+                <button type="button" data-stage="3" class="stage-btn tab-inactive px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">4. Fiziki / Dijital Köprü</button>
+                <button type="button" data-stage="4" class="stage-btn tab-inactive px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">5. Sınır Ötesi Çıkış</button>
+                <button type="button" data-stage="5" class="stage-btn tab-inactive px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer">6. Hukuki Sonuç &amp; Tasfiye</button>
+            </div>
+
+            <div id="comparison-matrix-container" class="space-y-4 mb-8">
+            </div>
+
+            <div class="bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-5">
+                <h3 class="text-base font-bold text-[#1E293B] mb-1">SDNY Zarrab &amp; Halkbank Davası (15 Cr. 867) Hukuki Kapanış Kronolojisi</h3>
+                <p class="text-xs text-[#57534E] mb-4">ABD Yüksek Mahkemesi dokunulmazlık kararlarından 2026 Kovuşturmanın Ertelenmesi Anlaşması (DPA) ve davanın düşmesine uzanan adımlar <span class="text-[#047857] font-semibold">[VERIFIED]</span></p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-3">
+                        <div class="text-xs font-mono-code font-bold text-[#1E3A5F]">2019-10-15</div>
+                        <div class="text-xs font-bold text-[#1E293B] mt-1">SDNY İddianamesi</div>
+                        <p class="text-[11px] text-[#47534E] mt-1">Halkbank hakkında ~20 milyar USD İran fonu transferi iddiasıyla 6 maddelik iddianame.</p>
+                    </div>
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-3">
+                        <div class="text-xs font-mono-code font-bold text-[#1E3A5F]">2023-04-19</div>
+                        <div class="text-xs font-bold text-[#1E293B] mt-1">SCOTUS Halkbank II</div>
+                        <p class="text-[11px] text-[#47534E] mt-1">598 U.S. 264: FSIA'nın ceza davalarını kapsamadığına hükmedilerek teamül hukuku incelemesi için iade.</p>
+                    </div>
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-3">
+                        <div class="text-xs font-mono-code font-bold text-[#1E3A5F]">2024-10-22</div>
+                        <div class="text-xs font-bold text-[#1E293B] mt-1">2. Temyiz Halkbank III</div>
+                        <p class="text-[11px] text-[#47534E] mt-1">Ticari faaliyetler bakımından teamül hukuku dokunulmazlığı talebi oybirliğiyle reddedildi.</p>
+                    </div>
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-3">
+                        <div class="text-xs font-mono-code font-bold text-[#1E3A5F]">2025-10-06</div>
+                        <div class="text-xs font-bold text-[#1E293B] mt-1">2. SCOTUS Reddi</div>
+                        <p class="text-[11px] text-[#47534E] mt-1">Docket 24-1144: ABD Yüksek Mahkemesi ikinci certiorari başvurusunu yorumsuz reddetti.</p>
+                    </div>
+                    <div class="bg-white rounded-lg border border-[#E5E2DC] p-3">
+                        <div class="text-xs font-mono-code font-bold text-[#047857]">2026-03-09</div>
+                        <div class="text-xs font-bold text-[#1E293B] mt-1">DPA &amp; EY Denetimi</div>
+                        <p class="text-[11px] text-[#47534E] mt-1">Suç ikrarı ve para cezası içermeyen DPA; OFAC dosyası kapandı, EY Türkiye uyum incelemesi.</p>
+                    </div>
+                    <div class="bg-white rounded-lg border border-emerald-300 bg-emerald-50/40 p-3">
+                        <div class="text-xs font-mono-code font-bold text-[#047857]">2026-06-17 / 07-14</div>
+                        <div class="text-xs font-bold text-[#1E293B] mt-1">Düşme &amp; Time Served</div>
+                        <p class="text-[11px] text-[#47534E] mt-1">17 Haziran'da Halkbank davası düştü; 14 Temmuz'da Zarrab'a yatmış olduğu süre (time served) cezası.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kronolojik-veri" class="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-[#1E3A5F]">Bölüm 5 • Yapılandırılmış Kronolojik Veri Tabanı</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-[#1E293B] mt-1">Adli Finans Kronolojik Veri Seti (2016–2026)</h2>
+                    <p class="text-sm text-[#47534E] mt-2 leading-relaxed max-w-3xl">
+                        Raporun 5. bölümündeki standart 6 sütunlu kronolojik veri setini (<span class="font-mono-code">date, category, entity_or_institution, event_summary, amount_if_any, source_url</span>) kategoriye, doğrulama etiketine veya anahtar kelimelere göre filtreleyebilir ve doğrudan CSV dosyası olarak bilgisayarınıza indirebilirsiniz.
+                    </p>
+                </div>
+                <button type="button" id="download-csv-btn" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#1E3A5F] text-white text-xs sm:text-sm font-semibold hover:bg-[#152944] transition shadow-sm cursor-pointer shrink-0">
+                    <span>📥</span>
+                    <span>CSV Olarak İndir (adli_finans_kayitlari.csv)</span>
+                </button>
+            </div>
+
+            <div class="bg-[#F8F7F4] rounded-xl border border-[#E5E2DC] p-4 mb-5 space-y-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label for="csv-search" class="block text-xs font-semibold text-[#334155] mb-1">Anahtar Kelime / Kurum Ara</label>
+                        <input type="text" id="csv-search" placeholder="Örn: Papara, Tera, Halkbank, 11929, MASAK..." class="w-full rounded-lg border border-[#E5E2DC] bg-white px-3 py-2 text-xs sm:text-sm text-[#1E293B] focus:outline-none focus:border-[#1E3A5F]">
+                    </div>
+                    <div>
+                        <label for="csv-category" class="block text-xs font-semibold text-[#334155] mb-1">Araştırma Ekseni (Kategori)</label>
+                        <select id="csv-category" class="w-full rounded-lg border border-[#E5E2DC] bg-white px-3 py-2 text-xs sm:text-sm text-[#1E293B] focus:outline-none focus:border-[#1E3A5F] cursor-pointer">
+                            <option value="all">Tüm Kategoriler</option>
+                            <option value="Free_Funds">Serbest Fonlar (Büyüme, SPK &amp; Soruşturma)</option>
+                            <option value="Electronic_Money">Elektronik Para Lisans &amp; Denetim</option>
+                            <option value="Digital_Banking">Dijital Bankacılık Lisansları</option>
+                            <option value="SDNY_Zarrab_Halkbank">SDNY Zarrab / Halkbank Davası</option>
+                            <option value="Gold_Crypto">Altın Kotası, Kapalıçarşı &amp; Kripto</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="csv-status" class="block text-xs font-semibold text-[#334155] mb-1">Doğrulama Etiketi</label>
+                        <select id="csv-status" class="w-full rounded-lg border border-[#E5E2DC] bg-white px-3 py-2 text-xs sm:text-sm text-[#1E293B] focus:outline-none focus:border-[#1E3A5F] cursor-pointer">
+                            <option value="all">Tüm Kayıtlar</option>
+                            <option value="VERIFIED">[VERIFIED] Birincil Kayıtlarla Doğrulanmış</option>
+                            <option value="CLAIMED">[CLAIMED / UNVERIFIED] Beyan / İddia</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-xs text-[#57534E] pt-1">
+                    <span id="csv-count-label" class="font-medium">Gösterilen kayıt: 47 / 47</span>
+                    <button type="button" id="reset-filters-btn" class="text-[#1E3A5F] font-semibold hover:underline cursor-pointer">Filtreleri Sıfırla</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-[#E5E2DC]">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#F8F7F4] border-b border-[#E5E2DC] text-[11px] font-bold uppercase tracking-wider text-[#57534E]">
+                            <th class="py-3 px-3.5 whitespace-nowrap">Tarih</th>
+                            <th class="py-3 px-3.5 whitespace-nowrap">Kategori</th>
+                            <th class="py-3 px-3.5">Kurum / Aktör</th>
+                            <th class="py-3 px-3.5">Olay Özeti ve Doğrulama</th>
+                            <th class="py-3 px-3.5 whitespace-nowrap">Tutar / Hacim</th>
+                            <th class="py-3 px-3.5 whitespace-nowrap">Kaynak</th>
+                        </tr>
+                    </thead>
+                    <tbody id="csv-table-body" class="divide-y divide-[#E5E2DC] text-xs bg-white">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-[#E5E2DC] bg-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-xs text-[#57534E] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+                <p class="font-semibold text-[#1E293B]">Metodoloji ve Hukuki Çerçeve Notu</p>
+                <p class="mt-1">Tüm veriler TSPB, SPK Haftalık Bültenleri, TCMB/BDDK Resmî Gazete kararları, MASAK rapor özetleri, TBMM tutanakları ve ABD Güney New York Bölge Mahkemesi (SDNY) kayıtlarından derlenmiştir. Devam eden ceza soruşturmalarındaki gözaltı, tutuklama ve kayyım kararları kesinleşmiş mahkûmiyet hükmü niteliğinde değildir.</p>
+            </div>
+            <div class="font-mono-code text-[11px] text-[#1E3A5F] shrink-0">
+                2012–2026 Adli Finans İncelemesi
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const factDisambiguationData = {
+            masak: {
+                title: "Eski MASAK Yöneticileri Ayrımı: Dr. Ramazan Başak vs. Osman Dereli",
+                subtitle: "Haber metinlerinde sıkça tek kişi gibi aktarılan iki ayrı eski MASAK yöneticisinin dosya ve kurumsal sicil kayıtları",
+                leftTitle: "Dr. Ramazan Başak (Eski MASAK Başkan Yardımcısı)",
+                leftBadge: "Uyarı & İki Kez Gözaltı Süreci",
+                leftItems: [
+                    { text: "Haziran 2025'te Tera Grubu işlemlerindeki şüpheli para hareketlerini Vergi Denetim Kurulu'na, ardından CİMER üzerinden MASAK ve SPK'ya bildirdiğini açıklamıştır.", tag: "CLAIMED" },
+                    { text: "2026-01-05 tarihinde Tera Grubu hakkında hazırladığı kapsamlı dosyayı doğrudan İstanbul Cumhuriyet Başsavcılığı'na teslim ettiğini beyan etmiştir.", tag: "CLAIMED" },
+                    { text: "2025-11-19 tarihinde Tera Yatırım ve hakim ortağı Emre Tezmen'in şikayeti üzerine 5411 sayılı Bankacılık Kanunu'na muhalefet iddiasıyla gözaltına alınmış, 2025-11-20'de serbest bırakılmış ve 2025-11-26'da hakkında iddianame düzenlenmiştir.", tag: "VERIFIED" },
+                    { text: "2026-04-08 tarihinde Bakırköy Cumhuriyet Başsavcılığı kararıyla TCK m.217/A ve SPKn m.107 (borsa manipülasyonu) suçlamalarıyla ikinci kez gözaltına alınmış ve yurt dışına çıkış yasağıyla serbest bırakılmıştır.", tag: "VERIFIED" }
+                ],
+                rightTitle: "Osman Dereli (Eski MASAK Başkanı)",
+                rightBadge: "Yönetim Kurulu Üyeliği & KAP Kayıtları",
+                rightItems: [
+                    { text: "Dört yıl MASAK Başkanlığı ve üç yıl Bakan Danışmanlığı yapmış olan Osman Dereli hakkında serbest fonlara ilişkin herhangi bir suç duyurusu kaydı bulunmamaktadır.", tag: "VERIFIED" },
+                    { text: "KAP kayıtları ve TBMM tutanaklarına göre 2026-04-22 tarihinde soruşturmanın merkezindeki Bulls Yatırım'da bağımsız yönetim kurulu üyesi (Denetim ve Risk Komiteleri Başkanı) olarak göreve başlamıştır.", tag: "VERIFIED" },
+                    { text: "Eşzamanlı olarak soruşturma kapsamındaki Lydia Holding (YKB Enver Çevik) ve Ruzy Madencilik (YKB Nureddin Çevik) yönetim kurullarında da bağımsız üye olarak yer almıştır.", tag: "VERIFIED" },
+                    { text: "Bulls Yatırım'ın 2026-09-18 saat 23:00 tarihli KAP formunda yer alan adı, fon tasfiyelerinin ardından 2026-09-22 saat 17:13 tarihli KAP şirket genel bilgi formundan çıkarılmıştır.", tag: "VERIFIED" }
+                ]
+            },
+            papara: {
+                title: "Papara TCMB Kararları Ayrımı: 30 Ekim 2025 İptali vs. 21 Ocak 2026 Kaldırma Tebliği",
+                subtitle: "Ocak 2026 tarihli Resmî Gazete yayınının hukuki niteliği ve aynı aydaki diğer e-para iptalleri",
+                leftTitle: "Papara Elektronik Para A.Ş. İdari Yargı Süreci",
+                leftBadge: "2026-01-21 RG 33144: İptalin Kaldırılması",
+                leftItems: [
+                    { text: "2025-05-27 tarihinde yasa dışı bahis soruşturması kapsamında kurucu Ahmed Faruk Karslı dahil 13 şüpheli gözaltına alınmış, PPR Holding ve Papara'ya TMSF kayyımı atanmıştır.", tag: "VERIFIED" },
+                    { text: "TCMB Banka Meclisi, faaliyet izni iptal kararını Ocak 2026'da değil, 2025-10-30 tarihli ve 11929/21528 sayılı Kararı (2025-10-31 RG 33063) ile almıştır.", tag: "VERIFIED" },
+                    { text: "Ankara 25. İdare Mahkemesi'nin 2025-12-09 tarihli yürütmeyi durdurma kararı üzerine TCMB, 2026-01-20 tarihli kararıyla iptal kararını kaldırmış ve 2026-01-21 RG 33144'te yayımlamıştır.", tag: "VERIFIED" },
+                    { text: "TMSF tarafından 4,27 milyar TL muhammen bedelle satışa çıkarılan Papara grup payları ihalesini Türkiye Emlak Katılım Bankası kazanmış ve 2026-09-15'te hizmetler yeniden açılmıştır.", tag: "VERIFIED" }
+                ],
+                rightTitle: "Ocak 2026 ve Sonrasında Kalıcı İptal Edilen Kuruluşlar",
+                rightBadge: "2025–2026 Genelinde 18+ Kalıcı İptal",
+                rightItems: [
+                    { text: "Ocak 2026'da faaliyet izni iptal edilen kuruluşlar Papara değil; 2026-01-28 tarihli ve 11973–11976 sayılı TCMB kararlarıyla (2026-02-01 RG 33155) Vizyon, BSM, Vepara ve Mypayz'dır.", tag: "VERIFIED" },
+                    { text: "2025-03-14'te izinleri durdurulan ve TMSF'ye devredilen Pay Fix, İninal ve Aypara'nın faaliyet izinleri 2025-11-06 tarihli TCMB kararıyla (2025-11-08 RG 33071) iptal edilmiştir.", tag: "VERIFIED" },
+                    { text: "2026-01-22'de izni durdurulup TMSF kayyımı atanan Papel Elektronik Para'nın izni 2026-09-18 tarihli ve 12092/21691 sayılı TCMB kararıyla (2026-09-23 RG 33379) iptal edilmiştir.", tag: "VERIFIED" },
+                    { text: "2025-10-31'de kayyım atanan Ozan Elektronik Para ile A Ödeme'nin izinleri 2026-11-10 tarihli TCMB kararlarıyla (2026-11-11 RG 33427) kalıcı olarak iptal edilmiştir.", tag: "VERIFIED" }
+                ]
+            },
+            halkbank: {
+                title: "SDNY Halkbank & Rıza Zarrab Dosyası (15 Cr. 867): 2026 DPA ve Kapanış",
+                subtitle: "ABD Yüksek Mahkemesi temyiz sürecinin tamamlanması ve 2026 yazındaki nihai yargı kararları",
+                leftTitle: "Türkiye Halk Bankası A.Ş. Ceza Davası Sonucu",
+                leftBadge: "2026-06-17: Suç İkrarsız ve Para Cezasız Düşme",
+                leftItems: [
+                    { text: "ABD Yüksek Mahkemesi, 2023-04-19 Halkbank II (598 U.S. 264) ve 2. Temyiz Mahkemesi'nin 2024-10-22 Halkbank III kararlarının ardından 2025-10-06'da ikinci certiorari başvurusunu reddetmiştir.", tag: "VERIFIED" },
+                    { text: "DOJ ile Halkbank 2026-03-09 tarihinde Kovuşturmanın Ertelenmesi Anlaşması (DPA) imzalamış; Halkbank hiçbir cezai suç kabulünde bulunmamış ve adli/idari para cezası ödememiştir.", tag: "VERIFIED" },
+                    { text: "Anlaşma kapsamında ABD Hazine Bakanlığı OFAC idari dosyayı ek yaptırım olmaksızın kapatmış, Ernst & Young Türkiye bağımsız uyum incelemesi gerçekleştirmiştir.", tag: "VERIFIED" },
+                    { text: "EY'nin temiz uyum raporu ve tarafların ortak başvurusu üzerine SDNY Yargıcı Richard M. Berman 2026-06-17 tarihinde Halkbank davasını kesin olarak düşürmüştür.", tag: "VERIFIED" }
+                ],
+                rightTitle: "Rıza Zarrab ve Mehmet Hakan Atilla Cezai Sonuçları",
+                rightBadge: "2026-07-14: Zarrab Time Served Kararı",
+                rightItems: [
+                    { text: "2016-03-19'da tutuklanan Rıza Zarrab, 2017-10-26'da 7 suçlamayı kabul ederek savcılık tanığı olmuş ve Aralık 2017 duruşmalarında altın ve Volgam-Centrica şemasını anlatmıştır.", tag: "VERIFIED" },
+                    { text: "Eski Halkbank Genel Müdür Yardımcısı Mehmet Hakan Atilla 2018-01-03'te 6 suçlamanın 5'inden mahkûm edilerek 32 ay hapis cezası almış ve cezası 2020'de onanmıştır.", tag: "VERIFIED" },
+                    { text: "Yargıç Richard M. Berman, Rıza Zarrab'ı kapsamlı işbirliği ve tanıklığını gerekçe göstererek 2026-07-14 tarihinde tutuklu kaldığı ~22 aylık süreye karşılık 'yatmış olduğu süre' (time served) cezasına çarptırmıştır.", tag: "VERIFIED" },
+                    { text: "Zarrab hakkında daha önce hükmedilen 376.000 USD müsadere dışında ek bir tazminat veya hapis cezası uygulanmayarak 15 Cr. 867 dosyası kapatılmıştır.", tag: "VERIFIED" }
+                ]
+            }
+        };
+
+        const emoneyEntitiesData = [
+            {
+                name: "Papara Elektronik Para A.Ş.",
+                category: "lifted",
+                badge: "İptal Kaldırıldı & TMSF Devri",
+                badgeColor: "bg-emerald-100 text-emerald-900",
+                licenseInfo: "2016-04-21 BDDK 6862 s.k. (2023-09-28 TCMB kapsam genişletme)",
+                actionDate: "2025-10-30 İptal → 2026-01-21 İptal Kaldırma",
+                legalBasis: "6493 s.K. m.16/1-ç, e, 19 • Ankara 25. İdare Mah. 2025-12-09 YD",
+                summary: "2025-05-27 operasyonunda TMSF kayyımı atandı; 2021–2023'te 21.088 bahis hesabı (%94,4 sektör payı) ve 12,88 milyar TL hacim tespit edildi. 2026-01-21 RG 33144 ile iptal kaldırıldı ve TMSF ihalesiyle Türkiye Emlak Katılım Bankası'na devredildi. [VERIFIED]"
+            },
+            {
+                name: "Pay Fix, İninal ve Aypara Ödeme Kuruluşları",
+                category: "revoked",
+                badge: "Faaliyet İzni İptal Edildi",
+                badgeColor: "bg-red-100 text-red-900",
+                licenseInfo: "6493 s.K. kapsamında elektronik para ve ödeme kuruluşları",
+                actionDate: "2025-03-14 Durdurma → 2025-11-06 İptal (RG 33071)",
+                legalBasis: "TCMB 11811/21410 s.k. • 6493 s.K. m.16/1-ç, e • BDDK 11176 (Bankpozitif)",
+                summary: "Yasa dışı bahis ve aklama soruşturması kapsamında 2025-03-14'te tüm faaliyet izinleri durdurularak TMSF'ye devredildi (6,9 milyar TL el koyma); 2025-11-08 RG 33071 kararıyla izinleri kalıcı olarak iptal edildi. [VERIFIED]"
+            },
+            {
+                name: "Papel Elektronik Para ve Ödeme Hizmetleri A.Ş.",
+                category: "revoked",
+                badge: "Faaliyet İzni İptal Edildi",
+                badgeColor: "bg-red-100 text-red-900",
+                licenseInfo: "2022-10-27 TCMB 11334/20933 s.k. (2022-10-30 RG)",
+                actionDate: "2026-01-22 Durdurma → 2026-09-18 İptal (RG 33379)",
+                legalBasis: "TCMB 12092/21691 s.k. • 6493 s.K. m.16/1-ç, e, 19, 21/8",
+                summary: "2026-01-22'de faaliyet izni geçici olarak durdurularak TMSF kayyımı atandı; 2026-09-23 tarihli ve 33379 sayılı Resmî Gazete'de yayımlanan TCMB kararıyla faaliyet izni iptal edildi. [VERIFIED]"
+            },
+            {
+                name: "Ozan Elektronik Para A.Ş. & A Ödeme Hizmetleri A.Ş.",
+                category: "revoked",
+                badge: "Faaliyet İzni İptal Edildi",
+                badgeColor: "bg-red-100 text-red-900",
+                licenseInfo: "Ozan: 2019-09-06 BDDK 8538 • A Ödeme: 2022-10-27 TCMB 11333/20932",
+                actionDate: "2025-10-31 TMSF Kayyımı → 2026-11-10 İptal (RG 33427)",
+                legalBasis: "TCMB 12111/21710 & 12113/21712 s.k. • 6493 s.K.",
+                summary: "2025-10-31'de yasa dışı bahis ve POS tefeciliği soruşturmasında TMSF kayyımı atanan her iki kuruluşun faaliyet izinleri 2026-11-11 RG 33427 kararıyla kalıcı olarak iptal edildi. [VERIFIED]"
+            },
+            {
+                name: "Ocak–Ekim 2026 İptal Dalgası (Vizyon, BSM, Vepara, Mypayz, Parolapara vb.)",
+                category: "revoked",
+                badge: "18+ Kuruluş İptal",
+                badgeColor: "bg-red-100 text-red-900",
+                licenseInfo: "6493 s.K. kapsamındaki ödeme ve elektronik para kuruluşları",
+                actionDate: "2026-01-28 (RG 33155) – 2026-10-10",
+                legalBasis: "TCMB 11973–11976, 11992–11994 s.k. • 6493 s.K. m.16",
+                summary: "2026-01-28'de Vizyon, BSM, Vepara ve Mypayz; 2026-02-21 RG ile Fzypay, Klon ve TTM; devamında ParaQR (30.04), Parolapara (06.06), Vezne24 (25.07), Junomoney (26.08) ve Parakolay (10.10) iptal edildi. [VERIFIED]"
+            },
+            {
+                name: "Adil Katılım Bankası A.Ş. (Dijital Katılım Bankası)",
+                category: "digitalbank",
+                badge: "TMSF'ye Devredildi",
+                badgeColor: "bg-amber-100 text-amber-900",
+                licenseInfo: "2024-05-23 BDDK 10914 Kuruluş • 2025-09-11 BDDK 11267 Faaliyet İzni",
+                actionDate: "2026-11-18 BDDK 11601 s.k. ile TMSF Devri",
+                legalBasis: "5411 sayılı Bankacılık Kanunu • Dijital Bankacılık Yönetmeliği",
+                summary: "Ali Emre Ballı sahipliğinde kurulan ve genel müdürlüğüne eski BDDK Bşk. Yrd. Murat Yönaç'ın geçtiği dijital katılım bankasının temettü hariç ortaklık hakları, serbest fon soruşturması kapsamında 2026-11-18'de TMSF'ye devredildi. [VERIFIED]"
+            },
+            {
+                name: "Katılımevim Katılım Bankası & Fon Bağlantılı Yatırım Bankaları",
+                category: "digitalbank",
+                badge: "BDDK & TMSF Tedbiri",
+                badgeColor: "bg-amber-100 text-amber-900",
+                licenseInfo: "Katılımevim Katılım: 2024-12-12 BDDK 11037 Kuruluş İzni",
+                actionDate: "2026-09-30 BDDK 11576–11580 s.k.",
+                legalBasis: "5411 s.K. m.18/5 & 6361 s.K. m.6/3",
+                summary: "2026-09-30'da Tera Yatırım Bankası, Destek Yatırım Bankası, Hedef Yatırım Bankası, Destek Finans Faktoring ve Tera Finans Faktoring'in ortaklık/oy hakları TMSF'ye devredildi; Katılımevim devir süreci savcılık iznine konu oldu. [VERIFIED]"
+            }
+        ];
+
+        const structuralComparisonStages = [
+            {
+                stage: "1. Düzenleyici Kısıt ve Arbitraj Kaynağı",
+                era2012: {
+                    title: "ABD İran Yaptırımları & İnsani İstisna Boşluğu",
+                    detail: "2019-10-15 DOJ/SDNY İddianamesi (15 Cr. 867): ABD İran yaptırımları (IEEPA), ikili ticaret kuralı ve insani yardım (gıda/ilaç) istisnası nedeniyle Halkbank'ta biriken ~20 milyar USD kısıtlı petrol/doğalgaz geliri.",
+                    tag: "VERIFIED"
+                },
+                era2021: {
+                    title: "Serbest Fon Muafiyetleri, Altın Kotası & Bahis Tahsilatı",
+                    detail: "(a) Serbest fonların esnek portföy/değerleme rejimi (2025-12-31 TSPB 4,98 trilyon TL; 2026-08-29 TEFAS 3,6 trilyon TL); (b) 2023-08-07 HMB aylık 12 ton işlenmemiş altın ithalat kotası ve DİR istisnaları; (c) Yasa dışı bahis ve lisanssız forex ağları.",
+                    tag: "VERIFIED"
+                }
+            },
+            {
+                stage: "2. Fon Toplama ve Yerleştirme (Placement)",
+                era2012: {
+                    title: "Kamu Bankası Bloke Enerji Hesapları",
+                    detail: "2017-12-01 SDNY Duruşma Tutanağı (United States v. Atilla): TÜPRAŞ ve BOTAŞ ödemelerinin yatırıldığı Halkbank nezdindeki NIOC, NIGC, İran Merkez Bankası ve Sarmayeh Bank bloke mevduat hesapları.",
+                    tag: "VERIFIED"
+                },
+                era2021: {
+                    title: "E-Para, Sanal POS ve TEFAS Serbest Fon Girişleri",
+                    detail: "(a) 2025-10-11 Papara İddianamesi (26.012 bahis hesabı, merkezi kontrol paneli, 12,88 milyar TL hacim) ve 2026-07-10 Kapalıçarşı İddianamesi (369 paravan şirket, sanal POS); (b) 2026-09-17 SPK 2026/61 kapsamındaki TEFAS serbest ve para piyasası fonları.",
+                    tag: "VERIFIED"
+                }
+            },
+            {
+                stage: "3. Katmanlaştırma (Layering) ve Değer Üretimi",
+                era2012: {
+                    title: "Sahte Gıda Faturaları ve Banka İçi Paravan Virmanlar",
+                    detail: "2017-12-01 & 2017-12-04 SDNY Tutanakları: Fiziki sevkiyat olmayan sahte gıda faturaları, gemi kapasitesini aşan konşimentolar ve banka içi ardışık virmanlar (Sarmayeh/Toseh Tejarat → Volgam Gıda → Centrica/Atlantis).",
+                    tag: "VERIFIED"
+                },
+                era2021: {
+                    title: "'Bıyıklı Yabancı' Döngüsü, OTC Ters Repo ve 'M80' Yazılımı",
+                    detail: "(a) 2026-11-21 MASAK Raporu: Sığ BIST paylarında fonlar arası çapraz işlemler, OTC ters repo/Takasbank kredisi ve Gildencrest Capital → İsviçre → BIST döngüsüyle NAD artışı; (b) 'M80' yazılımıyla 274–369 hesap/şirket içi dağıtım.",
+                    tag: "VERIFIED"
+                }
+            },
+            {
+                stage: "4. Fiziki / Dijital Değer Dönüşüm Köprüsü",
+                era2012: {
+                    title: "Türkiye'de Külçe Altın Alımı ve Dubai'ye İhraç (2012–2013)",
+                    detail: "2019-10-15 DOJ Özeti: Halkbank fonlarıyla Türkiye'de fiziki külçe altın alımı (Royal Holding, Asi Kıymetli Madenler, ECB Kuyumculuk) ve yetkili müesseseler (Durak Döviz) üzerinden Dubai'ye altın ihracı.",
+                    tag: "VERIFIED"
+                },
+                era2021: {
+                    title: "Kapalıçarşı Yetkili Müesseseleri → Fiziki Altın → USDT (Tether)",
+                    detail: "2026-07-10 Kapalıçarşı İddianamesi ve 2026-06-11 MASAK Rapor Özeti: Kapalıçarşı yetkili müesseselerinde (Venüs Döviz, Özbey Altın, Angun Döviz) nakdin fiziki altın/dövize, ardından kripto ofisleri ve borsalarda USDT/kripto varlıklara dönüştürülmesi.",
+                    tag: "VERIFIED"
+                }
+            },
+            {
+                stage: "5. Sınır Ötesi Çıkış (Exfiltration) ve Takas",
+                era2012: {
+                    title: "BAE Döviz Büroları ve ABD Muhabir Bankaları",
+                    detail: "2017-12-01 SDNY Tutanağı: Dubai döviz büroları (Rostamani Exchange, Al Nafees Exchange LLC) ve ABD muhabir bankalarındaki USD hesapları (Standard Chartered USA; ~1 milyar USD ABD finansal sistemi takası).",
+                    tag: "VERIFIED"
+                },
+                era2021: {
+                    title: "9 Ülkede Yurt Dışı Hesaplar ve Kripto Soğuk Cüzdanlar",
+                    detail: "(a) 2026-11-21 MASAK Raporu: Londra, İsviçre, Bahamalar, Çekya dahil 9 ülkedeki hesaplar (21 milyar TL Gildencrest hacmi, 7,8 milyar TL kâr); (b) 2026-10-14 MASAK TBMM sunumu: Yurt dışı kripto/USDT transferleri ve soğuk cüzdanlar.",
+                    tag: "VERIFIED"
+                }
+            },
+            {
+                stage: "6. Yaptırım, Tasfiye ve Hukuki Sonuç",
+                era2012: {
+                    title: "SDNY Ceza Yargılaması, DPA ve Davanın Düşmesi",
+                    detail: "Atilla 32 ay hapis (2018-01-03), Zarrab time served (~22 ay + 376.000 USD müsadere, 2026-07-14), Halkbank için 2026-03-09 DPA + EY denetimi + 2026-06-17 suç ikrarsız ve para cezasız düşme kararı.",
+                    tag: "VERIFIED"
+                },
+                era2021: {
+                    title: "Çok Kurumlu Tasfiye, Kayyım ve 7596 Sayılı Kanun",
+                    detail: "SPK 131 fon tasfiyesi (2026-09-17), 7596 s.K. (2026-10-27, 161 milyar TL yatırımcı ödemesi), Tera Yatırım izin iptali; TCMB 18+ e-para iptali; BDDK 4 banka/2 faktoring TMSF devri; 91 şirkette TMSF kayyımı ve 133–139 tutuklu.",
+                    tag: "VERIFIED"
+                }
+            }
+        ];
+
+        const csvRecords = [
+            { date: "2016-03-19", category: "SDNY_Zarrab_Halkbank", entity: "DOJ / SDNY", summary: "Rıza Zarrab İran yaptırımlarını delme ve kara para aklama suçlamalarıyla Miami'de tutuklandı (15 Cr. 867).", tag: "VERIFIED", amount: "-", url: "https://www.justice.gov/usao-sdny/pr/manhattan-us-attorney-announces-arrest-turkish-national-conspiring-evade-us-sanctions" },
+            { date: "2016-04-21", category: "Electronic_Money_License", entity: "BDDK / Papara Elektronik Para A.Ş.", summary: "BDDK 6862 sayılı Karar (26.04.2016 RG 29695) ile Papara'ya 6493 sayılı Kanun kapsamında ilk elektronik para faaliyet iznini verdi.", tag: "VERIFIED", amount: "-", url: "https://www.bddk.org.tr/Mevzuat/DokumanGetir/310" },
+            { date: "2017-03-27", category: "SDNY_Zarrab_Halkbank", entity: "DOJ / SDNY", summary: "Eski Halkbank Genel Müdür Yardımcısı Mehmet Hakan Atilla ABD'de tutuklandı (2017-09-06'da Zafer Çağlayan ve Süleyman Aslan ek iddianameye dahil edildi).", tag: "VERIFIED", amount: "-", url: "https://www.justice.gov/usao-sdny/pr/former-turkish-minister-economy-former-general-manager-turkish-government-owned-bank" },
+            { date: "2017-10-26", category: "SDNY_Zarrab_Halkbank", entity: "SDNY / Reza Zarrab", summary: "Rıza Zarrab hakkındaki 7 suçlamayı kabul ederek savcılık tanığı oldu; Aralık 2017 duruşmasında altın ve Volgam-Centrica-Rostamani sahte gıda şemasını anlattı.", tag: "VERIFIED", amount: "-", url: "https://www.justice.gov/usao-sdny/pr/turkish-bank-charged-manhattan-federal-court-its-participation-multibillion-dollar" },
+            { date: "2018-01-03", category: "SDNY_Zarrab_Halkbank", entity: "SDNY / Mehmet Hakan Atilla", summary: "Jüri Mehmet Hakan Atilla'yı 6 suçlamanın 5'inden suçlu buldu; 32 ay hapis cezası verildi ve 2020'de 2. Temyiz Mahkemesince (966 F.3d 118) onandı.", tag: "VERIFIED", amount: "-", url: "https://www.justice.gov/usao-sdny/pr/turkish-banker-convicted-conspiring-evade-us-sanctions-against-iran-and-other-offenses" },
+            { date: "2019-09-06", category: "Electronic_Money_License", entity: "BDDK / Ozan Elektronik Para A.Ş.", summary: "BDDK 8538 sayılı Kurul Kararı ile Ozan Elektronik Para A.Ş.'ye faaliyet izni verdi.", tag: "VERIFIED", amount: "-", url: "https://fintech.tr/haberler/a-odeme-ozan-elektronik-para-izin-iptali" },
+            { date: "2019-10-15", category: "SDNY_Zarrab_Halkbank", entity: "DOJ / Türkiye Halk Bankası A.Ş.", summary: "SDNY Büyük Jürisi Halkbank hakkında altın ihracı ve sahte insani gıda/ilaç ticareti yoluyla yaptırım delme iddiasıyla 6 maddelik iddianame düzenledi.", tag: "VERIFIED", amount: "20.000.000.000 USD", url: "https://www.justice.gov/usao-sdny/pr/turkish-bank-charged-manhattan-federal-court-its-participation-multibillion-dollar" },
+            { date: "2021-12-31", category: "Free_Funds_Growth", entity: "TSPB", summary: "Serbest yatırım fonları yıl sonu portföy büyüklüğü 101.455 milyon TL ve fon piyasası içindeki payı %35 olarak kaydedildi.", tag: "VERIFIED", amount: "101.455.000.000 TL", url: "https://tspb.org.tr/wp-content/uploads/2026/07/Turkiye-Sermaye-Piyasasi-2025.pdf" },
+            { date: "2022-01-01", category: "Digital_Banking_License", entity: "BDDK", summary: "Dijital Bankaların Faaliyet Esasları ile Servis Modeli Bankacılığı Hakkında Yönetmelik yürürlüğe girdi.", tag: "VERIFIED", amount: "-", url: "https://fintech.tr/analiz/dijital-bankalar-karsilastirma" },
+            { date: "2022-10-27", category: "Electronic_Money_License", entity: "TCMB / Papel & A Ödeme", summary: "TCMB 11334/20933 sayılı kararla Papel Elektronik Para'ya ve 11333/20932 sayılı kararla A Ödeme'ye faaliyet izni verdi.", tag: "VERIFIED", amount: "-", url: "https://hukukcularevi.com/papel-kapandi-mi-paralar-ne-olacak-tcmb-izin-iptali-23-09-2026-tmsf-kayyim-koruma-hesabi-bakiye-iadesi-6493-16-19-21-8-22-3-yonetmelik-6-35-36/" },
+            { date: "2022-12-31", category: "Free_Funds_Growth", entity: "TSPB", summary: "Serbest yatırım fonları portföy büyüklüğü yıllık %252,9 artışla 358.018 milyon TL'ye, fon pazarındaki payı %52'ye yükseldi.", tag: "VERIFIED", amount: "358.018.000.000 TL", url: "https://tspb.org.tr/wp-content/uploads/2026/07/Turkiye-Sermaye-Piyasasi-2025.pdf" },
+            { date: "2023-04-19", category: "SDNY_Zarrab_Halkbank", entity: "U.S. Supreme Court", summary: "ABD Yüksek Mahkemesi (598 U.S. 264) FSIA'nın ceza davalarında dokunulmazlık sağlamadığına hükmetti ve dosyayı teamül hukuku incelemesi için 2. Temyiz Mahkemesine gönderdi.", tag: "VERIFIED", amount: "-", url: "https://law.justia.com/cases/federal/appellate-courts/ca2/20-3499/20-3499-2024-10-22.html" },
+            { date: "2023-08-07", category: "Gold_Quota_Kapalicarsi", entity: "Hazine ve Maliye Bakanlığı", summary: "İşlenmemiş altın ithalatına aylık 12 tonluk kota uygulaması getirildi (Dahilde İşleme Rejimi kota dışı tutuldu).", tag: "VERIFIED", amount: "12 Ton/Ay", url: "https://hukukcularevi.com/altin-ithalat-kotasi-islenmemis-altin-kota-tahsisi-yaptirim/" },
+            { date: "2023-09-11", category: "Gold_Quota_Kapalicarsi", entity: "MASAK", summary: "Kapalıçarşı/forex kara para ağına ilişkin ilk MASAK raporunda 241 paravan şirket üzerinden yasa dışı fon aktarımı tespit edildi.", tag: "VERIFIED", amount: "14.200.000.000 TL", url: "https://www.patronlardunyasi.com/241-paravan-sirketle-14-2-milyarlik-vurgun-karapara-aginin-sifreleri-cozuldu" },
+            { date: "2023-09-28", category: "Electronic_Money_License", entity: "TCMB / Papara Elektronik Para A.Ş.", summary: "32323 sayılı Resmî Gazete kararıyla Papara Elektronik Para A.Ş.'nin faaliyet izni kapsamı genişletildi.", tag: "VERIFIED", amount: "-", url: "https://www.bloomberght.com/tcmb-den-iki-yeni-faaliyet-izni-2339186" },
+            { date: "2023-12-31", category: "Free_Funds_Growth", entity: "TSPB", summary: "Serbest yatırım fonları portföy büyüklüğü 1.026.505 milyon TL (1,03 trilyon TL) seviyesini aştı.", tag: "VERIFIED", amount: "1.026.505.000.000 TL", url: "https://tspb.org.tr/wp-content/uploads/2026/07/Turkiye-Sermaye-Piyasasi-2025.pdf" },
+            { date: "2024-05-23", category: "Digital_Banking_License", entity: "BDDK / Adil Katılım Bankası A.Ş.", summary: "BDDK 10914 sayılı Kurul Kararı ile Adil Katılım Bankası A.Ş. unvanlı dijital katılım bankası kuruluş izni verdi.", tag: "VERIFIED", amount: "-", url: "https://www.bddk.org.tr/Duyuru/Liste/48" },
+            { date: "2024-07-02", category: "Crypto_Regulation", entity: "TBMM / Resmî Gazete (32590)", summary: "7518 sayılı Kanun yürürlüğe girerek kripto varlık hizmet sağlayıcıları SPK lisansına ve MASAK şüpheli işlem/blokaj denetimine tabi kılındı.", tag: "VERIFIED", amount: "-", url: "https://www.muhasebetr.com/yazarlarimiz/hasanaydin/002/" },
+            { date: "2024-10-22", category: "SDNY_Zarrab_Halkbank", entity: "U.S. Court of Appeals (2d Cir.)", summary: "ABD 2. Temyiz Mahkemesi (No. 20-3499-cr, Halkbank III) ticari faaliyetler nedeniyle Halkbank'ın teamül hukuku dokunulmazlığı olmadığına oybirliğiyle hükmetti.", tag: "VERIFIED", amount: "-", url: "https://law.justia.com/cases/federal/appellate-courts/ca2/20-3499/20-3499-2024-10-22.html" },
+            { date: "2024-10-31", category: "Digital_Banking_License", entity: "BDDK", summary: "BDDK 10979, 10980 ve 10997 sayılı kararlarla FUPS Bank, Ziraat Dinamik Banka ve Colendi Bank'a dijital banka faaliyet izni verdi.", tag: "VERIFIED", amount: "-", url: "https://fintech.tr/analiz/dijital-bankalar-karsilastirma" },
+            { date: "2024-12-12", category: "Digital_Banking_License", entity: "BDDK / Katılımevim Katılım Bankası", summary: "BDDK 11037 sayılı Kurul Kararı ile Katılımevim Katılım Bankası A.Ş.'ye kuruluş izni verdi.", tag: "VERIFIED", amount: "-", url: "https://www.bddk.org.tr/Duyuru/Liste/48" },
+            { date: "2024-12-31", category: "Free_Funds_Growth", entity: "TSPB", summary: "Serbest yatırım fonları portföy büyüklüğü yıllık %119,4 artışla 2.252.091 milyon TL'ye ulaştı.", tag: "VERIFIED", amount: "2.252.091.000.000 TL", url: "https://tspb.org.tr/wp-content/uploads/2026/07/Turkiye-Sermaye-Piyasasi-2025.pdf" },
+            { date: "2025-03-14", category: "Electronic_Money_Enforcement", entity: "TCMB / Pay Fix - İninal - Aypara", summary: "TCMB 11811/21410 sayılı kararla yasa dışı bahis soruşturması kapsamında Pay Fix, İninal ve Aypara'nın faaliyet izinlerini durdurdu; şirketler TMSF'ye devredildi.", tag: "VERIFIED", amount: "6.900.000.000 TL", url: "https://www.tcmb.gov.tr/wps/wcm/connect/tr/tcmb+tr/main+menu/duyurular/basin/2025/duy2025-18" },
+            { date: "2025-05-27", category: "Electronic_Money_Enforcement", entity: "İstanbul C. Başsavcılığı / Papara", summary: "Yasa dışı bahis ve aklama soruşturmasında Papara kurucusu Ahmed Faruk Karslı dahil 13 kişi gözaltına alındı; PPR Holding ve Papara'ya TMSF kayyımı atandı.", tag: "VERIFIED", amount: "5.000.000.000 TL", url: "https://www.forbes.com.tr/haberler/papara-ya-yasa-disi-bahis-operasyonu-sekiz-sirkete-kayyum-atandi" },
+            { date: "2025-09-11", category: "Digital_Banking_License", entity: "BDDK / Adil Katılım Bankası A.Ş.", summary: "BDDK 11267 sayılı kararla (20.09.2025 RG) Adil Katılım Bankası A.Ş.'ye dijital katılım bankası faaliyet izni verdi.", tag: "VERIFIED", amount: "-", url: "https://fintech.tr/analiz/dijital-bankalar-karsilastirma" },
+            { date: "2025-10-06", category: "SDNY_Zarrab_Halkbank", entity: "U.S. Supreme Court", summary: "ABD Yüksek Mahkemesi (Docket 24-1144) Halkbank'ın ikinci certiorari dokunulmazlık başvurusunu reddetti.", tag: "VERIFIED", amount: "-", url: "https://bankingjournal.aba.com/2025/11/u-s-supreme-court-declines-to-review-second-circuit-ruling-on-foreign-sovereign-immunity/" },
+            { date: "2025-10-11", category: "Electronic_Money_Enforcement", entity: "İstanbul C. Başsavcılığı / MASAK", summary: "Papara iddianamesi tamamlandı: 2021-2023 TCMB raporunda kapatılan 21.088 hesap sektörün %94,4'ü; 26.012 hesapta bahis hacmi, 274 banka hesabı ve 5 kripto cüzdan tespit edildi.", tag: "VERIFIED", amount: "12.879.558.000 TL", url: "https://www.aa.com.tr/tr/gundem/paparaya-yonelik-yasa-disi-bahis-sorusturmasinda-25-supheli-hakkinda-iddianame-hazirlandi/3714549" },
+            { date: "2025-10-30", category: "Electronic_Money_Enforcement", entity: "TCMB / Papara Elektronik Para A.Ş.", summary: "TCMB Banka Meclisi 11929/21528 sayılı Karar (31.10.2025 RG 33063) ile Papara'nın elektronik para faaliyet iznini iptal etti.", tag: "VERIFIED", amount: "-", url: "https://www.tcmb.gov.tr/wps/wcm/connect/176801ca-c5f2-479c-8d3b-5cf68c40386c/Papara+Resmi+Gazete.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE-176801ca-c5f2-479c-8d3b-5cf68c40386c-pEVRhQW" },
+            { date: "2025-11-06", category: "Electronic_Money_Enforcement", entity: "TCMB / Pay Fix - İninal - Aypara", summary: "TCMB kararıyla (08.11.2025 RG 33071) Pay Fix, İninal ve Aypara'nın faaliyet izinleri 6493 s.K. m.16/1-ç ve e uyarınca iptal edildi.", tag: "VERIFIED", amount: "-", url: "https://hukukcularevi.com/pay-fix-payfix-kapandi-mi-param-ne-olacak-izin-iptali-08-11-2025-tmsf-koruma-hesabi-bakiye-iadesi-ininal-aypara-6493-16-21-8-22-3-iyuk-13/" },
+            { date: "2025-11-19", category: "Free_Funds_Investigation", entity: "İstanbul C. Başsavcılığı / Ramazan Başak", summary: "Tera Grubu hakkında uyarılarda bulunan Eski MASAK Bşk. Yrd. Dr. Ramazan Başak, Tera Yatırım ve Emre Tezmen şikayetiyle ilk kez gözaltına alındı (20.11.2025 serbest, 26.11.2025 iddianame).", tag: "VERIFIED", amount: "-", url: "https://kisadalga.net/haber/gundem/fonlar-icin-uyardi-iki-kez-gozaltina-alindi-eski-masak-baskan-yardimcisi-basaktan-akin-gurleke-ozur-cagrisi-141394" },
+            { date: "2025-12-02", category: "Free_Funds_Regulation", entity: "Finansal İstikrar Komitesi / SPK", summary: "Sığ paylardaki olağandışı fiyat hareketleri üzerine FİK toplandı ve 3 Aralık 2025'te SPK Çalışma Grubu oluşturuldu.", tag: "VERIFIED", amount: "-", url: "https://spk.gov.tr/duyurular/basin-duyurulari/2026/yatirim-fonlarina-iliskin-rehber-duzenleme-surecine-iliskin-aciklama" },
+            { date: "2025-12-18", category: "Free_Funds_Regulation", entity: "SPK (Bülten 2025/64 - Karar 65/2354)", summary: "i-SPK.37.7 sayılı İlke Kararı ile nitelikli yatırımcı finansal varlık eşiği 1 milyon TL'den 10 milyon TL'ye yükseltildi.", tag: "VERIFIED", amount: "10.000.000 TL", url: "https://spk.gov.tr/duyurular/basin-duyurulari/2026/yatirim-fonlarina-iliskin-rehber-duzenleme-surecine-iliskin-aciklama" },
+            { date: "2025-12-31", category: "Free_Funds_Growth", entity: "TSPB", summary: "Tüm serbest yatırım fonları yıl sonu portföy büyüklüğü 4.979.940 milyon TL'ye (4,98 trilyon TL) ulaştı; Tera TLY fonu 2025'te %4233 getiri bildirdi.", tag: "VERIFIED", amount: "4.979.940.000.000 TL", url: "https://tspb.org.tr/wp-content/uploads/2026/07/Turkiye-Sermaye-Piyasasi-2025.pdf" },
+            { date: "2026-01-05", category: "Free_Funds_Investigation", entity: "Ramazan Başak / İstanbul C. Başsavcılığı", summary: "Eski MASAK Bşk. Yrd. Dr. Ramazan Başak, Tera Grubu işlemlerine dair inceleme ve suç duyurusu dosyasını İstanbul Cumhuriyet Başsavcılığına sunduğunu açıkladı.", tag: "CLAIMED", amount: "-", url: "https://kisadalga.net/haber/gundem/fonlar-icin-uyardi-iki-kez-gozaltina-alindi-eski-masak-baskan-yardimcisi-basaktan-akin-gurleke-ozur-cagrisi-141394" },
+            { date: "2026-01-21", category: "Electronic_Money_Enforcement", entity: "TCMB / Ankara 25. İdare Mahkemesi", summary: "Ankara 25. İdare Mahkemesinin 09.12.2025 tarihli yürütmeyi durdurma kararı üzerine TCMB, Papara'nın faaliyet izni iptali kararını kaldırdı (RG 33144).", tag: "VERIFIED", amount: "-", url: "https://www.tcmb.gov.tr/wps/wcm/connect/4badbec8-b2e0-424b-afa3-28d56d80407a/Papara-21.1.2026%2Btarihli%2BRG.pdf?CACHEID=ROOTWORKSPACE-4badbec8-b2e0-424b-afa3-28d56d80407a-pMNWS18&MOD=AJPERES" },
+            { date: "2026-01-28", category: "Electronic_Money_Enforcement", entity: "TCMB", summary: "TCMB 11973-11976 sayılı kararlarla (01.02.2026 RG 33155) Vizyon, BSM, Vepara ve Mypayz kuruluşlarının faaliyet izinlerini iptal etti.", tag: "VERIFIED", amount: "-", url: "https://hukukcularevi.com/faaliyet-izni-iptal-edilen-odeme-ve-elektronik-para-kuruluslari-listesi-2025-2026-papara-payfix-vezne24-parolapara-payco-trpos-papel-6493-16-22/" },
+            { date: "2026-02-18", category: "Electronic_Money_Enforcement", entity: "TCMB", summary: "TCMB 11992-11994 sayılı kararlarla (21.02.2026 RG 33175) Fzypay, Klon ve TTM kuruluşlarının faaliyet izinlerini iptal etti.", tag: "VERIFIED", amount: "-", url: "https://hukukcularevi.com/faaliyet-izni-iptal-edilen-odeme-ve-elektronik-para-kuruluslari-listesi-2025-2026-papara-payfix-vezne24-parolapara-payco-trpos-papel-6493-16-22/" },
+            { date: "2026-03-09", category: "SDNY_Zarrab_Halkbank", entity: "DOJ / SDNY / Halkbank", summary: "DOJ ve Halkbank suç kabulsüz ve para cezasız Kovuşturmanın Ertelenmesi Anlaşması (DPA) imzaladı; 11 Mart'ta Yargıç Berman davayı EY incelemesi için 90 gün askıya aldı.", tag: "VERIFIED", amount: "-", url: "https://www.comsuregroup.com/news/halkbank-escapes-criminal-conviction-as-ey-delivers-clean-sanctions-and-aml-review/" },
+            { date: "2026-04-08", category: "Free_Funds_Investigation", entity: "Bakırköy C. Başsavcılığı / Ramazan Başak", summary: "Eski MASAK Bşk. Yrd. Dr. Ramazan Başak TCK m.217/A ve SPKn m.107 (borsa manipülasyonu) iddialarıyla ikinci kez gözaltına alındı; adli kontrolle serbest bırakıldı.", tag: "VERIFIED", amount: "-", url: "https://www.diken.com.tr/eski-masak-baskan-yardimcisi-gozaltinda/" },
+            { date: "2026-04-22", category: "Free_Funds_Investigation", entity: "Bulls Yatırım / Osman Dereli", summary: "Eski MASAK Başkanı Osman Dereli, Bulls Yatırım bağımsız yönetim kurulu üyesi olarak göreve başladı (Lydia Holding ve Ruzy Madencilik'te de bağımsız YK üyesi).", tag: "VERIFIED", amount: "-", url: "https://www.karar.com/guncel-haberler/yeni-partili-umit-ozlaleden-bomba-iddia-eski-masak-baskani-foncu-2083225" },
+            { date: "2026-06-06", category: "Electronic_Money_Enforcement", entity: "TCMB / Parolapara", summary: "Yasa dışı bahis operasyonu ardından 33272 sayılı Resmî Gazete kararıyla Parolapara'nın faaliyet izni iptal edildi.", tag: "VERIFIED", amount: "-", url: "https://tcmb.gov.tr/wps/wcm/connect/6a2a9525-d5ab-4ff3-95c9-0ec3c881af57/Parolapara+Faaliyet+%C4%B0zni+%C4%B0ptali.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE-6a2a9525-d5ab-4ff3-95c9-0ec3c881af57-pWCwTwW" },
+            { date: "2026-06-17", category: "SDNY_Zarrab_Halkbank", entity: "SDNY (Judge Richard M. Berman)", summary: "EY uyum raporu ve ortak talep sonrası Yargıç Berman, Halkbank hakkındaki 2019 tarihli ceza davasını düşürdü.", tag: "VERIFIED", amount: "-", url: "https://www.ahaber.com.tr/ekonomi/2026/06/17/abdde-gorulen-halkbank-davasi-9-yil-sonra-dustu" },
+            { date: "2026-07-10", category: "Gold_Quota_Kapalicarsi", entity: "İstanbul C. Başsavcılığı", summary: "Kapalıçarşı kara para soruşturmasında 369 paravan şirket, sanal POS, e-para, Venüs Döviz ve kripto dönüşümü üzerinden 504 şüpheliye iddianame düzenlendi.", tag: "VERIFIED", amount: "-", url: "https://www.aa.com.tr/tr/gundem/mal-varligi-degerlerinin-aklanmasina-yonelik-kapalicarsi-sorusturmasinda-504-supheliye-iddianame/3994003" },
+            { date: "2026-07-14", category: "SDNY_Zarrab_Halkbank", entity: "SDNY (Judge Richard M. Berman)", summary: "Yargıç Richard Berman, Rıza Zarrab'ı savcılıkla işbirliği nedeniyle yatmış olduğu süre (time served, ~22 ay) ve önceki 376.000 USD müsadere ile cezalandırdı.", tag: "VERIFIED", amount: "376.000 USD", url: "https://assets.alm.com/66/3e/c6de5efa4638aee8fd1034c3e3f8/nylj071626a.pdf" },
+            { date: "2026-08-28", category: "Free_Funds_Regulation", entity: "SPK (Bülten 2026/54 - Karar 52/1589)", summary: "TEFAS serbest fon hacmi 3,6 trilyon TL'ye ulaşırken SPK Yatırım Fonlarına İlişkin Rehber'de %5/%20 yoğunlaşma, %20 kaldıraç/TPP ve %105 OTC ters repo limitlerini getirdi.", tag: "VERIFIED", amount: "3.600.000.000.000 TL", url: "https://spk.gov.tr/data/6a91fe798f95db1fb01ff364/2026-54.pdf" },
+            { date: "2026-09-15", category: "Free_Funds_Investigation", entity: "Pusula Portföy / İstanbul C. Başsavcılığı", summary: "Pusula Portföy katılma payı iade ödemelerinde temerrüt açıkladı; YKB Muhammed Yarız tutuklandı (16 Eylül'de Tera Portföy iki fonda temerrüt bildirdi).", tag: "VERIFIED", amount: "-", url: "https://tr.wikipedia.org/wiki/2026_T%C3%BCrkiye_fon_krizi" },
+            { date: "2026-09-16", category: "Free_Funds_Investigation", entity: "SPK (Bülten 2026/59)", summary: "KTLEV, GUNDG ve DSTKF paylarındaki işlemler nedeniyle 38 kişi hakkında SPKn m.107/1 uyarınca suç duyurusu ve 2 yıl işlem yasağı kararı alındı.", tag: "VERIFIED", amount: "-", url: "https://spk.gov.tr/data/6aab0e898f95db07100fd7a0/2026-59.pdf" },
+            { date: "2026-09-17", category: "Free_Funds_Regulation", entity: "SPK (Bülten 2026/60 ve 2026/61)", summary: "Karar 57/1706-1708 ile 7 portföy yönetim şirketinin (Pardus 42, Hedef 31, Atlas 16, Bulls 15, Pusula 12, A1 Capital 9, Tera 6) 131 fonu tasfiyeye alındı (>800 milyar TL).", tag: "VERIFIED", amount: "800.000.000.000 TL", url: "https://spk.gov.tr/data/6aac56ff8f95db07100fd82d/2026-61.pdf" },
+            { date: "2026-09-18", category: "Electronic_Money_Enforcement", entity: "TCMB / Papel Elektronik Para A.Ş.", summary: "TCMB 12092/21691 sayılı Karar (23.09.2026 RG 33379) ile Papel Elektronik Para ve Ödeme Hizmetleri A.Ş.'nin faaliyet iznini iptal etti.", tag: "VERIFIED", amount: "-", url: "https://hukukcularevi.com/papel-kapandi-mi-paralar-ne-olacak-tcmb-izin-iptali-23-09-2026-tmsf-kayyim-koruma-hesabi-bakiye-iadesi-6493-16-19-21-8-22-3-yonetmelik-6-35-36/" },
+            { date: "2026-09-20", category: "Free_Funds_Regulation", entity: "SPK (Bülten 2026/62 - Karar 59/1710)", summary: "Tasfiye kapsamındaki 131 fon için azami tasfiye süresi 3 aydan 6 aya uzatıldı.", tag: "VERIFIED", amount: "-", url: "https://spk.gov.tr/data/6ab045158f95db2f50d96da8/2026-62.pdf" },
+            { date: "2026-09-22", category: "Free_Funds_Investigation", entity: "İstanbul C. Başsavcılığı", summary: "2026/149004 sayılı dosyada Emre Tezmen, Serdar Turhan, Alper Öztürk, Emre Alkin ve Kerem Alkin tutuklandı; aynı gün Osman Dereli'nin adı Bulls Yatırım KAP kaydından çıktı.", tag: "VERIFIED", amount: "-", url: "https://tr.wikipedia.org/wiki/2026_T%C3%BCrkiye_fon_krizi" },
+            { date: "2026-09-30", category: "Free_Funds_Regulation", entity: "BDDK (Karar 11576-11580) & SPK (2026/67)", summary: "BDDK 3 yatırım bankası ve 2 faktoring şirketinin yönetimini TMSF'ye devretti; SPK 1 milyon TL ara ödeme kararı aldı ve Tera Yatırım'ı geçici durdurdu.", tag: "VERIFIED", amount: "1.000.000 TL", url: "https://www.bddk.org.tr/Duyuru/EkGetir/4306?ekId=939" },
+            { date: "2026-10-06", category: "Free_Funds_Investigation", entity: "Adalet Bakanlığı", summary: "Adalet Bakanı Akın Gürlek fon soruşturmasında 214 gerçek/tüzel kişinin şüpheli çıkış yaptığını ve haksız kazancın 187,6 milyar TL olduğunu açıkladı.", tag: "VERIFIED", amount: "187.600.000.000 TL", url: "https://www.sondakika.com/guncel/haber-istanbul-da-fon-sorusturmasinda-gozaltina-alinan-7-20455693/" },
+            { date: "2026-10-15", category: "Free_Funds_Investigation", entity: "MASAK / Hazine ve Maliye Bakanlığı", summary: "MASAK fon dosyası kapsamında 278 gerçek ve tüzel kişinin nakit ve kripto varlıkları için 29 ülkeden 48 ayrı bilgi talebinde bulundu.", tag: "VERIFIED", amount: "-", url: "https://aa.com.tr/tr/ekonomi/hazine-ve-maliye-bakan-yardimcisi-hatipoglu-fon-dosyasi-kapsaminda-masak-29-farkli-ulkeden-48-ayri-talepte-bulundu/4089049" },
+            { date: "2026-10-20", category: "Free_Funds_Regulation", entity: "Cumhurbaşkanlığı / Resmî Gazete", summary: "SPK Başkanı Mahmut Sütcü ve KGK Başkanı (eski SPK Başkanı) İbrahim Ömer Gönül görevden alındı.", tag: "VERIFIED", amount: "-", url: "https://www.aa.com.tr/tr/gundem/sermaye-piyasasi-kurulu-spk-baskani-ile-kamu-gozetimi-muhasebe-ve-denetim-standartlari-kurumu-baskani-gorevden-alindi/4093980" },
+            { date: "2026-10-26", category: "Free_Funds_Regulation", entity: "SPK (Bülten 2026/75 & Karar 75/1899)", summary: "Tera Portföy ve Pusula Portföy'ün faaliyetleri geçici durdurularak kalan fonları devredildi; 75/1899 sayılı İlke Kararı ile nitelikli yatırımcı eşiği 50 milyon TL'ye çıkarıldı.", tag: "VERIFIED", amount: "50.000.000 TL", url: "https://spk.gov.tr/data/6adf98e58f95db2330f22045/2026-75.pdf" },
+            { date: "2026-10-27", category: "Free_Funds_Regulation", entity: "TBMM / Resmî Gazete (33413) / SPK (2026/76-77)", summary: "7596 sayılı Fon Tasfiye Kanunu yürürlüğe girdi; SPK 76/1903 ile ara ödeme esaslarını belirledi ve 2026/77 ile Tera Yatırım Menkul Değerler'in tüm izinlerini iptal etti.", tag: "VERIFIED", amount: "-", url: "https://spk.gov.tr/data/6ae0e2ce8f95dc0c1408d476/2026-77.pdf" },
+            { date: "2026-11-05", category: "Free_Funds_Investigation", entity: "İstanbul C. Başsavcılığı", summary: "3 Kasım'da eski BIST GM Korkmaz Enes Ergun, 5 Kasım'da eski Bakan Fatma Betül Sayan Kaya, 7-8 Kasım'da eski SPK Bşk. V. Enver Usca ve 2 BDDK daire başkanı tutuklandı.", tag: "VERIFIED", amount: "-", url: "https://www.sondakika.com/guncel/haber-istanbul-da-fon-sorusturmasinda-gozaltina-alinan-7-20455693/" },
+            { date: "2026-11-10", category: "Electronic_Money_Enforcement", entity: "TCMB / Ozan & A Ödeme", summary: "TCMB 12111/21710 ve 12113/21712 sayılı kararlarla (11.11.2026 RG 33427) Ozan Elektronik Para A.Ş. ve A Ödeme A.Ş.'nin faaliyet izinlerini iptal etti.", tag: "VERIFIED", amount: "-", url: "https://fintech.tr/haberler/a-odeme-ozan-elektronik-para-izin-iptali" },
+            { date: "2026-11-12", category: "Free_Funds_Investigation", entity: "İstanbul C. Başsavcılığı / BDDK", summary: "11 Kasım'da istifa eden BDDK Başkanı Şahap Kavcıoğlu ve eski yöneticiler hakkında soruşturma izni talep edildi ve Kavcıoğlu'na yurt dışı çıkış yasağı konuldu.", tag: "VERIFIED", amount: "-", url: "https://t24.com.tr/gundem/hakkinda-sorusturma-izni-istenen-sahap-kavcioglu-icin-savcilik-yazisindaki-iddialar-katilimevimin-devri-surecinde-teraya-kredi-icin-takasbanka-baski-yapti,1359924" },
+            { date: "2026-11-18", category: "Free_Funds_Investigation", entity: "İstanbul C. Başsavcılığı / BDDK", summary: "Başsavcılık 100 milyon TL üzeri bireysel kazanç sağladığı belirtilen 108 kişinin varlıklarına tedbir istedi; BDDK 11601 s.k. ile Adil Katılım Bankası'nı TMSF'ye devretti.", tag: "VERIFIED", amount: "100.000.000 TL", url: "https://serbestiyet.com/featured/fonda-100-milyonluk-islem-yapan-108-kisilik-listeden-eski-tbmm-genel-sekreteri-de-cikti-253969/" },
+            { date: "2026-11-21", category: "Free_Funds_Investigation", entity: "MASAK / İstanbul C. Başsavcılığı", summary: "MASAK'ın Londra merkezli Gildencrest Capital üzerinden 9 yılda 21 milyar TL trafik ve 7,8 milyar TL yurt dışı kâr tespit eden raporu savcılığa sunuldu.", tag: "VERIFIED", amount: "21.000.000.000 TL", url: "https://kureansiklopedi.com/tr/detay/2026-turkiye-sermaye-piyasasi-fon-krizi-ve-manipul" },
+            { date: "2026-11-22", category: "Free_Funds_Investigation", entity: "Adalet Bakanlığı / TMSF", summary: "Fon dosyasındaa 632 şüpheli, 91 şirkete TMSF kayyımı, 9 ülkede ~13 milyar TL dondurulan varlık, 44,58 milyar TL gönüllü iade ve 444.987 yatırımcıya 161 milyar TL ödeme açıklandı.", tag: "VERIFIED", amount: "161.000.000.000 TL", url: "https://kureansiklopedi.com/tr/detay/2026-turkiye-sermaye-piyasasi-fon-krizi-ve-manipul" }
+        ];
+
+        function wrapLabel(str, maxChars = 16) {
+            if (str.length <= maxChars) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length <= maxChars) {
+                    currentLine = (currentLine + ' ' + word).trim();
+                } else {
+                    if (currentLine) lines.push(currentLine);
+                    currentLine = word;
+                }
+            });
+            if (currentLine) lines.push(currentLine);
+            return lines;
+        }
+
+        function renderTagBadge(tag) {
+            if (tag === 'VERIFIED') {
+                return '<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-900 font-mono-code">[VERIFIED]</span>';
+            }
+            return '<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 font-mono-code">[CLAIMED / UNVERIFIED]</span>';
+        }
+
+        function renderFactTab(key) {
+            const data = factDisambiguationData[key];
+            const container = document.getElementById('fact-detail-container');
+            const leftList = data.leftItems.map(item => `
+                <li class="flex items-start gap-2.5 text-xs text-[#334155] leading-relaxed">
+                    <span class="mt-0.5 text-[#1E3A5F] font-bold">•</span>
+                    <div><span>${item.text}</span> <span class="ml-1">${renderTagBadge(item.tag)}</span></div>
+                </li>
+            `).join('');
+            const rightList = data.rightItems.map(item => `
+                <li class="flex items-start gap-2.5 text-xs text-[#334155] leading-relaxed">
+                    <span class="mt-0.5 text-[#B45309] font-bold">•</span>
+                    <div><span>${item.text}</span> <span class="ml-1">${renderTagBadge(item.tag)}</span></div>
+                </li>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="mb-4 pb-3 border-b border-[#E5E2DC]">
+                    <h3 class="text-base sm:text-lg font-bold text-[#1E293B]">${data.title}</h3>
+                    <p class="text-xs text-[#57534E] mt-0.5">${data.subtitle}</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-xl border border-[#E5E2DC] p-4">
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <h4 class="text-sm font-bold text-[#1E3A5F]">${data.leftTitle}</h4>
+                            <span class="px-2 py-0.5 rounded bg-[#1E3A5F]/10 text-[#1E3A5F] text-[11px] font-semibold">${data.leftBadge}</span>
+                        </div>
+                        <ul class="space-y-2.5">${leftList}</ul>
+                    </div>
+                    <div class="bg-white rounded-xl border border-[#E5E2DC] p-4">
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <h4 class="text-sm font-bold text-[#B45309]">${data.rightTitle}</h4>
+                            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[11px] font-semibold">${data.rightBadge}</span>
+                        </div>
+                        <ul class="space-y-2.5">${rightList}</ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.querySelectorAll('.fact-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.fact-tab-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('tab-inactive');
+                });
+                btn.classList.remove('tab-inactive');
+                btn.classList.add('tab-active');
+                renderFactTab(btn.getAttribute('data-fact'));
+            });
+        });
+        renderFactTab('masak');
+
+        let growthChartInstance = null;
+        function initGrowthChart(mode = 'aum') {
+            const ctx = document.getElementById('freeFundsGrowthChart').getContext('2d');
+            if (growthChartInstance) {
+                growthChartInstance.destroy();
+            }
+
+            const labels = [
+                '2021-12-31 (TSPB)',
+                '2022-12-31 (TSPB)',
+                '2023-12-31 (TSPB)',
+                '2024-12-31 (TSPB)',
+                '2025-12-31 (TSPB)',
+                '2026-08-29 (TEFAS Açık)'
+            ].map(l => wrapLabel(l, 16));
+
+            const datasetConfig = mode === 'aum' ? {
+                label: 'Portföy Büyüklüğü (Milyar TL)',
+                data: [101.46, 358.02, 1026.51, 2252.09, 4979.94, 3600.00],
+                backgroundColor: ['#1E3A5F', '#1E3A5F', '#1E3A5F', '#1E3A5F', '#1E3A5F', '#B45309'],
+                borderRadius: 6
+            } : {
+                label: 'Yıllık Net Nakit Girişi (Milyar TL)',
+                data: [30.42, 145.00, 378.79, 720.83, 1603.63, null],
+                backgroundColor: '#047857',
+                borderRadius: 6
+            };
+
+            growthChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        datasetConfig,
+                        {
+                            type: 'line',
+                            label: 'Toplam Fon Pazar Payı (%)',
+                            data: [35, 52, null, null, null, 65],
+                            borderColor: '#D97706',
+                            backgroundColor: '#D97706',
+                            yAxisID: 'y1',
+                            tension: 0.3,
+                            spanGaps: true,
+                            pointRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.parsed.y === null) return null;
+                                    if (context.dataset.yAxisID === 'y1') {
+                                        return `${context.dataset.label}: %${context.parsed.y}`;
+                                    }
+                                    return `${context.dataset.label}: ${context.parsed.y.toLocaleString('tr-TR')} Milyar TL`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Milyar TL', font: { size: 11 } },
+                            grid: { color: '#E5E2DC' }
+                        },
+                        y1: {
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'Pazar Payı (%)', font: { size: 11 } },
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('btn-growth-aum').addEventListener('click', (e) => {
+            e.target.classList.add('bg-[#1E3A5F]', 'text-white');
+            e.target.classList.remove('text-[#47534E]');
+            const other = document.getElementById('btn-growth-inflow');
+            other.classList.remove('bg-[#1E3A5F]', 'text-white');
+            other.classList.add('text-[#47534E]');
+            initGrowthChart('aum');
+        });
+
+        document.getElementById('btn-growth-inflow').addEventListener('click', (e) => {
+            e.target.classList.add('bg-[#1E3A5F]', 'text-white');
+            e.target.classList.remove('text-[#47534E]');
+            const other = document.getElementById('btn-growth-aum');
+            other.classList.remove('bg-[#1E3A5F]', 'text-white');
+            other.classList.add('text-[#47534E]');
+            initGrowthChart('inflow');
+        });
+
+        initGrowthChart('aum');
+
+        let liquidatedChartInstance = null;
+        const liquidatedRawData = [
+            { pys: 'Pardus Portföy', count: 42, bank: 'ziraat', bankLabel: 'Ziraat Bankası' },
+            { pys: 'Hedef Portföy', count: 31, bank: 'ziraat', bankLabel: 'Ziraat Bankası' },
+            { pys: 'Atlas Portföy', count: 16, bank: 'ziraat', bankLabel: 'Ziraat Bankası' },
+            { pys: 'Bulls Portföy', count: 15, bank: 'ziraat', bankLabel: 'Ziraat Bankası' },
+            { pys: 'Pusula Portföy', count: 12, bank: 'ziraat', bankLabel: 'Ziraat Bankası' },
+            { pys: 'A1 Capital Portföy', count: 9, bank: 'ziraat', bankLabel: 'Ziraat Bankası' },
+            { pys: 'Tera Portföy', count: 6, bank: 'isbank', bankLabel: 'Türkiye İş Bankası' }
+        ];
+
+        function initLiquidatedChart(filter = 'all') {
+            const ctx = document.getElementById('liquidatedFundsChart').getContext('2d');
+            if (liquidatedChartInstance) {
+                liquidatedChartInstance.destroy();
+            }
+
+            const filtered = filter === 'all'
+                ? liquidatedRawData
+                : liquidatedRawData.filter(d => d.bank === filter);
+
+            liquidatedChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: filtered.map(d => wrapLabel(d.pys, 16)),
+                    datasets: [{
+                        label: 'Tasfiye Edilen Fon Sayısı',
+                        data: filtered.map(d => d.count),
+                        backgroundColor: filtered.map(d => d.bank === 'isbank' ? '#B45309' : '#1E3A5F'),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const item = filtered[context.dataIndex];
+                                    return `${item.count} Fon (Tasfiye Yetkilisi: ${item.bankLabel})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 45,
+                            title: { display: true, text: 'Fon Adedi (Toplam: 131 Fon)', font: { size: 11 } },
+                            grid: { color: '#E5E2DC' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11, weight: '500' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('liquidator-filter').addEventListener('change', (e) => {
+            initLiquidatedChart(e.target.value);
+        });
+        initLiquidatedChart('all');
+
+        function initEmoneyAuditChart() {
+            const ctx = document.getElementById('emoneyAuditChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        wrapLabel('Papara (21.088 Hesap)', 16),
+                        wrapLabel('Diğer Tüm Kuruluşlar (~1.251 Hesap)', 16)
+                    ],
+                    datasets: [{
+                        data: [94.4, 5.6],
+                        backgroundColor: ['#B45309', '#1E3A5F'],
+                        borderWidth: 2,
+                        borderColor: '#F8F7F4'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: %${context.parsed}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        initEmoneyAuditChart();
+
+        function renderEntityCards(filter = 'all') {
+            const container = document.getElementById('entity-cards-list');
+            const filtered = filter === 'all'
+                ? emoneyEntitiesData
+                : emoneyEntitiesData.filter(item => item.category === filter);
+
+            container.innerHTML = filtered.map(item => `
+                <div class="bg-white rounded-xl border border-[#E5E2DC] p-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                        <h4 class="text-sm font-bold text-[#1E293B]">${item.name}</h4>
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${item.badgeColor}">${item.badge}</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-[#57534E] font-mono-code mb-2">
+                        <div><strong>İlk Lisans:</strong> ${item.licenseInfo}</div>
+                        <div><strong>İşlem Tarihi:</strong> ${item.actionDate}</div>
+                    </div>
+                    <p class="text-xs text-[#334155] leading-relaxed mb-2">${item.summary}</p>
+                    <div class="text-[11px] font-mono-code text-[#1E3A5F] bg-[#F8F7F4] px-2.5 py-1 rounded border border-[#E5E2DC]">
+                        Dayanak: ${item.legalBasis}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.querySelectorAll('.efilter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.efilter-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('tab-inactive');
+                });
+                btn.classList.remove('tab-inactive');
+                btn.classList.add('tab-active');
+                renderEntityCards(btn.getAttribute('data-efilter'));
+            });
+        });
+        renderEntityCards('all');
+
+        function renderComparisonStages(selected = 'all') {
+            const container = document.getElementById('comparison-matrix-container');
+            const items = selected === 'all'
+                ? structuralComparisonStages
+                : [structuralComparisonStages[parseInt(selected, 10)]];
+
+            container.innerHTML = items.map(st => `
+                <div class="rounded-xl border border-[#E5E2DC] bg-[#F8F7F4] p-4">
+                    <div class="text-xs font-bold uppercase tracking-wider text-[#1E3A5F] mb-3">${st.stage}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-lg border border-[#E5E2DC] p-4">
+                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                                <span class="text-[11px] font-bold text-[#57534E] uppercase">2012–2016 Geleneksel Koridoru</span>
+                                ${renderTagBadge(st.era2012.tag)}
+                            </div>
+                            <h4 class="text-sm font-bold text-[#1E293B] mb-1">${st.era2012.title}</h4>
+                            <p class="text-xs text-[#47534E] leading-relaxed">${st.era2012.detail}</p>
+                        </div>
+                        <div class="bg-white rounded-lg border border-[#E5E2DC] p-4">
+                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                                <span class="text-[11px] font-bold text-[#B45309] uppercase">2021–2026 Hibrit Mekanizması</span>
+                                ${renderTagBadge(st.era2021.tag)}
+                            </div>
+                            <h4 class="text-sm font-bold text-[#1E293B] mb-1">${st.era2021.title}</h4>
+                            <p class="text-xs text-[#47534E] leading-relaxed">${st.era2021.detail}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.querySelectorAll('.stage-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.stage-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('tab-inactive');
+                });
+                btn.classList.remove('tab-inactive');
+                btn.classList.add('tab-active');
+                renderComparisonStages(btn.getAttribute('data-stage'));
+            });
+        });
+        renderComparisonStages('all');
+
+        let currentlyFilteredCsv = [...csvRecords];
+
+        function filterAndRenderCsv() {
+            const query = document.getElementById('csv-search').value.toLowerCase().trim();
+            const cat = document.getElementById('csv-category').value;
+            const status = document.getElementById('csv-status').value;
+
+            currentlyFilteredCsv = csvRecords.filter(row => {
+                const matchesQuery = !query ||
+                    row.date.toLowerCase().includes(query) ||
+                    row.entity.toLowerCase().includes(query) ||
+                    row.summary.toLowerCase().includes(query) ||
+                    row.category.toLowerCase().includes(query) ||
+                    row.amount.toLowerCase().includes(query);
+
+                let matchesCat = true;
+                if (cat === 'Free_Funds') {
+                    matchesCat = row.category.startsWith('Free_Funds');
+                } else if (cat === 'Electronic_Money') {
+                    matchesCat = row.category.startsWith('Electronic_Money');
+                } else if (cat === 'Digital_Banking') {
+                    matchesCat = row.category === 'Digital_Banking_License';
+                } else if (cat === 'SDNY_Zarrab_Halkbank') {
+                    matchesCat = row.category === 'SDNY_Zarrab_Halkbank';
+                } else if (cat === 'Gold_Crypto') {
+                    matchesCat = row.category === 'Gold_Quota_Kapalicarsi' || row.category === 'Crypto_Regulation';
+                }
+
+                const matchesStatus = status === 'all' || row.tag === status;
+                return matchesQuery && matchesCat && matchesStatus;
+            });
+
+            document.getElementById('csv-count-label').textContent = `Gösterilen kayıt: ${currentlyFilteredCsv.length} / ${csvRecords.length}`;
+
+            const tbody = document.getElementById('csv-table-body');
+            if (currentlyFilteredCsv.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 px-4 text-center text-xs text-[#57534E]">Seçilen filtrelere uygun kayıt bulunamadı.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = currentlyFilteredCsv.map(row => `
+                <tr class="hover:bg-[#F8F7F4]/80 transition">
+                    <td class="py-3 px-3.5 font-mono-code font-semibold text-[#1E3A5F] whitespace-nowrap align-top">${row.date}</td>
+                    <td class="py-3 px-3.5 font-mono-code text-[11px] text-[#57534E] whitespace-nowrap align-top">${row.category}</td>
+                    <td class="py-3 px-3.5 font-semibold text-[#1E293B] align-top">${row.entity}</td>
+                    <td class="py-3 px-3.5 text-[#334155] leading-relaxed align-top">
+                        <span>${row.summary}</span>
+                        <span class="ml-1">${renderTagBadge(row.tag)}</span>
+                    </td>
+                    <td class="py-3 px-3.5 font-mono-code font-semibold text-[#B45309] whitespace-nowrap align-top">${row.amount}</td>
+                    <td class="py-3 px-3.5 whitespace-nowrap align-top">
+                        <a href="${row.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1E3A5F]/10 text-[#1E3A5F] font-semibold text-[11px] hover:bg-[#1E3A5F] hover:text-white transition">
+                            <span>🔗 Kaynak</span>
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        document.getElementById('csv-search').addEventListener('input', filterAndRenderCsv);
+        document.getElementById('csv-category').addEventListener('change', filterAndRenderCsv);
+        document.getElementById('csv-status').addEventListener('change', filterAndRenderCsv);
+
+        document.getElementById('reset-filters-btn').addEventListener('click', () => {
+            document.getElementById('csv-search').value = '';
+            document.getElementById('csv-category').value = 'all';
+            document.getElementById('csv-status').value = 'all';
+            filterAndRenderCsv();
+        });
+
+        document.getElementById('download-csv-btn').addEventListener('click', () => {
+            const headers = ['date', 'category', 'entity_or_institution', 'event_summary', 'amount_if_any', 'source_url'];
+            const escapeCsv = (val) => `"${String(val).replace(/"/g, '""')}"`;
+            const rows = currentlyFilteredCsv.map(r => {
+                const tagStr = r.tag === 'VERIFIED' ? '[VERIFIED]' : '[CLAIMED / UNVERIFIED]';
+                const amt = r.amount === '-' ? '' : r.amount;
+                return [
+                    r.date,
+                    r.category,
+                    escapeCsv(r.entity),
+                    escapeCsv(`${r.summary} ${tagStr}`),
+                    amt,
+                    r.url
+                ].join(',');
+            });
+            const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'adli_finans_kayitlari.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        filterAndRenderCsv();
+    </script>
+</body>
+</html>

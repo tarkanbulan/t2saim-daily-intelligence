@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getAllReports, getReportBySlug } from "@/lib/reports";
 import { GlossaryArticle } from "@/components/GlossaryArticle";
 import {
+  MarketMetricsPanel,
   PrioritySignalChart,
   ScenarioDonutChart,
 } from "@/components/ReportVisuals";
@@ -111,6 +112,8 @@ export default async function ReportDetailPage({
           <ScenarioDonutChart scenarios={report.scenarios} />
           <PrioritySignalChart signals={report.signals} />
         </div>
+
+        <MarketMetricsPanel metrics={report.marketMetrics} />
 
         <GlossaryArticle htmlContent={report.htmlContent} />
       </article>

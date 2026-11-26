@@ -1,4 +1,8 @@
-import type { PrioritySignalItem, ScenarioItem } from "@/lib/reports";
+import type {
+  MarketMetricItem,
+  PrioritySignalItem,
+  ScenarioItem,
+} from "@/lib/reports";
 
 export function ArchitectureSchema() {
   const steps = [
@@ -185,6 +189,44 @@ export function PrioritySignalChart({
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+export function MarketMetricsPanel({
+  metrics,
+}: {
+  metrics: MarketMetricItem[];
+}) {
+  if (!metrics.length) return null;
+  return (
+    <div className="bg-white border border-[#e2dfd7] rounded-xl p-5">
+      <div className="text-xs font-mono uppercase tracking-wider text-[#1e3a5f] font-bold mb-3.5">
+        Günlük Piyasa &amp; Makro Gösterge Paneli (Bölüm 4.1 Özeti)
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {metrics.map((m) => (
+          <div
+            key={m.indicator}
+            className="rounded-lg border border-[#e2dfd7] bg-[#faf9f6] p-3.5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="text-[11px] font-mono text-[#64748b] font-semibold">
+                {m.indicator}
+              </div>
+              <div className="font-mono text-base font-bold text-[#121417] mt-1">
+                {m.value}
+              </div>
+              <div className="text-[11px] font-mono text-[#8b1e3f] mt-0.5">
+                {m.delta}
+              </div>
+            </div>
+            <p className="text-[11px] text-[#4a5568] mt-2 pt-2 border-t border-[#efede7] leading-snug">
+              {m.note}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );
