@@ -62,6 +62,12 @@ export default function RootLayout({
               >
                 Özel Dosya
               </Link>
+              <Link
+                href="/ozel-otopsi"
+                className="px-3 py-1.5 rounded-lg bg-[#8b1e3f] hover:bg-[#701631] text-white font-semibold transition-colors"
+              >
+                Özel Konu: Otopsi
+              </Link>
             </nav>
           </div>
         </header>

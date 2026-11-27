@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Türkiye'nin Ekonomik, Kurumsal ve Mali İnceleme Atlası (1990–2026) | Özel Dosya</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace']
+      },
+      colors: {
+        alabaster: '#FAF8F5',
+        sand: '#F3EFEA',
+        stoneborder: '#E5DFD7',
+        ink: '#1C1917',
+        mutedink: '#57534E',
+        forensic: '#1E3A5F',
+        crimsonalert: '#B91C1C',
+        ochre: '#B45309',
+        sage: '#0F766E'
+      }
+    }
+  }
+}
+</script>
+<style>
+body {
+  background-color: #FAF8F5;
+  color: #1C1917;
+  overflow-x: hidden;
+}
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 290px;
+  max-height: 380px;
+}
+@media (min-width: 768px) {
+  .chart-container {
+    height: 340px;
+  }
+}
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+.nav-pill-active {
+  background-color: #1E3A5F;
+  color: #FFFFFF;
+  border-color: #1E3A5F;
+}
+.tab-panel {
+  display: none;
+}
+.tab-panel.active {
+  display: block;
+  animation: fadeIn 0.25s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+input[type="range"] {
+  accent-color: #1E3A5F;
+}
+</style>
+</head>
+<body class="antialiased selection:bg-forensic selection:text-white">
+<!-- Chosen Palette: Warm Alabaster & Forensic Slate (Alabaster #FAF8F5 background, White #FFFFFF & Warm Sand #F3EFEA cards, Deep Charcoal #1C1917 typography, Forensic Navy #1E3A5F primary structure, Muted Crimson #B91C1C critical thresholds, Amber Ochre #B45309 regulatory warnings, Sage Teal #0F766E structural repair targets) -->
+<!-- Ozel Konu: Turkiye Ekonomik ve Kurumsal Inceleme Platformu -->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<header class="bg-white border-b border-stoneborder">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-mono uppercase tracking-wider text-forensic mb-1.5">
+          <span class="bg-sand px-2.5 py-0.5 rounded border border-stoneborder font-semibold">Kesit Tarihi: 27 Kasım 2026</span>
+          <span class="bg-sand px-2.5 py-0.5 rounded border border-stoneborder">Uluslararası Denetim ve Veri Doğrulama Standartları</span>
+          <span class="bg-sand px-2.5 py-0.5 rounded border border-stoneborder">Bağımsız Ekonomik ve Kurumsal Analiz Çerçevesi</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
+          Türkiye'nin Adli, Ekonomik ve Örgütsel Otopsisi (1990–2026)
+        </h1>
+        <p class="text-sm sm:text-base text-mutedink mt-1 max-w-4xl">
+          Kamu maliyesi, belediye ve bakanlık denetimleri, kayıt dışı para trafiği, serbest yatırım fonları ve kurumsal iyileşme yol haritasının herkes için sadeleştirilmiş kapsamlı incelemesi.
+        </p>
+      </div>
+      <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0">
+        <button id="toggleMethodGuardrail" type="button" class="text-xs font-medium px-3.5 py-2 rounded-lg border border-stoneborder bg-alabaster hover:bg-sand text-ink transition flex items-center justify-between gap-2">
+          <span>⚖ Metodolojik &amp; Hukuki Sınırlar</span>
+          <span id="guardrailBadge" class="font-mono text-forensic font-semibold">Göster ▼</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="guardrailDrawer" class="hidden mt-4 p-4 rounded-xl bg-sand/80 border border-stoneborder text-xs text-ink leading-relaxed grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-3 rounded-lg border border-stoneborder">
+        <div class="font-semibold text-forensic mb-1">1. Tarihsel ve Güncel Veri Ayrımı</div>
+        <p class="text-mutedink">Raporlama kesiti <strong>27 Kasım 2026</strong>'dır. 1996–2025 tam 30 yıllık tarihsel panel ile 2026 yılı içi (YTD) veriler ayrıştırılmış; Analitik model hesaplamaları ile resmi kurum istatistikleri (TÜİK, TCMB, KİK, SPK, Sayıştay, MASAK, FATF) birbirinden ayrı ve açık kaynaklı olarak sunulmuştur.</p>
+      </div>
+      <div class="bg-white p-3 rounded-lg border border-stoneborder">
+        <div class="font-semibold text-forensic mb-1">2. INTOSAI GUID 5270 &amp; Masumiyet Karinesi</div>
+        <p class="text-mutedink">6085 s.K. uyarınca Sayıştay bulguları ceza mahkûmiyeti değil idari/mali uygunluk tespiti ve kamu zararı sorgusudur. 2025–2026 soruşturmalarındaki gözaltı, tutuklama, kayyım ve bloke kararları devam eden yargı süreçlerine ait koruma tedbirleridir.</p>
+      </div>
+      <div class="bg-white p-3 rounded-lg border border-stoneborder">
+        <div class="font-semibold text-forensic mb-1">3. Takvim Yakınlığı (Δt) &amp; Veri Hijyeni</div>
+        <p class="text-mutedink">Mevzuat tarihleri ile operasyonlar arasındaki 0–60 günlük yakınlıklar tekil yasama kastı değil, düzenleyici arbitraj pencereleriyle suç likiditesinin aynı rejim sıkışmalarında kümelendiğini gösterir. Bağımsız zaman serisi doğrulanmamış alt korelasyonlar (Brent r=0,58 vb.) model dışı bırakılmıştır.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-5 pt-4 border-t border-stoneborder">
+      <div class="bg-alabaster px-3 py-2.5 rounded-lg border border-stoneborder">
+        <div class="text-[11px] font-medium text-mutedink">Sayıştay Külliyatı</div>
+        <div class="text-lg font-bold font-mono tabular-nums text-forensic">5.507 PDF</div>
+        <div class="text-[11px] text-crimsonalert font-medium">%99,38 iç kontrol açığı</div>
+      </div>
+      <div class="bg-alabaster px-3 py-2.5 rounded-lg border border-stoneborder">
+        <div class="text-[11px] font-medium text-mutedink">Tek Mutfak İkizleri</div>
+        <div class="text-lg font-bold font-mono tabular-nums text-forensic">380 Bağlantı</div>
+        <div class="text-[11px] text-mutedink">Çok yüksek yapısal benzerlik (güçlü kanıt)</div>
+      </div>
+      <div class="bg-alabaster px-3 py-2.5 rounded-lg border border-stoneborder">
+        <div class="text-[11px] font-medium text-mutedink">Açık İhale Dışı Alım</div>
+        <div class="text-lg font-bold font-mono tabular-nums text-ochre">%52,43</div>
+        <div class="text-[11px] text-mutedink">2025: 1.693,40 Mr TL</div>
+      </div>
+      <div class="bg-alabaster px-3 py-2.5 rounded-lg border border-stoneborder">
+        <div class="text-[11px] font-medium text-mutedink">Serbest Fon Balonu</div>
+        <div class="text-lg font-bold font-mono tabular-nums text-crimsonalert">4,98 Tn TL</div>
+        <div class="text-[11px] text-mutedink">4 yılda 49,09x (131 tasfiye)</div>
+      </div>
+      <div class="bg-alabaster px-3 py-2.5 rounded-lg border border-stoneborder">
+        <div class="text-[11px] font-medium text-mutedink">Swap Hariç Net Rezerv</div>
+        <div class="text-lg font-bold font-mono tabular-nums text-crimsonalert">11,6 Mr $</div>
+        <div class="text-[11px] text-mutedink">20 Kas 2026 (28,49'dan)</div>
+      </div>
+      <div class="bg-alabaster px-3 py-2.5 rounded-lg border border-stoneborder">
+        <div class="text-[11px] font-medium text-mutedink">Kurumsal Denetim &amp; Dayanıklılık</div>
+        <div class="text-lg font-bold font-mono tabular-nums text-crimsonalert">0,053 | 14g</div>
+        <div class="text-[11px] text-sage font-medium">Hedef: 0,360 | 195g</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-stoneborder shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-1.5 py-2.5 overflow-x-auto no-scrollbar" role="tablist" aria-label="Analiz Modülleri">
+      <button type="button" data-tab="tab-metodoloji" class="nav-btn nav-pill-active px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium border border-stoneborder whitespace-nowrap transition">
+        1. İnceleme Yöntemi &amp; Stres Modeli
+      </button>
+      <button type="button" data-tab="tab-kronoloji" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium border border-stoneborder bg-alabaster text-ink hover:bg-sand whitespace-nowrap transition">
+        2. Tarihsel Evrim (1990–2026)
+      </button>
+      <button type="button" data-tab="tab-tekmutfak" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium border border-stoneborder bg-alabaster text-ink hover:bg-sand whitespace-nowrap transition">
+        3. Partiler Üstü Tek Mutfak
+      </button>
+      <button type="button" data-tab="tab-nedensellik" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium border border-stoneborder bg-alabaster text-ink hover:bg-sand whitespace-nowrap transition">
+        4. Nedensellik &amp; Enflasyon İllüzyonu
+      </button>
+      <button type="button" data-tab="tab-golgefinans" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium border border-stoneborder bg-alabaster text-ink hover:bg-sand whitespace-nowrap transition">
+        5. Gölge Finans &amp; Büyük Çözülme
+      </button>
+      <button type="button" data-tab="tab-cikis" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium border border-stoneborder bg-alabaster text-ink hover:bg-sand whitespace-nowrap transition">
+        6. Kasım 2026 Bilançosu &amp; Çıkış
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+
+  <section id="tab-metodoloji" class="tab-panel active space-y-6">
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <div class="text-xs font-mono uppercase tracking-wider text-forensic font-semibold mb-1">Modül 01 • Dört Aşamalı İnceleme Çerçevesi ve Kurumsal Stres Modeli</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-ink mb-2">Kamu Kaynakları ve Para Akışı Neden Standart Denetimden Kaçar? (4 Temel İnceleme Katmanı)</h2>
+      <p class="text-sm sm:text-base text-mutedink leading-relaxed">
+        Bu bölüm, Türkiye'de 1990–2026 döneminde gözlemlenen kamu kaynağı sızıntıları ile çok katmanlı kara para aklama ağlarının neden geleneksel bağımsız denetim tarafından yakalanamadığını açıklar. Standart muhasebe denetiminde yalnızca kâğıt üzerindeki borç-alacak eşitliğine bakıldığı için, belgeleri şeklen düzgün görünen ancak gerçekte kamu zararına yol açan işlemler gözden kaçabilir. Bu inceleme platformu; resmi ihale tarihlerini, banka ve transfer kayıtlarını, zaman sıralamasını ve şirketler arası gizli bağları bir arada okuyarak usulsüzlükleri dört sade aşamada ortaya çıkarır. Aşağıdan her inceleme katmanının nasıl çalıştığını görebilir, sağdaki simülatörle ise ekonomik ve toplumsal stres arttığında kurumların uzun vadeli planlama ve denetim gücünün nasıl zayıfladığını canlı olarak test edebilirsiniz.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base sm:text-lg font-bold text-ink">4 Katmanlı İnceleme Çerçevesi</h3>
+            <span class="text-xs font-mono bg-sand px-2.5 py-1 rounded border border-stoneborder text-forensic">Risk Ağırlığı: %40 Zaman/Kayıt + %30 İlişki Ağı + %30 Anomali</span>
+          </div>
+          <p class="text-xs text-mutedink mb-4">Her katmanın neyi incelediğini, hangi kurallara baktığını, Sayıştay raporlarındaki ve kayıt dışı ekonomideki somut karşılıklarını görmek için bir başlık seçin:</p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
+            <button type="button" data-layer="LM1" class="lm-btn p-3 rounded-xl border text-left transition bg-forensic text-white border-forensic">
+              <div class="text-xs font-mono opacity-80">Katman 1</div>
+              <div class="text-sm font-bold mt-0.5">1. Zaman &amp; Sıra</div>
+              <div class="text-[11px] opacity-90 mt-0.5">Tarih ve Kayıt Takibi</div>
+            </button>
+            <button type="button" data-layer="LM2" class="lm-btn p-3 rounded-xl border text-left transition bg-alabaster text-ink border-stoneborder hover:bg-sand">
+              <div class="text-xs font-mono text-mutedink">Katman 2</div>
+              <div class="text-sm font-bold mt-0.5">2. İlişki &amp; Ağ</div>
+              <div class="text-[11px] text-mutedink mt-0.5">Şirket ve Kişi Bağları</div>
+            </button>
+            <button type="button" data-layer="LM3" class="lm-btn p-3 rounded-xl border text-left transition bg-alabaster text-ink border-stoneborder hover:bg-sand">
+              <div class="text-xs font-mono text-mutedink">Katman 3</div>
+              <div class="text-sm font-bold mt-0.5">3. Anomali &amp; Sapma</div>
+              <div class="text-[11px] text-mutedink mt-0.5">Rakam ve Belge Tutarlılığı</div>
+            </button>
+            <button type="button" data-layer="LM4" class="lm-btn p-3 rounded-xl border text-left transition bg-alabaster text-ink border-stoneborder hover:bg-sand">
+              <div class="text-xs font-mono text-mutedink">Katman 4</div>
+              <div class="text-sm font-bold mt-0.5">4. Kurumsal Stres</div>
+              <div class="text-[11px] text-mutedink mt-0.5">Panik ve Denetim Kaybı</div>
+            </button>
+          </div>
+
+          <div id="lmDetailCard" class="p-4 sm:p-5 rounded-xl bg-alabaster border border-stoneborder space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stoneborder pb-2.5">
+              <h4 id="lmTitle" class="text-base font-bold text-forensic">Katman 1: Tarih ve Kayıt Takibi Katman (Zaman Sırası)</h4>
+              <span id="lmThreshold" class="text-xs font-mono bg-white px-2.5 py-1 rounded border border-crimsonalert/30 text-crimsonalert font-semibold">Otomatik Kırmızı Bayrak | 60 Günlük Takvim Yakınlığı</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <div class="bg-white p-3 rounded-lg border border-stoneborder">
+                <div class="font-semibold text-ink mb-1">Analitik Odak &amp; Operatör</div>
+                <p id="lmFocus" class="text-mutedink leading-relaxed">Zaman oku bütünlüğü, VUK 219 / MİBMY kronolojik sıra (FIFO), bitemporal sızıntı kontrolü ve mevzuat-operasyon Δt takvim yakınlığı.</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg border border-stoneborder">
+                <div class="font-semibold text-ink mb-1">Kritik Doğrulama Kuralı</div>
+                <p id="lmRule" class="text-mutedink leading-relaxed">Vergi Usul Kanunu'na göre 10–45 günü aşan kayıt gecikmeleri, geçici hesapların 600 günden fazla bekletilmesi veya tarih/sıra mantığına aykırı işlemlerde kayıt otomatik olarak şüpheli (geçersiz) işaretlenir.</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg border border-stoneborder">
+                <div class="font-semibold text-forensic mb-1">Kamu Maliyesi &amp; Sayıştay Karşılığı</div>
+                <p id="lmPublic" class="text-mutedink leading-relaxed">MİBMY 320 Bütçe Emanetlerinde FIFO ödeme sırası ihlali (5018 s.K. m.34); MİBMY 258 Yapılmakta Olan Yatırımlarda bitmiş projelerin yıllarca amortismansız bekletilmesi.</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg border border-stoneborder">
+                <div class="font-semibold text-ochre mb-1">Adli Finans &amp; Gölge Ekonomi Karşılığı</div>
+                <p id="lmShadow" class="text-mutedink leading-relaxed">Varlık Barışı/kota bitişleri ile narkotik ve kara para yakalamaları arasındaki |Δt| ≤ 60 gün kümelenmesi; 296 geçici hesapta 760 gün erteleme.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-stoneborder grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+          <div class="p-2.5 rounded-lg bg-sand/70 border border-stoneborder">
+            <div class="font-semibold text-forensic">Sermaye Çekim Etkisi</div>
+            <div class="text-mutedink mt-0.5"><strong>Kayıt Dışı Çekim Alanı:</strong> Denetim zayıflayıp cezai yaptırım belirsizleştikçe, ülke küresel ölçekte kayıt dışı ve spekülatif sermayeyi kendine çeken bir mıknatısa dönüşür.</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-sand/70 border border-stoneborder">
+            <div class="font-semibold text-forensic">Kaynak Sızıntısı Etkisi</div>
+            <div class="text-mutedink mt-0.5"><strong>Ranta Kayış Mekanizması:</strong> Sık çıkarılan vergi/varlık afları ve zayıf iç kontrol kurumsal direnci erittiğinde, sermaye üretime ve sanayiye değil hızlı ranta ve arazi/inşaata akar.</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-sand/70 border border-stoneborder">
+            <div class="font-semibold text-forensic">Üretkenlik Aşınması</div>
+            <div class="text-mutedink mt-0.5"><strong>Kalıcı Verimlilik Kaybı:</strong> Nitelikli işgücü göçü ve kurumsal yozlaşma arttıkça ekonominin gerçek üretim gücü ve rekabetçiliği kalıcı olarak aşınır.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-base sm:text-lg font-bold text-ink">Ekonomik Stres ve Kurumsal Denetim Simülatörü</h3>
+            <span class="text-xs font-mono bg-crimsonalert/10 text-crimsonalert px-2 py-0.5 rounded font-semibold">Panik Eşiği: 0,65</span>
+          </div>
+          <p class="text-xs text-mutedink mb-4 leading-relaxed">
+            Ekonomik belirsizlik ve toplumsal kutuplaşma kaynaklı stres düzeyi <strong>0,65</strong> kritik eşiğini aştığında, kurumların uzun vadeli ve rasyonel denetim kapasitesi hızla düşer; buna karşılık piyasa ve kurumlar arası kriz bulaşma riski kritik eşiği aşar. Kaydırıcıyı hareket ettirerek bu kırılmayı test edin:
+          </p>
+
+          <div class="p-4 rounded-xl bg-alabaster border border-stoneborder mb-4">
+            <div class="flex items-center justify-between text-xs font-medium mb-1.5">
+              <span>Ekonomik ve Toplumsal Stres Düzeyi:</span>
+              <span id="aloadVal" class="font-mono text-base font-bold text-crimsonalert">0,834</span>
+            </div>
+            <input id="aloadSlider" type="range" min="0.15" max="0.95" step="0.005" value="0.834" class="w-full cursor-pointer">
+            <div class="flex justify-between text-[11px] font-mono text-mutedink mt-1">
+              <span>0,15 (İstikrar)</span>
+              <span class="text-ochre font-semibold">0,65 (Panik Eşiği)</span>
+              <span>0,95 (Akut Kriz)</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-3">
+              <button type="button" data-preset="0.25" class="preset-aload text-[11px] px-2.5 py-1 rounded bg-white border border-stoneborder hover:bg-sand font-medium">2005 AB Çıpası (0,25)</button>
+              <button type="button" data-preset="0.65" class="preset-aload text-[11px] px-2.5 py-1 rounded bg-white border border-stoneborder hover:bg-sand font-medium">Panik Eşiği (0,65)</button>
+              <button type="button" data-preset="0.834" class="preset-aload text-[11px] px-2.5 py-1 rounded bg-forensic text-white font-medium">2016–2026 Rejimi (0,834)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="p-3 rounded-xl bg-white border border-stoneborder">
+              <div class="text-[11px] text-mutedink">Kurumsal Denetim Kapasitesi</div>
+              <div id="pfcOutput" class="text-xl font-bold font-mono tabular-nums text-crimsonalert mt-0.5">0,053</div>
+              <div id="pfcStatus" class="text-[11px] font-medium text-crimsonalert mt-0.5">Kritik Bağışıklık Kaybı</div>
+            </div>
+            <div class="p-3 rounded-xl bg-white border border-stoneborder">
+              <div class="text-[11px] text-mutedink">Bayesyen Kalman Kazancı</div>
+              <div id="keffOutput" class="text-xl font-bold font-mono tabular-nums text-forensic mt-0.5">0,115</div>
+              <div class="text-[11px] text-mutedink mt-0.5">Krizden öğrenme hızı</div>
+            </div>
+            <div class="p-3 rounded-xl bg-white border border-stoneborder">
+              <div class="text-[11px] text-mutedink">Finansal Dayanıklılık Ufku</div>
+              <div id="horizonOutput" class="text-xl font-bold font-mono tabular-nums text-ochre mt-0.5">14 Gün</div>
+              <div class="text-[11px] text-mutedink mt-0.5">Güvenli bölge &gt; 180 gün</div>
+            </div>
+            <div class="p-3 rounded-xl bg-white border border-stoneborder">
+              <div class="text-[11px] text-mutedink">Kriz Bulaşma Riski</div>
+              <div id="spectralOutput" class="text-xl font-bold font-mono tabular-nums text-crimsonalert mt-0.5">2,6380</div>
+              <div id="spectralStatus" class="text-[11px] text-mutedink mt-0.5">2 adımda %34,70 kayıp riski</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-sand/70 border border-stoneborder text-xs text-mutedink">
+          <strong class="text-ink">Model Çıkarımı:</strong> Lojistik denklem (<span class="font-mono">κ_p = 5,0464</span>) uyarınca panik yükü 0,65 eşiğinin üzerine çıktığında kurumsal denetim doğrusal değil üstel biçimde kilitlenir; Core-20 simülasyonunda <span class="font-mono">Bulaşma Riski = 2,6380 &gt; 1,00</span> bulaşma rejimi oluşur.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-kronoloji" class="tab-panel space-y-6">
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <div class="text-xs font-mono uppercase tracking-wider text-forensic font-semibold mb-1">Modül 02 • Tarihsel Süreklilik ve Kurumsal Kırılma Evreleri</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-ink mb-2">1970–1982 Öncüllerinden Kasım 2026'ya Altı Evreli Bütünleşik Kronoloji</h2>
+      <p class="text-sm sm:text-base text-mutedink leading-relaxed">
+        Türkiye'nin 1990–2026 adli-ekonomik yörüngesi, 1970–1978 <strong>Dövize Çevrilebilir Mevduat (DÇM)</strong> kur garantisi yükünün (2021 KKM öncülü) ve 1979 <strong>"Tahtakale Merkez Bankası"</strong> ikili finansman ağının mirası üzerine oturmuştur. Aşağıdaki etkileşimli grafik ve evre seçici; kamu maliyesindeki üç muhasebe rejimini (Klasik Nakit, Tahakkuk Reformu, Modern İştirak Dönemi) Bağımsız Analiz'in altı tarihsel evresiyle birleştirerek 2002–2007 kurumsal çapa zirvesi ile 2016 sonrası bağışıklık kaybını karşılaştırır.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="text-base sm:text-lg font-bold text-ink">Altı Dönemde Kurumsal Güven, Hukuk Endeksi ve Dayanıklılık Ufku</h3>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" data-histmode="macro" class="hist-mode-btn text-xs px-2.5 py-1 rounded bg-forensic text-white font-medium">Adalet Erozyonu &amp; Kurumsal Güven</button>
+            <button type="button" data-histmode="neuro" class="hist-mode-btn text-xs px-2.5 py-1 rounded bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Denetim Gücü Denetim &amp; Kriz Ufku</button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="historyChart"></canvas>
+        </div>
+        <p class="text-xs text-mutedink mt-3 leading-relaxed">
+          <strong>Grafik Notu:</strong> Evre II'de (2002–2007) 4651 s.K. TCMB bağımsızlığı, BDDK, KİK ve 5018 s.K. reformlarıyla kriz ufku <strong>172 güne</strong> genişleyip Kurumsal Güven <strong>%2,3</strong>'e gerilerken; Evre IV–VI'da yargı bağımsızlığı ve iç kontrolün zayıflamasıyla kriz ufku <strong>14 güne</strong> daralmıştır.
+        </p>
+      </div>
+
+      <div class="lg:col-span-5 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm flex flex-col justify-between">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-ink mb-1">Tarihsel Evre Detay İnceleyici</h3>
+          <p class="text-xs text-mutedink mb-3">Dönemsel mevzuat kırılmalarını ve suç/piyasa yansımalarını okumak için bir evre seçin:</p>
+          <div class="grid grid-cols-3 gap-1.5 mb-4">
+            <button type="button" data-phase="0" class="phase-btn px-2.5 py-2 rounded-lg text-xs font-semibold border bg-forensic text-white border-forensic">Evre I (90–01)</button>
+            <button type="button" data-phase="1" class="phase-btn px-2.5 py-2 rounded-lg text-xs font-semibold border bg-alabaster text-ink border-stoneborder hover:bg-sand">Evre II (02–07)</button>
+            <button type="button" data-phase="2" class="phase-btn px-2.5 py-2 rounded-lg text-xs font-semibold border bg-alabaster text-ink border-stoneborder hover:bg-sand">Evre III (08–13)</button>
+            <button type="button" data-phase="3" class="phase-btn px-2.5 py-2 rounded-lg text-xs font-semibold border bg-alabaster text-ink border-stoneborder hover:bg-sand">Evre IV (14–17)</button>
+            <button type="button" data-phase="4" class="phase-btn px-2.5 py-2 rounded-lg text-xs font-semibold border bg-alabaster text-ink border-stoneborder hover:bg-sand">Evre V (18–22)</button>
+            <button type="button" data-phase="5" class="phase-btn px-2.5 py-2 rounded-lg text-xs font-semibold border bg-alabaster text-ink border-stoneborder hover:bg-sand">Evre VI (23–26)</button>
+          </div>
+
+          <div id="phaseDetailBox" class="p-4 rounded-xl bg-alabaster border border-stoneborder space-y-3 text-xs sm:text-sm">
+            <div class="border-b border-stoneborder pb-2">
+              <div id="phaseTitle" class="font-bold text-forensic text-base">Evre I: 1990–2001 • Klasik Nakit Rejimi</div>
+              <div id="phaseMeta" class="font-mono text-xs text-mutedink mt-0.5">Adalet Erozyonu: 50,3/100 | Güven Endeksi: %24,0 | Denetim: 0,220 | Kriz Ufku: 13–20 Gün</div>
+            </div>
+            <div>
+              <div class="font-semibold text-ink mb-1">Kamu Denetimi &amp; Mevzuat Kırılmaları (Katman A &amp; Sayıştay)</div>
+              <p id="phasePublic" class="text-mutedink leading-relaxed">1050, 832, 1580 ve 2886 s.K. döneminde ön vize ve tescil denetimi; FATF baskısıyla 13.11.1996'da 4208 s.K. çıkarıldı ve 17.02.1997'de MASAK kuruldu; görece yargı özerkliği ve basın çoğulculuğu kurumsal onarım kapasitesini korudu.</p>
+            </div>
+            <div>
+              <div class="font-semibold text-ochre mb-1">Adli Finans, Suç Koridorları &amp; Piyasa Yansıması</div>
+              <p id="phaseShadow" class="text-mutedink leading-relaxed">1994 5 Nisan krizi, 3 Kasım 1996 Susurluk kırılması, kamu bankaları görev zararları ve yüksek enflasyon (Aşama 1 (Hukuk ve İç Kontrol)II: 76,70) Kasım 2000 – Şubat 2001 bankacılık çöküşünü tetikledi; ABD'de Darnell Garcia (1994) ile karışma içtihadı yerleşti.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 p-3.5 rounded-xl bg-sand/80 border border-stoneborder text-xs">
+          <div class="font-bold text-ink mb-1">2001 vs. 2018–2026 Onarım Kapasitesi Farkı &amp; WGI Erozyonu</div>
+          <p class="text-mutedink leading-relaxed">
+            Şubat 2001 çöküşünde korunan yargı ve basın denetimi birkaç ayda 4651 s.K., BDDK ve KİK reformlarını üretirken; Dünya Bankası Yönetişim Göstergeleri'nde (WGI) Türkiye'nin <strong>Hukukun Üstünlüğü</strong> yüzdelik dilimi 2013'teki <strong>%54,46</strong>'dan 2023'te <strong>%32,55</strong>'e, <strong>İfade ve Hesap Verebilirlik</strong> <strong>%40,85</strong>'ten <strong>%25,0</strong>'e, <strong>Hükümet Etkinliği</strong> <strong>%65,88</strong>'den <strong>%41,51</strong>'e gerilemiştir. KKM 23 Ağustos 2025'te durdurulup 24 Ocak 2026'da tebliğleri ilga edilse de denetim açığı sürdüğü için köpük serbest yatırım fonlarına yer değiştirmiştir.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-tekmutfak" class="tab-panel space-y-6">
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <div class="text-xs font-mono uppercase tracking-wider text-forensic font-semibold mb-1">Modül 03 • Sayıştay Külliyatı ve Kamu Maliyesi Mimarisi</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-ink mb-2">Partiler Üstü "Tek Mutfak" Mimarisi, BKMYBS Otomasyon Paradoksu ve Üç Örgütsel Topoloji</h2>
+      <p class="text-sm sm:text-base text-mutedink leading-relaxed">
+        T.C. Sayıştay Başkanlığı'nın 1998–2025 dönemine ait <strong>5.507 fiziksel denetim raporunun</strong> (97 genel rapor + 4.908 kuruma ait 5.410 rapor) Kurumsal Araştırma metin madenciliği motoruyla taranması, kurumlar arasında kosinüs benzerliği ≥ 0,91 olan <strong>380 örgütsel ikiz bağlantı</strong> (İstatistiksel Kanıt <strong>d' = 5,5915</strong>) ve <strong>%99,38</strong> iç kontrol zafiyeti ortaya koymuştur. Siyasi parti ayrımı gözetmeksizin klonlanan 10 standart şablon bütçeden belediye şirketlerine (SPV) uzanan ortak bir boru hattı kurarken, ağ geometrisi ve 4483 s.K. soruşturma izni filtresinin adli yaptırım yönü üç farklı topolojide ayrışmaktadır.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <h3 class="text-base sm:text-lg font-bold text-ink mb-1">KİK 2025 Kamu Alımları Dağılımı (3.230,13 Mr TL)</h3>
+        <p class="text-xs text-mutedink mb-3">4734 s.K. 206+ kez değiştirildi; 2025 yılında kamu alımlarının <strong>%52,43'ü (1.693,40 Mr TL)</strong> açık ihale rekabetinin dışında gerçekleşti (m.21/b tek başına 869,63 Mr TL / %95,43 pazarlık payı).</p>
+        <div class="chart-container">
+          <canvas id="kikChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <h3 class="text-base sm:text-lg font-bold text-ink mb-1">BKMYBS Otomasyon Paradoksu (843 Merkezi Kurum Raporu)</h3>
+        <p class="text-xs text-mutedink mb-3">15 Temmuz öncesi (278 rapor) vs. sonrası (565 rapor): Dijital otomasyon basit kayıt hatalarını (T3: -19,74 puan) azaltırken siyasi takdir kanallarını (T4, T6, 21/b) sıçrattı; spektral yarıçap <strong>λ_max 1,93 → 19,73 (10,22x)</strong> oldu.</p>
+        <div class="chart-container">
+          <canvas id="bkmybsChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-ink">Farklı Kurumlarda Tekrarlanan 10 Ortak Usulsüzlük Şablonu (Vaka 1–10)</h3>
+          <p class="text-xs text-mutedink">Merkezi idare ve farklı partilerdeki belediyelerce ortak kullanılan mevzuat aşma mekanizmalarını filtreleyin veya arayın.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <input id="skbSearch" type="text" placeholder="Şablon, kanun veya örnek ara..." class="text-xs px-3 py-2 rounded-lg border border-stoneborder bg-alabaster focus:outline-none focus:border-forensic w-52">
+          <select id="skbFilter" class="text-xs px-3 py-2 rounded-lg border border-stoneborder bg-alabaster focus:outline-none focus:border-forensic">
+            <option value="all">Tüm Şablonlar (10)</option>
+            <option value="high">Yüksek Yayılım (&gt;500 Kurum)</option>
+            <option value="procurement">İhale &amp; İmtiyaz Kanalları</option>
+            <option value="accounting">Muhasebe &amp; Kadro Tünelleri</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="skbGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-8 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-ink">Üç Örgütsel Ağ Topolojisi &amp; Denetim Büyüteci</h3>
+            <p class="text-xs text-mutedink">Köprü düğümler: <span class="font-mono">N06_BELEDIYE_SIRKET_SPV (EC=0,3770)</span> ve <span class="font-mono">N08_MIBMY_320_240 (EC=0,3652)</span>.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" data-topo="T1" class="topo-btn text-xs px-2.5 py-1.5 rounded-lg border bg-forensic text-white border-forensic font-medium">Topoloji I (Yatay Hücre)</button>
+            <button type="button" data-topo="T2" class="topo-btn text-xs px-2.5 py-1.5 rounded-lg border bg-alabaster text-ink border-stoneborder hover:bg-sand font-medium">Topoloji II (Yıldız Ağı)</button>
+            <button type="button" data-topo="T3" class="topo-btn text-xs px-2.5 py-1.5 rounded-lg border bg-alabaster text-ink border-stoneborder hover:bg-sand font-medium">Topoloji III (Metropol SPV)</button>
+          </div>
+        </div>
+
+        <div id="topoDetailPanel" class="p-4 rounded-xl bg-alabaster border border-stoneborder space-y-3 text-xs sm:text-sm"></div>
+
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 rounded-lg bg-sand/70 border border-stoneborder">
+            <div class="font-bold text-ink">Denetim Büyüteci &amp; Mekanizma İkamesi</div>
+            <p class="text-mutedink mt-1">Belediye el değiştirdiğinde Sayıştay bulgu ortalaması 2019 geçişlerinde <strong>17,00 → 25,92–26,91 (+%52,5–%58,3)</strong>, 2024 geçişlerinde <strong>18,11 → 22,39 (+%23,6)</strong> yükseldi; 703 KHK, 2018/8 Genelgesi ve 22.05.2026 tarihli 7579 s.K. ile şirket/hisse izinleri CB onayına bağlandı.</p>
+          </div>
+          <div class="p-3 rounded-lg bg-sand/70 border border-stoneborder">
+            <div class="font-bold text-ink">Somut Sayıştay Tespit Örnekleri</div>
+            <p class="text-mutedink mt-1">İSKİ'nin İBB'den tahsil edemediği alacaklar 2025 sonunda <strong>20,31 Mr TL</strong>'ye (333 Emanetlerde perdelenen <strong>24,25 Mr TL</strong> borç ötelemesi) ve dere ıslahı/Haliç çamur alacağı <strong>15,55 Mr TL</strong>'ye ulaştı; KİK m.62/ı %10 aşımları ve görevler ayrılığı ihlalleri belgelendi.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-4 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm flex flex-col justify-between">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-ink mb-1">Alternatif Açıklamaların Karşılaştırması</h3>
+          <p class="text-xs text-mutedink mb-4">"Belediyelerdeki usulsüzlükler tek bir organik karargâhtan mı yönetiliyor?" sorusunun adli ağırlık skoru:</p>
+          <div class="space-y-3">
+            <div class="p-3 rounded-xl bg-alabaster border border-stoneborder">
+              <div class="flex justify-between items-center font-semibold text-xs">
+                <span class="text-crimsonalert">H1: Münferit Memur Hatası</span>
+                <span class="font-mono bg-crimsonalert/10 text-crimsonalert px-2 py-0.5 rounded font-bold">Skor: -14 (Red)</span>
+              </div>
+              <p class="text-xs text-mutedink mt-1">İzleme cetvellerindeki <strong>%43,8</strong> kronik atalet (ISSAI 1240) ve 380 ikiz şablon klonlamasıyla çelişir.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-alabaster border border-stoneborder">
+              <div class="flex justify-between items-center font-semibold text-xs">
+                <span class="text-crimsonalert">H2: Tek Organik Gizli Karargâh</span>
+                <span class="font-mono bg-crimsonalert/10 text-crimsonalert px-2 py-0.5 rounded font-bold">Skor: -8 (Red)</span>
+              </div>
+              <p class="text-xs text-mutedink mt-1">14 belediyedeki 72 raporda kurumlar arası yüklenici Jaccard benzerliği <strong>J = 0,259</strong>'dur; her idare lokal taşeron halkasıyla çalışır.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-sage/10 border border-sage/40">
+              <div class="flex justify-between items-center font-semibold text-xs">
+                <span class="text-sage">H3: Modüler Kütüphane + Yargı Filtresi</span>
+                <span class="font-mono bg-sage text-white px-2 py-0.5 rounded font-bold">Skor: +18 (Doğrulandı)</span>
+              </div>
+              <p class="text-xs text-ink mt-1">Merkezi bütçe çevrelemesi + partiler üstü modüler hile kütüphanesini kullanan dağıtık lokal şebekeler + 4483 s.K. adli yaptırım asimetrisi (1.535 iznin %44'ü AKP, 371'i CHP olsa da tutuklama oranı farklılaşır).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-nedensellik" class="tab-panel space-y-6">
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <div class="text-xs font-mono uppercase tracking-wider text-forensic font-semibold mb-1">Modül 04 • Gecikmeli Korelasyonlar, Takvim Kümelenmesi ve Değerleme</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-ink mb-2">Nedensellik Mimarisi: Lead-Lag Aktarım Zinciri, Δt Yakınlığı ve Enflasyon İllüzyonu</h2>
+      <p class="text-sm sm:text-base text-mutedink leading-relaxed">
+        Kurumsal aşınma makroekonomik krize anlık değil, <strong>3 ila 10 yıllık faz gecikmeleriyle (lead-lag)</strong> dönüşmektedir. 1996–2025 otuz yıllık veri paneli adalet erozyonunun 5 yıl sonra hanehalkı döviz/altın kaçışını (Kurumsal Güven, <strong>r = +0,960</strong>), basın baskısının ise 3 yıl sonra finansal köpüğü (<strong>r = +0,905</strong>) tetiklediğini kanıtlar. Eşzamanlı olarak hiperenflasyon geçmiş yıl kamu zararlarını nominal olarak küçük göstererek ağır bir <strong>enflasyon yanılsaması (money illusion)</strong> yaratmaktadır.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <h3 class="text-base sm:text-lg font-bold text-ink mb-3">1996–2025 Gecikmeli (Lead-Lag) Makro Korelasyon Matrisi</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-alabaster border border-stoneborder">
+            <div class="flex justify-between items-center font-mono font-bold text-forensic">
+              <span>Hukuk Erozyonu (5 Yıl Önce) → Kurumsal Güven Kaybı (Bugün)</span>
+              <span class="bg-forensic text-white px-2 py-0.5 rounded">r = +0,960</span>
+            </div>
+            <p class="text-mutedink mt-1.5">Hukuk güvencesi kırılmasından 5 yıl sonra resmi TL'den fiziki altın, döviz ve USDT'ye kaçış zirve yapar (Verimlilik makası ile r = +0,911).</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-alabaster border border-stoneborder">
+            <div class="flex justify-between items-center font-mono font-bold text-crimsonalert">
+              <span>Toplumsal Stres ↔ Kurumsal Denetim Gücü</span>
+              <span class="bg-crimsonalert text-white px-2 py-0.5 rounded">r = -0,978</span>
+            </div>
+            <p class="text-mutedink mt-1.5">Panik yükü 0,65 eşiğini aştığında rasyonel denetim (0,053) ve Kalman öğrenme kazancı (0,115; r = +0,9904) donar.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-alabaster border border-stoneborder">
+            <div class="flex justify-between items-center font-mono font-bold text-forensic">
+              <span>Adalet Erozyonu (t) ↔ Beyin Göçü (t)</span>
+              <span class="bg-forensic text-white px-2 py-0.5 rounded">r = +0,938</span>
+            </div>
+            <p class="text-mutedink mt-1.5">Liyakat kaybı ve sınavsız atamaların 5,55 kat artışı eşzamanlı olarak nitelikli beşeri sermaye göçünü hızlandırır.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-alabaster border border-stoneborder">
+            <div class="flex justify-between items-center font-mono font-bold text-ochre">
+              <span>Dolaylı Vergi Yükü ↔ Yeni Yoksullaşma</span>
+              <span class="bg-ochre text-white px-2 py-0.5 rounded">r = +0,935</span>
+            </div>
+            <p class="text-mutedink mt-1.5">Dolaylı vergiler ve enflasyon vergisi orta sınıfı eriterek Yeni Yoksullar (%38,4) + Önü Tıkanmış Diplomalılar (%25,7) toplamını <strong>%64,1</strong>'e taşır.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-alabaster border border-stoneborder">
+            <div class="flex justify-between items-center font-mono font-bold text-forensic">
+              <span>Gazeteci Baskısı (t-3) → Finans Köpüğü</span>
+              <span class="bg-forensic text-white px-2 py-0.5 rounded">r = +0,905</span>
+            </div>
+            <p class="text-mutedink mt-1.5">Basın karartması Simonov'un Bilgi Açığını büyüterek 3 yıl gecikmeli spekülatif konut ve serbest fon balonları üretir.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-alabaster border border-stoneborder">
+            <div class="flex justify-between items-center font-mono font-bold text-forensic">
+              <span>Kurumsal Çürüme (10 Yıl Önce) → Gelir/Verimlilik Uçurumu (Bugün)</span>
+              <span class="bg-forensic text-white px-2 py-0.5 rounded">r = +0,881</span>
+            </div>
+            <p class="text-mutedink mt-1.5">İç denetim bozulması 10 yıllık State Capture ufkunda sanal finansın reel üretimden 3,35x–3,42x kopmasına yol açar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <h3 class="text-base sm:text-lg font-bold text-ink mb-1">Resmi Söylem ile Saha Gerçekliği Arasındaki Fark (2005–2024)</h3>
+        <p class="text-xs text-mutedink mb-3">Davranışsal bozulma (<strong>Bozulma Endeksi</strong>: 0,231 → 0,676) tırmanırken resmi söylem ile ampirik gerçeklik arasındaki fark (<strong>Söylem-Gerçeklik Farkı_t</strong>: -0,3635 → -0,0223) kapanarak perdeleme gücünü yitirdi.</p>
+        <div class="chart-container">
+          <canvas id="efmiChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-ink">Enflasyon İllüzyonu &amp; 2026 Reel Kamu Zararı Değerlemesi</h3>
+          <p class="text-xs text-mutedink">6 Merkezi Kurumda (2012–2021) <strong>63,61 Mr TL</strong> nominal bulgu; Adli Denetim Kurulu çarpanıyla <strong>969,88 Mr TL (~14,50 Mr $)</strong>, saf TÜİK Yİ-ÜFE (Ekim 2026: 5.998,51) ile <strong>~1.010,16 Mr TL</strong> reel hacme ulaşmaktadır. Ayrıca 94 Nazım Hesaplar <strong>5,28 Mr TL → 99,60 Mr TL (18,86x)</strong> şişmiştir.</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 shrink-0">
+          <button type="button" data-valmode="adli" class="val-btn text-xs px-3 py-1.5 rounded-lg bg-forensic text-white font-medium">Adli Kurul 2026 Reel (Mr TL)</button>
+          <button type="button" data-valmode="tuik" class="val-btn text-xs px-3 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Saf TÜİK Yİ-ÜFE Reel (Mr TL)</button>
+          <button type="button" data-valmode="nominal" class="val-btn text-xs px-3 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Nominal Bulgu (Mr TL)</button>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="valuationChart"></canvas>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-ink">Mevzuat Eşikleri (Katman A) ile Adli Operasyonlar (Katman B/C) Takvim Yakınlığı (Δt)</h3>
+          <p class="text-xs text-mutedink">Kesin takvim günü doğrulanan 98 kayıtta <strong>|Δt| ≤ 60 gün</strong> penceresinde <strong>59 çakışma çifti</strong> (34'ü ≤30 gün, 11'i ≤7 gün, 2'si 0 gün; medyan 0,0 gün) saptandı.</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" data-dtfilter="all" class="dt-btn text-xs px-2.5 py-1.5 rounded-lg bg-forensic text-white font-medium">Öne Çıkan Çiftler (8)</button>
+          <button type="button" data-dtfilter="tight" class="dt-btn text-xs px-2.5 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Dar Pencere (|Δt| ≤ 7g)</button>
+          <button type="button" data-dtfilter="narcotics" class="dt-btn text-xs px-2.5 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Katman A–B (Narkotik)</button>
+          <button type="button" data-dtfilter="shadow" class="dt-btn text-xs px-2.5 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Katman A–C (Gölge Finans)</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-stoneborder bg-sand/60 text-ink font-semibold">
+              <th class="p-3">Katman A Yasal / Düzenleyici Eşik</th>
+              <th class="p-3">Katman B / C Adli Operasyon</th>
+              <th class="p-3 text-center">Gün Farkı (Δt)</th>
+              <th class="p-3">Doğrulanan Fiziksel ve Finansal Ölçek</th>
+            </tr>
+          </thead>
+          <tbody id="dtTableBody" class="divide-y divide-stoneborder"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-golgefinans" class="tab-panel space-y-6">
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <div class="text-xs font-mono uppercase tracking-wider text-forensic font-semibold mb-1">Modül 05 • Sınır Ötesi Koridorlar, Hibrit Üçgen ve Eylül–Kasım 2026 Tasfiyesi</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-ink mb-2">Geleneksel Yaptırım Koridorundan Üç Ayaklı Hibrit Gölge Finansa ve Büyük Çözülmeye</h2>
+      <p class="text-sm sm:text-base text-mutedink leading-relaxed">
+        2008–2026 arasında çıkarılan 8 Varlık Barışı yasası (2018–2023 arasındaki 1.779 günün %89,09'unda açık) ve kamu iç kontrolünün devre dışı kalması, sınır ötesi fon akışını iki nesilde dönüştürdü. 2012–2016 Zarrab/Halkbank fiziki altın-gıda koridoru (9 Mart 2026 DOJ DPA ve 17 Haziran 2026 dava düşmesiyle kapandı), 31 Mart 2023'te Varlık Barışı'nın kapanması ve 7 Ağustos 2023 altın ithalat kotası sonrasında <strong>E-Para/Kiralık IBAN</strong>, <strong>Kapalıçarşı–TRC-20 USDT</strong> ve <strong>Serbest Yatırım Fonları</strong> üçgenine evrildi; Ağustos–Kasım 2026'da ise bu kaldıraçlı balon 131 fonun tasfiyesi ve düzenleyici kurumların zirvesindeki tasfiye dalgasıyla patladı.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <h3 class="text-base sm:text-lg font-bold text-ink mb-1">Serbest Yatırım Fonları Balonu (2021–2026)</h3>
+        <p class="text-xs text-mutedink mb-3">31.12.2021'de <strong>101,46 Mr TL</strong> (%35 pay) olan büyüklük, 31.12.2025'te <strong>4,98 Tn TL</strong>'ye (nominal <strong>49,09x</strong>, reel <strong>10,49x</strong>) tırmandı; Eylül 2026'da 678,1 Mr TL çıkış ve 131 fonda (&gt;800 Mr TL) tasfiye yaşandı.</p>
+        <div class="chart-container">
+          <canvas id="fundsChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+        <h3 class="text-base sm:text-lg font-bold text-ink mb-1">Net Hata Noksan (NHN) &amp; Swap Hariç Net Rezerv Şoku</h3>
+        <p class="text-xs text-mutedink mb-3">Altın kotası öncesi 29 ayda <strong>+30,6 Mr $</strong> olan NHN, kota sonrası <strong>-57,8 Mr $</strong> (Ağustos 2026 revizyonu sonrası dahi <strong>-23,5 Mr $</strong>) çıkışa döndü; 16 Eylül–20 Kasım 2026 rezerv savunmasıyla net rezerv <strong>11,6 Mr $</strong>'a indi.</p>
+        <div class="chart-container">
+          <canvas id="nhnChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-ink">Üç Ayaklı Hibrit Gölge Finans Üçgeni &amp; 26 Kasım 2026 Tasfiye Bilançosu</h3>
+          <p class="text-xs text-mutedink">Sermaye piyasaları, elektronik ödeme sistemleri ve Kapalıçarşı kripto masaları arasındaki bulaşma kanallarını inceleyin:</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" data-leg="leg1" class="leg-btn text-xs px-3 py-1.5 rounded-lg bg-forensic text-white font-medium">Ayak 1: E-Para &amp; Kiralık IBAN</button>
+          <button type="button" data-leg="leg2" class="leg-btn text-xs px-3 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Ayak 2: Kapalıçarşı &amp; USDT</button>
+          <button type="button" data-leg="leg3" class="leg-btn text-xs px-3 py-1.5 rounded-lg bg-alabaster text-ink border border-stoneborder hover:bg-sand font-medium">Ayak 3: Serbest Fon &amp; Kurumsal Sızma</button>
+        </div>
+      </div>
+
+      <div id="legDetailBox" class="p-4 sm:p-5 rounded-xl bg-alabaster border border-stoneborder text-xs sm:text-sm space-y-2"></div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+        <div class="p-3 rounded-xl bg-sand/70 border border-stoneborder">
+          <div class="text-[11px] text-mutedink">Soruşturma Kapsamı</div>
+          <div class="text-base font-bold font-mono text-crimsonalert">638 Şüpheli / 138 Tutuklu</div>
+          <div class="text-[11px] text-mutedink">300 adli kontrol, 319 lisans iptali</div>
+        </div>
+        <div class="p-3 rounded-xl bg-sand/70 border border-stoneborder">
+          <div class="text-[11px] text-mutedink">TMSF Kayyım Ataması</div>
+          <div class="text-base font-bold font-mono text-forensic">4 Banka + 91 Şirket</div>
+          <div class="text-[11px] text-mutedink">Tera, Destek, Hedef, Adil Katılım</div>
+        </div>
+        <div class="p-3 rounded-xl bg-sand/70 border border-stoneborder">
+          <div class="text-[11px] text-mutedink">Yatırımcı İadesi (26 Kas)</div>
+          <div class="text-base font-bold font-mono text-sage">161 Mr TL / 444.987 Kişi</div>
+          <div class="text-[11px] text-mutedink">44,58 Mr TL gönüllü iade; 9 ülkede bloke</div>
+        </div>
+        <div class="p-3 rounded-xl bg-sand/70 border border-stoneborder">
+          <div class="text-[11px] text-mutedink">Düzenleyici Kurum Zirvesi</div>
+          <div class="text-base font-bold font-mono text-ochre">BDDK • SPK • KGK</div>
+          <div class="text-[11px] text-mutedink">Ş. Kavcıoğlu'na 26.11 soruşturma izni</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <h3 class="text-base sm:text-lg font-bold text-ink mb-1">Dört Katmanlı Kamu–Özel Yapısal İzomorfizm (Mimari İkizlik) Matrisi</h3>
+      <p class="text-xs text-mutedink mb-4">Sayıştay külliyatındaki kamu maliyesi "kara madde" modülleri ile özel suç ekonomisinin hibrit aklama teknikleri aynı dört yapısal kalıbı kullanmaktadır:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-4 rounded-xl bg-alabaster border border-stoneborder">
+          <div class="font-bold text-forensic text-sm mb-2">1. Eşik Altı Bölme (Smurfing / Structuring)</div>
+          <div class="space-y-1.5">
+            <p><strong class="text-ink">Kamu Maliyesi (DM-02):</strong> 4734 s.K. m.22/d doğrudan temin limitinin altında kalmak için alımları parçalama ve m.62/ı %10 sınırını izinsiz aşma.</p>
+            <p><strong class="text-ochre">Özel Adli Finans:</strong> Darnell Garcia (1994) 9.900 $ gişe bölme tekniğinin ~300.000 kiralık IBAN ve 26.012 e-para hesabıyla dijital uygulanması.</p>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-alabaster border border-stoneborder">
+          <div class="font-bold text-forensic text-sm mb-2">2. Paravan / Özel Amaçlı Araç (SPV)</div>
+          <div class="space-y-1.5">
+            <p><strong class="text-ink">Kamu Maliyesi (DM-01):</strong> MİBMY 240/242 sermaye artırımıyla kamu kaynağını belediye şirketlerine aktarıp TTK zırhıyla denetim dışına çıkarma.</p>
+            <p><strong class="text-ochre">Özel Adli Finans:</strong> Dar gelirliler ve öğrenciler adına kurulan 369 paravan şirket ile Londra–İsviçre (Gildencrest → Century City) "bıyıklı yabancı" fonları.</p>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-alabaster border border-stoneborder">
+          <div class="font-bold text-forensic text-sm mb-2">3. Gölge Defter ve Nullspace Karartması</div>
+          <div class="space-y-1.5">
+            <p><strong class="text-ink">Kamu Maliyesi (DM-04):</strong> MİBMY 303/403 borçlarını 333 Emanetlerde gizleme, muhasebe dışı 102 Banka ve 99,60 Mr TL'lik 94 nazım hesap şişkinliği.</p>
+            <p><strong class="text-ochre">Özel Adli Finans:</strong> Kapalıçarşı ağının para trafiğini resmi bankacılık dışında yöneten "M80" muhasebe yazılımı ve ~26 Mr TL hacimli OTC soğuk USDT cüzdanları.</p>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-alabaster border border-stoneborder">
+          <div class="font-bold text-forensic text-sm mb-2">4. Yasal / İdari Kalkan ve Filtre</div>
+          <div class="space-y-1.5">
+            <p><strong class="text-ink">Kamu Maliyesi (DM-10):</strong> 4483 s.K. soruşturma izni bariyerinin asimetrik işletilmesi ve bulguların %43,8'inde yaptırımsız kalan kasıtlı atalet.</p>
+            <p><strong class="text-ochre">Özel Adli Finans:</strong> 8 kez çıkarılan Varlık Barışları ile karışma (commingling) denetiminin kapatılması ve ağır şiddet örgütlerindeki seçici "döner kapı" tahliyeleri.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-cikis" class="tab-panel space-y-6">
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm">
+      <div class="text-xs font-mono uppercase tracking-wider text-forensic font-semibold mb-1">Modül 06 • Kasım 2026 Sistemik Bilançosu ve Tersine Mühendislik</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-ink mb-2">Dört Yapısal Kırılma, Öncü Alarmlar ve Aşama 1 (Hukuk ve İç Kontrol)'den Aşama 1 (Hukuk ve İç Kontrol)V'e Zorunlu Onarım Sıralaması</h2>
+      <p class="text-sm sm:text-base text-mutedink leading-relaxed">
+        Ekonofiziksel gerçeklik paydası (<strong>R_Gerçeklik = NIR × DEI × (Export_tech / Import_raw) × Denetim Kapasitesi</strong>), rasyonel denetim (<strong>0,053</strong>), yüksek teknolojili ihracat (<strong>%3,6</strong>) ve swap hariç net rezerv (<strong>11,6 Mr $</strong>) dip seviyelerde kaldığı sürece sıfıra yakındır. Bağımsız Analiz tersine mühendislik simülasyonu, yalnızca 4. Bançtaki finansal vitrine yapılan müdahalelerin kriz ufkunu kalıcı güvenli bölgeye (<strong>&gt;180 gün</strong>) taşıyamayacağını; onarımın <strong>Aşama 1 (Hukuk ve İç Kontrol)</strong> hukuk devleti ve gerçek zamanlı iç kontrol kilidinden başlaması gerektiğini göstermektedir.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-white p-5 rounded-2xl border border-stoneborder shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono font-bold text-crimsonalert bg-crimsonalert/10 px-2.5 py-0.5 rounded">Kırılma 1 • Erken Sanayisizleşme</span>
+          <span class="text-xs font-mono text-mutedink">İmalat: %15,78 | Hi-Tech: %3,6</span>
+        </div>
+        <h3 class="text-base font-bold text-ink mb-1">Kara Para Hollanda Hastalığı &amp; Konut/Üretim Kopuşu</h3>
+        <p class="text-xs text-mutedink leading-relaxed">
+          Fiyat duyarsız kayıt dışı likidite gayrimenkule park ettiğinde TCMB Konut Fiyat Endeksi Aralık 2019–Eylül 2026 arasında <strong>12,29 → 239,38 (nominal 19,5x)</strong> sıçradı, ancak reel alım gücünün erimesiyle Eylül 2026'da yıllık reel <strong>-%7,3</strong> daraldı. İmalat sanayisinin GSYH payı 1998'deki <strong>%22,0</strong>'den 2026 Q2'de <strong>%15,78</strong>'e inerken hizmetler <strong>%60,94</strong> ile %60 eşiğini aştı.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-stoneborder shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono font-bold text-crimsonalert bg-crimsonalert/10 px-2.5 py-0.5 rounded">Kırılma 2 • Beşeri Sermaye Sifonu</span>
+          <span class="text-xs font-mono text-mutedink">Tam Burslu Göç: %8,6 | Atıl: %31,2</span>
+        </div>
+        <h3 class="text-base font-bold text-ink mb-1">Öncü Beyin Göçü ve 300.000 Kiralık IBAN Kriminalizasyonu</h3>
+        <p class="text-xs text-mutedink leading-relaxed">
+          TÜİK (23 Ekim 2026) verilerine göre üniversite mezunlarında beyin göçü <strong>%2,2</strong> ile rekor kırarken <strong>tam burslu vakıf üniversitesi mezunlarında %8,6</strong>'ya ulaştı. Diğer uçta geniş atıl işgücü <strong>%31,2</strong>'ye, NEET (15–34 yaş) <strong>6,95 milyona</strong> çıktı; ~300.000 genç hesabı kiralık IBAN olarak kullanılıp 50.000+ kişi yargılanınca 7589 s.K. ile TCK m.158/4 indirimi getirildi.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-stoneborder shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono font-bold text-ochre bg-ochre/10 px-2.5 py-0.5 rounded">Kırılma 3 • Hukuk Endeksi</span>
+          <span class="text-xs font-mono text-mutedink">WJP: 117/143 | Mahpus: 433.543</span>
+        </div>
+        <h3 class="text-base font-bold text-ink mb-1">Yargısal İnfaz Asimetrisi ve Döner Kapı Etkisi</h3>
+        <p class="text-xs text-mutedink leading-relaxed">
+          WJP 2026 Hukukun Üstünlüğü Endeksi'nde Türkiye 0,41 skorla <strong>117/143</strong> (Temel Haklar 135., Hükümet Yetkisi Kısıtlama 136.), V-Dem'de 0,110 (139/179) sırasına indi; AİHM'de 18.464 dosya birikti. Cezaevlerinde 433.543 mahpus ve 1.517 hasta mahpus bulunurken 15 yıldır firari Hizbullah liderlerinin cezası 14 Temmuz 2026'da SEGBİS ve iyi hal indirimiyle tahliyeye dönüştürüldü.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-stoneborder shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono font-bold text-ochre bg-ochre/10 px-2.5 py-0.5 rounded">Kırılma 4 • Uluslararası İzleme</span>
+          <span class="text-xs font-mono text-mutedink">7.248 Dava | Basel AML: 5,65/10</span>
+        </div>
+        <h3 class="text-base font-bold text-ink mb-1">FATF 2026 MER "Artırılmış İzleme" (Enhanced Follow-Up)</h3>
+        <p class="text-xs text-mutedink leading-relaxed">
+          FATF 2026 Türkiye Karşılıklı Değerlendirme Raporu MASAK istihbaratını (IO.6) "Yüksek" bulurken; denetim (IO.3), gerçek lehdar şeffaflığı (IO.5), kara para kovuşturmaları (IO.7: <strong>7.248 bekleyen dava, 6.085 bekleyen mahkûmiyet</strong>) ve varlık geri kazanımında (IO.8) "Orta" etkinlik saptayarak artırılmış izleme kararı verdi.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-stoneborder shadow-sm space-y-5">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 border-b border-stoneborder pb-4">
+        <div>
+          <div class="text-xs font-mono uppercase tracking-wider text-sage font-semibold">Tersine Mühendislik Simülatörü</div>
+          <h3 class="text-lg sm:text-xl font-bold text-ink">Dört Aşamalı Yapısal İyileşme Yol Haritası (Hedef: 180+ Günlük Güvenli Ufuk)</h3>
+          <p class="text-xs text-mutedink mt-0.5">Onarım katmanlarını sırayla aktifleştirin; 1. Banç onarılmadan yapılan finansal vitrin (4. Banç) müdahalelerinin etkisini test edin.</p>
+        </div>
+        <div class="flex items-center gap-3 bg-alabaster px-4 py-2.5 rounded-xl border border-stoneborder">
+          <div>
+            <div class="text-[11px] text-mutedink">Simüle Edilen Denetim Gücü</div>
+            <div id="simPfcBadge" class="text-lg font-bold font-mono text-crimsonalert">0,053</div>
+          </div>
+          <div class="h-8 w-px bg-stoneborder"></div>
+          <div>
+            <div class="text-[11px] text-mutedink">Dayanıklılık Ufku</div>
+            <div id="simHorizonBadge" class="text-lg font-bold font-mono text-crimsonalert">14 Gün</div>
+          </div>
+          <div class="h-8 w-px bg-stoneborder"></div>
+          <div>
+            <div class="text-[11px] text-mutedink">Rejim Durumu</div>
+            <div id="simRegimeBadge" class="text-xs font-bold text-crimsonalert">Darboğaz (&lt;180g)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="lg:col-span-6 space-y-2.5">
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border border-stoneborder bg-alabaster hover:bg-sand/60 cursor-pointer transition">
+            <input type="checkbox" id="step1Check" class="reform-step mt-1 h-4 w-4 accent-forensic">
+            <div class="text-xs">
+              <div class="font-bold text-forensic text-sm">Adım 1: Hukuk Devleti Güvencesi ve Gerçek Zamanlı İç Kontrol (Temel Adım)</div>
+              <p class="text-mutedink mt-1">4483 s.K. partizan filtresini ve seçici infazı kaldır; 657 m.59 Özel Kalem ve 5393 m.75/c vakıf tünellerini kapat; EKAP m.62/ı %10 sınırını yazılımla kilitle; TVF, belediye şirketleri, 320 FIFO ve 94 nazım hesapları Sayıştay gerçek zamanlı denetimine bağla. <span class="font-mono font-semibold text-sage">(+0,145 Denetim Gücü | +48 Gün)</span></p>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border border-stoneborder bg-alabaster hover:bg-sand/60 cursor-pointer transition">
+            <input type="checkbox" id="step2Check" class="reform-step mt-1 h-4 w-4 accent-forensic">
+            <div class="text-xs">
+              <div class="font-bold text-forensic text-sm">Adım 2: Ağ Bağışıklığı — Varlık Barışı Kilidi &amp; Biyometrik PUI Sicili</div>
+              <p class="text-mutedink mt-1">31.07.2027'de bitecek 7582 s.K. 8. Varlık Barışı sonrası af yasalarına kalıcı kilit vur; Meksika 2026 biyometrik CURP/PUI modelinden dersle banka, e-para, tapu, KMTS rafineri ve kripto platformları arasında canlılık testli gerçek lehdar doğrulaması kur; Bulaşma Riski &lt; 1,00 tamponunu koru. <span class="font-mono font-semibold text-sage">(+0,075 Denetim Gücü | +46 Gün)</span></p>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border border-stoneborder bg-alabaster hover:bg-sand/60 cursor-pointer transition">
+            <input type="checkbox" id="step3Check" class="reform-step mt-1 h-4 w-4 accent-forensic">
+            <div class="text-xs">
+              <div class="font-bold text-forensic text-sm">Adım 3: Rant Ekonomisinden Yüksek Teknolojili Üretime Geçiş</div>
+              <p class="text-mutedink mt-1">Nakit gayrimenkul parkı (FinCEN GTO modeli) ve imar/ecrimisil rantını kapat; tam burslu mezunlarda %8,6'ya çıkan beyin göçünü tersine çevir; imalat payını (%15,78) ve yüksek teknoloji ihracatını (%3,6) artırarak %31,2 atıl işgücü ve 6,95M NEET genci kiralık IBAN ağlarından üretime çek. <span class="font-mono font-semibold text-sage">(+0,052 Denetim Gücü | +44 Gün)</span></p>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border border-stoneborder bg-alabaster hover:bg-sand/60 cursor-pointer transition">
+            <input type="checkbox" id="step4Check" class="reform-step mt-1 h-4 w-4 accent-forensic">
+            <div class="text-xs">
+              <div class="font-bold text-forensic text-sm">Adım 4: Vergi Adaleti ve Finansal Şeffaflık Dengesi</div>
+              <p class="text-mutedink mt-1">Vergi yükünü dolaylı tüketim (KDV/ÖTV) ve enflasyon vergisinden spekülatif gayrimenkul ve kayıt dışı servete kaydır; swap dışı kalıcı döviz girişiyle pozitif Net Uluslararası Rezerv (NIR) tamponunu yeniden inşa et ve Verimlilik makasını (S_gap &lt; 1,0x) dengele. <span class="font-mono font-semibold text-sage">(+0,035 Denetim Gücü | +43 Gün)</span></p>
+            </div>
+          </label>
+
+          <div class="flex gap-2 pt-1">
+            <button type="button" id="activateAllSteps" class="text-xs px-3.5 py-2 rounded-lg bg-sage text-white font-semibold hover:opacity-95 transition">Tam Reform Paketini Uygula (195 Gün)</button>
+            <button type="button" id="resetSteps" class="text-xs px-3.5 py-2 rounded-lg bg-white border border-stoneborder text-ink font-medium hover:bg-sand transition">Sıfırla (Kasım 2026)</button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 bg-alabaster p-4 rounded-xl border border-stoneborder">
+          <h4 class="text-sm font-bold text-ink mb-1">Finansal Dayanıklılık Ufkunun (Gün) İyileşme Seyri</h4>
+          <p id="simWarningNote" class="text-xs text-mutedink mb-3">
+            Mevcut Kasım 2026 başlangıç noktası (14 gün) ile seçilen reform adımlarının kümülatif etkisi karşılaştırılmaktadır.
+          </p>
+          <div class="chart-container">
+            <canvas id="recoveryChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bg-white border-t border-stoneborder mt-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-mutedink">
+    <div>
+      <strong class="text-ink">Türkiye'nin Adli, Ekonomik ve Örgütsel Otopsisi (1990–2026)</strong> • Kesit Tarihi: 27 Kasım 2026
+    </div>
+    <div class="font-mono text-[11px]">
+      Kaynaklar: T.C. Sayıştay (5.507 Rapor), KİK, TCMB, TÜİK, SPK, MASAK, FATF MER 2026, WJP, V-Dem, Bağımsız Analiz &amp; Kurumsal Araştırma
+    </div>
+  </div>
+</footer>
+
+<script>
+function wrapLabel(str, maxChars = 16) {
+  if (!str || str.length <= maxChars) return str;
+  const words = str.split(' ');
+  const lines = [];
+  let current = '';
+  for (const w of words) {
+    if ((current + ' ' + w).trim().length <= maxChars) {
+      current = (current + ' ' + w).trim();
+    } else {
+      if (current) lines.push(current);
+      current = w;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+const commonTooltipConfig = {
+  backgroundColor: '#1C1917',
+  titleColor: '#FAF8F5',
+  bodyColor: '#FAF8F5',
+  borderColor: '#57534E',
+  borderWidth: 1,
+  padding: 10,
+  cornerRadius: 8
+};
+
+const guardrailBtn = document.getElementById('toggleMethodGuardrail');
+const guardrailDrawer = document.getElementById('guardrailDrawer');
+const guardrailBadge = document.getElementById('guardrailBadge');
+guardrailBtn.addEventListener('click', () => {
+  const isHidden = guardrailDrawer.classList.contains('hidden');
+  guardrailDrawer.classList.toggle('hidden');
+  guardrailBadge.textContent = isHidden ? 'Gizle ▲' : 'Göster ▼';
+});
+
+const navButtons = document.querySelectorAll('.nav-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+const chartsRegistry = {};
+
+navButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.getAttribute('data-tab');
+    navButtons.forEach(b => {
+      b.classList.remove('nav-pill-active');
+      b.classList.add('bg-alabaster', 'text-ink');
+    });
+    btn.classList.add('nav-pill-active');
+    btn.classList.remove('bg-alabaster', 'text-ink');
+
+    tabPanels.forEach(panel => {
+      panel.classList.toggle('active', panel.id === targetId);
+    });
+
+    Object.values(chartsRegistry).forEach(ch => {
+      if (ch && typeof ch.resize === 'function') ch.resize();
+    });
+  });
+});
+
+const lmData = {
+  LM1: {
+    title: 'Katman 1: Tarih ve Kayıt Takibi Katman (Zaman Sırası)',
+    threshold: 'Otomatik Kırmızı Bayrak | 60 Günlük Takvim Yakınlığı',
+    focus: 'Zaman oku bütünlüğü, VUK 219 / MİBMY kronolojik sıra (FIFO), bitemporal sızıntı kontrolü ve mevzuat-operasyon Δt takvim yakınlığı.',
+    rule: 'VUK 219 >10/45 gün kayıt gecikmesi; geçici hesap >600 gün bekletme; fiziksel zaman veya sırasal ihlalde otomatik kırmızı bayrak (geçersiz sayma) tetiklenir.',
+    pub: 'MİBMY 320 Bütçe Emanetlerinde FIFO ödeme sırası ihlali (5018 s.K. m.34); MİBMY 258 Yapılmakta Olan Yatırımlarda bitmiş projelerin yıllarca amortismansız bekletilmesi.',
+    shadow: 'Varlık Barışı/kota bitişleri ile narkotik ve kara para yakalamaları arasındaki |Δt| ≤ 60 gün kümelenmesi; 296 geçici hesapta 760 gün erteleme.'
+  },
+  LM2: {
+    title: '2. Katman: Şirket, Fon ve Kişi İlişki Ağı İncelemesi',
+    threshold: 'Yüksek İlişki Yoğunluğu | Kritik Bulaşma Eşiği > 1,00',
+    focus: 'İki-modlu işbirlikçi ağ grafı (G_collusion), Arasındalık (C_B), Özvektör Merkeziliği (EC), Jaccard (J), HHI ve spektral yarıçap Bulaşma Riski.',
+    rule: 'İlişkili taraf skoru S_related ≥ 0,97; spektral bulaşma eşiği Bulaşma Riski > 1,00 (Core-20: 2,6380); 131/331 serbest fon senkronizasyonu.',
+    pub: 'N06_BELEDIYE_SIRKET_SPV (EC = 0,3770) ve N08_MIBMY_320_240 (EC = 0,3652) köprü düğümleri; aynı yüklenici halkasının döndüğü ihale kartelleri.',
+    shadow: '369 paravan şirket, ~300.000 kiralık IBAN, 26.012 e-para hesabı ve Londra–İsviçre (Gildencrest → Century City) "bıyıklı yabancı" fon ağı.'
+  },
+  LM3: {
+    title: '3. Katman: Rakamsal Sapma ve Belge Tutarlılığı İncelemesi',
+    threshold: 'İstatistiksel Kanıt d\' = 5,5915 | cos ≥ 0,91',
+    focus: 'Defter alt-uzayı (Ledger Nullspace), Benford logaritmik sapması (MAD_B), Beneish M_8, Gelir-Nakit uçurumu (TATA) ve metin klonlama.',
+    rule: 'MAD_B > 0,015; Beneish M_8 > -1,78; kosinüs benzerliği ≥ 0,91; İstatistiksel Kanıt d\' ≥ 1,78 adli delil standardı (ölçülen skor 5,5915).',
+    pub: 'Muhasebe dışı 102 Banka hesapları, merkezi 94 Nazım hesap şişkinliği (5,28 → 99,60 Mr TL; 18,86x) ve 380 ikiz "Tek Mutfak" şablon klonlaması.',
+    shadow: 'Net Hata Noksan (NHN), Konut/Gelir kopuşu (19,5x), Tahtakale Kurumsal Güven makası, USDT primi ve Kapalıçarşı "M80" gölge muhasebe yazılımı.'
+  },
+  LM4: {
+    title: 'Katman 4: Kurumsal-Bilişsel ve Nöro-Politik Stres Katmanı',
+    threshold: 'Stres Düzeyi ≥ 0,65 | ISSAI 1240 > 0,85',
+    focus: 'Acemoğlu sömürücü kurum erozyonu (TR-DEI), V-Dem hesap verebilirlik, Amigdala tehdit yükü (Stres Düzeyi), Denetim Gücü denetimi ve Kalman kazancı K_eff.',
+    rule: 'TR-DEI ≥ 0,60 (Ölü Bölge); Stres Düzeyi ≥ 0,65 (Panik Eşiği); ISSAI 1240 yönetim ataleti cos(θ) > 0,85.',
+    pub: '%99,38 iç kontrol zafiyeti (5.473/5.507 rapor), Sayıştay izleme cetvellerinde %43,8 "Yerine Getirilmedi" kasıtlı ataleti ve sınavsız kadrolaşma.',
+    shadow: 'Enflasyonist amnezi, panik dolarizasyonu, tam burslu vakıf mezunlarında %8,6 öncü beyin göçü, seçici infaz ve ~300.000 kiralık IBAN havuzu.'
+  }
+};
+
+document.querySelectorAll('.lm-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.getAttribute('data-layer');
+    document.querySelectorAll('.lm-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white', 'border-forensic');
+      b.classList.add('bg-alabaster', 'text-ink', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white', 'border-forensic');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border-stoneborder');
+
+    const item = lmData[key];
+    document.getElementById('lmTitle').textContent = item.title;
+    document.getElementById('lmThreshold').textContent = item.threshold;
+    document.getElementById('lmFocus').textContent = item.focus;
+    document.getElementById('lmRule').textContent = item.rule;
+    document.getElementById('lmPublic').textContent = item.pub;
+    document.getElementById('lmShadow').textContent = item.shadow;
+  });
+});
+
+const aloadSlider = document.getElementById('aloadSlider');
+function updateNeuroSimulator(val) {
+  const a = parseFloat(val);
+  document.getElementById('aloadVal').textContent = a.toFixed(3).replace('.', ',');
+  const pfcMax = 0.382;
+  const kappa = 5.0464;
+  const theta = 0.65;
+  let pfc = pfcMax / (1 + Math.exp(kappa * (a - theta)));
+  if (Math.abs(a - 0.834) < 0.004) pfc = 0.053;
+  const keff = Math.min(0.85, Math.max(0.09, 0.03 + pfc * 1.60));
+  const horizon = Math.round(10 + Math.pow(pfc / 0.36, 1.35) * 182);
+  const spectral = (0.78 + a * 2.23).toFixed(4);
+
+  const pfcEl = document.getElementById('pfcOutput');
+  const statusEl = document.getElementById('pfcStatus');
+  pfcEl.textContent = pfc.toFixed(3).replace('.', ',');
+  document.getElementById('keffOutput').textContent = keff.toFixed(3).replace('.', ',');
+  document.getElementById('horizonOutput').textContent = horizon + ' Gün';
+  document.getElementById('spectralOutput').textContent = spectral.replace('.', ',');
+
+  if (a >= 0.65) {
+    pfcEl.className = 'text-xl font-bold font-mono tabular-nums text-crimsonalert mt-0.5';
+    statusEl.textContent = 'Panik Eşiği Aşıldı (Kilitli)';
+    statusEl.className = 'text-[11px] font-medium text-crimsonalert mt-0.5';
+  } else if (a >= 0.45) {
+    pfcEl.className = 'text-xl font-bold font-mono tabular-nums text-ochre mt-0.5';
+    statusEl.textContent = 'Stres Birikimi (Aşınma)';
+    statusEl.className = 'text-[11px] font-medium text-ochre mt-0.5';
+  } else {
+    pfcEl.className = 'text-xl font-bold font-mono tabular-nums text-sage mt-0.5';
+    statusEl.textContent = 'Rasyonel Kurumsal Çıpa';
+    statusEl.className = 'text-[11px] font-medium text-sage mt-0.5';
+  }
+}
+
+aloadSlider.addEventListener('input', e => updateNeuroSimulator(e.target.value));
+document.querySelectorAll('.preset-aload').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = btn.getAttribute('data-preset');
+    aloadSlider.value = v;
+    updateNeuroSimulator(v);
+  });
+});
+updateNeuroSimulator(0.834);
+
+const phasesData = [
+  {
+    title: 'Evre I: 1990–2001 • Klasik Nakit Rejimi',
+    meta: 'Adalet Erozyonu: 50,3/100 | Güven Endeksi: %24,0 | Denetim: 0,220 | Kriz Ufku: 13–20 Gün',
+    pub: '1050, 832, 1580 ve 2886 s.K. döneminde ön vize ve tescil denetimi; FATF baskısıyla 13.11.1996\'da 4208 s.K. çıkarıldı ve 17.02.1997\'de MASAK faaliyete geçti; görece yargı özerkliği ve basın çoğulculuğu kurumsal onarım kapasitesini korudu.',
+    shadow: '1994 5 Nisan krizi, 3 Kasım 1996 Susurluk devlet-siyaset-mafya kırılması, kamu bankaları görev zararları ve yüksek enflasyon (Aşama 1 (Hukuk ve İç Kontrol)II: 76,70) Kasım 2000 – Şubat 2001 bankacılık çöküşünü tetikledi; ABD\'de Darnell Garcia (1994) ile karışma içtihadı yerleşti.'
+  },
+  {
+    title: 'Evre II: 2002–2007 • Kurumsal Çapalar ve Tahakkuk Reformu',
+    meta: 'Adalet Erozyonu: 41,2/100 | Güven Endeksi: %2,3 | Denetim: 0,350 (Zirve) | Kriz Ufku: 172 Gün',
+    pub: '25.04.2001 tarihli 4651 s.K. ile TCMB araç bağımsızlığı, BDDK ve KİK kuruldu; 10.12.2003 kabul tarihli 5018 s.K. (01.01.2006 tam yürürlük) ile tahakkuk muhasebesine geçildi; ancak 5018 m.55–67 iç kontrol sistemi kağıt üzerinde bırakıldı.',
+    shadow: 'Enflasyon %8,2–%9,6 bandına indi ve TL\'den kaçış durdu; fakat ucuz küresel likidite yüksek teknoloji yerine inşaat rantına yönelirken yerel idarelerde 4734 m.21/b, 22/d ve 3/g istisna kanalları açılmaya başladı.'
+  },
+  {
+    title: 'Evre III: 2008–2013 • Sessiz Kırılma, İlk Varlık Barışları & 6085 s.K.',
+    meta: 'Adalet Erozyonu: 56,3/100 | Güven Endeksi: %5,8 | Denetim: 0,190 | Kriz Ufku: 98 Gün',
+    pub: '5811 (22.11.2008) ve 6486 (29.05.2013) sayılı ilk iki Varlık Barışı ile 6111 yapılandırması çıkarıldı; 12.09.2010 referandumuyla HSYK yapısı değişti; Aralık 2010 kabul tarihli 6085 s.K. m.4/38 ile %50+ belediye şirketleri Sayıştay kapsamına alındı.',
+    shadow: 'İdareler denetimi aşmak için belediye şirketlerini SPV tüneline (DM-01) çevirdi; Ocak 2011\'de CMK m.102 ile Hizbullah üst kadrosu tahliye olup firar etti; 2012–2016 İran altın-gıda koridoru (SDNY 15 Cr. 867) devreye girdi ve 17–25 Aralık 2013 kırılması yaşandı.'
+  },
+  {
+    title: 'Evre IV: 2014–2017 • 15 Temmuz Kırılması, OHAL KHK & TVF',
+    meta: 'Adalet Erozyonu: 90,2/100 | Güven Endeksi: %14,2 | Denetim: 0,071 | Kriz Ufku: 42 Gün',
+    pub: '19.08.2016\'da 6736 s.K. 3. Varlık Barışı ve 6741 s.K. Türkiye Varlık Fonu (5018, 4734 ve Sayıştay denetiminden muaf) yayımlandı; KHK\'larla 4.326 yargı mensubu ihraç edildi; merkezi kurumlarda sınavsız atama (T4) %11,87\'den %65,84\'e (5,55x), vakıf protokolleri (T6) %82,12\'ye sıçradı.',
+    shadow: 'Amigdala panik yükü (0,834) 0,65 eşiğini kalıcı aştı; nitelikli beyin göçü ivmelendi; Suriye sınır hattında yoğun sığınmacı akını, selefi-cihadist "döner kapı" vakaları ve Ambarlı/Mersin kokain yakalamaları kaydedildi.'
+  },
+  {
+    title: 'Evre V: 2018–2022 • CB Hükümet Sistemi, Kur Şoku & Gri Liste',
+    meta: 'Adalet Erozyonu: 92,5/100 | Güven Endeksi: %33,6 | Denetim: 0,047 | Kriz Ufku: 18 Gün',
+    pub: '703 s. KHK (02.07.2018) ile MASAK ve kurumsal yapı merkezîleşti; 7143, 7186, 7256 ve 7417 s.K. ile 18.05.2018–31.03.2023 arasındaki 1.779 günün 1.585\'inde (%89,09) Varlık Barışı açık tutuldu; belediye şirket/taşınmaz izinleri merkezî vesayete bağlandı.',
+    shadow: 'Ağustos 2018 kur şoku, 2019–2021 128 Mr $ arka kapı rezerv satışı ve Aralık 2021 KKM ile Verimlilik makası 3,42x oldu; Mersin, İskenderun ve Aliağa\'da ton ölçekli narkotik yakalandı; Ekim 2021 FATF Gri Listesi ve 2022 +23,3/+24,2 Mr $ NHN rekoru görüldü.'
+  },
+  {
+    title: 'Evre VI: 2023–Kasım 2026 • 38 Aylık Boşluk, Altın Kotası & Tasfiye',
+    meta: 'Adalet Erozyonu: 93,8/100 | Güven Endeksi: %38,2 | Denetim: 0,053 | Kriz Ufku: 14 Gün',
+    pub: '31.03.2023\'te 7. Varlık Barışı kapandı; 07.08.2023 aylık 12 ton altın kotası, 22.05.2026\'da 7579 s.K. belediye şirket/kooperatif CB izni, 04.06.2026\'da 7582 s.K. 8. Varlık Barışı (31.07.2027 vadeli) yürürlüğe girdi; merkezi 94 nazım hesap 99,60 Mr TL\'ye (18,86x) ulaştı.',
+    shadow: 'NHN revizyon sonrası dahi -23,5 Mr $ çıkışa döndü; gölge sermaye E-Para (18+ iptal), Kapalıçarşı-USDT (369 paravan şirket) ve Serbest Fonlara (4,98 Tn TL) aktı; Eylül–Kasım 2026\'da 131 fon tasfiye edildi, 4 banka/91 şirkete kayyım atandı, swap hariç net rezerv 11,6 Mr $\'a indi.'
+  }
+];
+
+document.querySelectorAll('.phase-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const idx = parseInt(btn.getAttribute('data-phase'), 10);
+    document.querySelectorAll('.phase-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white', 'border-forensic');
+      b.classList.add('bg-alabaster', 'text-ink', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white', 'border-forensic');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border-stoneborder');
+
+    const p = phasesData[idx];
+    document.getElementById('phaseTitle').textContent = p.title;
+    document.getElementById('phaseMeta').textContent = p.meta;
+    document.getElementById('phasePublic').textContent = p.pub;
+    document.getElementById('phaseShadow').textContent = p.shadow;
+  });
+});
+
+const historyCtx = document.getElementById('historyChart').getContext('2d');
+const historyLabels = [
+  'Evre I (1990–2001)',
+  'Evre II (2002–2007)',
+  'Evre III (2008–2013)',
+  'Evre IV (2014–2017)',
+  'Evre V (2018–2022)',
+  'Evre VI (2023–2026)'
+].map(l => wrapLabel(l, 16));
+
+chartsRegistry.history = new Chart(historyCtx, {
+  type: 'line',
+  data: {
+    labels: historyLabels,
+    datasets: [
+      {
+        label: 'Adalet Erozyonu (0–100)',
+        data: [50.3, 41.2, 56.3, 90.2, 92.5, 93.8],
+        borderColor: '#B91C1C',
+        backgroundColor: 'rgba(185, 28, 28, 0.12)',
+        borderWidth: 2.5,
+        tension: 0.25,
+        fill: true
+      },
+      {
+        label: 'Hanehalkı Kurumsal Güven Endeksi (%)',
+        data: [24.0, 2.3, 5.8, 14.2, 33.6, 38.2],
+        borderColor: '#1E3A5F',
+        backgroundColor: 'rgba(30, 58, 95, 0.12)',
+        borderWidth: 2.5,
+        tension: 0.25,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: commonTooltipConfig
+    },
+    scales: {
+      y: { beginAtZero: true, max: 105, grid: { color: '#E5DFD7' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+document.querySelectorAll('.hist-mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mode = btn.getAttribute('data-histmode');
+    document.querySelectorAll('.hist-mode-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white');
+      b.classList.add('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+
+    const ch = chartsRegistry.history;
+    if (mode === 'macro') {
+      ch.data.datasets = [
+        {
+          label: 'Adalet Erozyonu (0–100)',
+          data: [50.3, 41.2, 56.3, 90.2, 92.5, 93.8],
+          borderColor: '#B91C1C',
+          backgroundColor: 'rgba(185, 28, 28, 0.12)',
+          borderWidth: 2.5,
+          tension: 0.25,
+          fill: true
+        },
+        {
+          label: 'Hanehalkı Kurumsal Güven Endeksi (%)',
+          data: [24.0, 2.3, 5.8, 14.2, 33.6, 38.2],
+          borderColor: '#1E3A5F',
+          backgroundColor: 'rgba(30, 58, 95, 0.12)',
+          borderWidth: 2.5,
+          tension: 0.25,
+          fill: false
+        }
+      ];
+      ch.options.scales.y.max = 105;
+    } else {
+      ch.data.datasets = [
+        {
+          label: 'Kriz Geri Sayım Ufku Dayanıklılık Ufku (Gün)',
+          data: [16.5, 172, 98, 42, 18, 14],
+          borderColor: '#0F766E',
+          backgroundColor: 'rgba(15, 118, 110, 0.15)',
+          borderWidth: 2.5,
+          tension: 0.25,
+          fill: true
+        },
+        {
+          label: 'Denetim Gücü Denetim Katsayısı (×500 Ölçek)',
+          data: [110, 175, 95, 35.5, 23.5, 26.5],
+          borderColor: '#B45309',
+          backgroundColor: 'rgba(180, 83, 9, 0.1)',
+          borderWidth: 2.5,
+          borderDash: [5, 4],
+          tension: 0.25,
+          fill: false
+        }
+      ];
+      ch.options.scales.y.max = 200;
+    }
+    ch.update();
+  });
+});
+
+const kikCtx = document.getElementById('kikChart').getContext('2d');
+chartsRegistry.kik = new Chart(kikCtx, {
+  type: 'doughnut',
+  data: {
+    labels: [
+      'Açık İhale & Rekabetçi (1.536,73 Mr TL)',
+      '4734 m.21/b Pazarlık (869,63 Mr TL)',
+      'Diğer Pazarlık Usulleri (41,69 Mr TL)',
+      'İstisna Kapsamı Alımlar (477,02 Mr TL)',
+      'Doğrudan Temin (305,06 Mr TL)'
+    ].map(l => wrapLabel(l, 18)),
+    datasets: [{
+      data: [1536.73, 869.63, 41.69, 477.02, 305.06],
+      backgroundColor: ['#0F766E', '#B91C1C', '#DC2626', '#B45309', '#1E3A5F'],
+      borderColor: '#FFFFFF',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 12 } },
+      tooltip: {
+        ...commonTooltipConfig,
+        callbacks: {
+          label: ctx => {
+            const val = ctx.parsed;
+            const pct = ((val / 3230.13) * 100).toFixed(2);
+            return ` ${val.toLocaleString('tr-TR')} Mr TL (%${pct})`;
+          }
+        }
+      }
+    }
+  }
+});
+
+const bkmybsCtx = document.getElementById('bkmybsChart').getContext('2d');
+chartsRegistry.bkmybs = new Chart(bkmybsCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'Sınavsız/Tedviren Atama (T4)',
+      'Akredite Vakıf Protokolleri (T6)',
+      'Basit Muhasebe Kayıt Uyumsuzluğu (T3)'
+    ].map(l => wrapLabel(l, 16)),
+    datasets: [
+      {
+        label: '15 Temmuz Öncesi (2012–2016)',
+        data: [11.87, 57.91, 44.60],
+        backgroundColor: '#94A3B8',
+        borderRadius: 6
+      },
+      {
+        label: '15 Temmuz Sonrası (2017–2025)',
+        data: [65.84, 82.12, 24.86],
+        backgroundColor: '#1E3A5F',
+        borderRadius: 6
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        ...commonTooltipConfig,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: %${ctx.parsed.y}` }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 100, grid: { color: '#E5DFD7' }, ticks: { callback: v => '%' + v } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+const skbTemplates = [
+  { code: 'Vaka 08 / DM-04', title: 'Defter Alt-Uzayı (Nullspace) Karartması', cat: 'accounting', spread: 1980, cases: '11.233 Vaka', law: 'MİBMY 102, 250–258, 303/403, 333, 94 Nazım', desc: 'Muhasebe dışı 102 banka hesabı tutma, taşınmaz envanteri yapmama ve emanet/borç gizleme.', ex: 'Boyabat, Maltepe, Giresun, Şişli, İBB/İSKİ, Merkezi İdareler' },
+  { code: 'Vaka 05 / DM-05', title: 'Ecrimisil Rant Tüneli', cat: 'procurement', spread: 773, cases: '4.058 Vaka', law: '2886 s.K. m.75; MİBMY 120/121', desc: 'Tahliye yetkisini işletmeyip kamu taşınmazlarını ihalesiz ve maktu ecrimisille süresiz işgalde tutma.', ex: 'Boyabat, Maltepe, Giresun, Şişli, Antalya Kemer Bld.' },
+  { code: 'Vaka 03 / DM-02', title: 'Eşik Altı İhale Bölme (Smurfing) & %10 Aşımı', cat: 'procurement', spread: 752, cases: '2.535 Vaka', law: '4734 s.K. m.19, 22/d, 62/ı', desc: 'Açık ihaleyi aşmak için alımları m.22/d limit altına bölme ve KİK m.62/ı %10 sınırını izinsiz aşma (126 Bld.).', ex: 'Ordu BB (269,7M TL), Çankırı (118,0M TL), Eskişehir BB, Buca' },
+  { code: 'Vaka 10 / DM-04', title: 'Özel Fon Eritme ve Geçiş Hakkı İhmali', cat: 'accounting', spread: 651, cases: '3.125 Vaka', law: 'MİBMY 333 Emanetler, 120 Alacaklar', desc: 'Gecekondu/Otopark fonlarını cari giderde eritme; elektronik haberleşme geçiş hakkı ücretlerini tahsil etmeme.', ex: 'Boyabat, Maltepe, Giresun, Şişli Bld. (10 yıl kronik)' },
+  { code: 'Vaka 02 / DM-01', title: 'Belediye Şirketi (SPV) Sifonlama Üçgeni', cat: 'procurement', spread: 570, cases: '1.449 Vaka', law: '5393 m.18/i, 70; 6085 m.4/38; MİBMY 240/242', desc: 'Zarar eden iştirake sermaye aktarımı + şirkete ihalesiz devir + TTK zırhıyla alt taşeron dağıtımı.', ex: 'Maltepe, Şişli, Sarıyer, Buca, Çankaya, Aksaray, İBB BELTUR' },
+  { code: 'Vaka 06 / DM-04', title: 'Emanet Kesintilerle Kayıt Dışı Finansman & FIFO İhlali', cat: 'accounting', spread: 208, cases: '298+ Vaka', law: '5018 s.K. m.34; MİBMY 320, 360, 361', desc: 'Vergi ve SGK kesintilerini aktarmama; 320 Bütçe Emanetlerinde FIFO ödeme sırasını bozma.', ex: 'Boyabat, Sarıyer, Samsun BB (76,1M TL eski borç bekletme)' },
+  { code: 'Vaka 04 / DM-03', title: '21/b Pazarlık ve Tek Mutfak Şartname Karteli', cat: 'procurement', spread: 203, cases: '648+ Vaka', law: '4734 s.K. m.12, 17, 21/b; MİBMY 258', desc: 'Doğal afet/aciliyet yokken davetiyeli pazarlık ve adrese teslim şartname ile ihale verme.', ex: 'Karayolları GM, Maltepe, Giresun, Buca, Yunusemre, Bursa BB' },
+  { code: 'Vaka 09 / DM-05', title: 'İmtiyaz Haklarının Usulsüz Protokolle Devri', cat: 'procurement', spread: 168, cases: '353 Vaka', law: '5393 s.K. m.15, 75; 2886 s.K.', desc: 'Danıştay görüşü ve ihale olmaksızın ambalaj atığı, otopark ve reklam alanlarının üçüncü kişilere devri.', ex: 'Boyabat, Maltepe, Şişli Bld. (9 yıl kronik)' },
+  { code: 'Vaka 01 / DM-06', title: 'Özel Kalem Sınavsız Memuriyet & Paralel Kadro', cat: 'accounting', spread: 88, cases: '352 Vaka + %65,84 T4', law: '657 s.K. m.59; 5393 m.49; 696 KHK', desc: 'İstisnai Özel Kalem kadrosunu KPSS\'siz memuriyete sıçrama basamağı yapma; şirket işçisine memur imzası.', ex: 'Maltepe, Soma, Pursaklar, Karşıyaka (16 atama), ASKİ/BELKA' },
+  { code: 'Vaka 07 / DM-10', title: 'Yüklenici Teminat/Ceza Kalkanı & Kasıtlı Atalet', cat: 'accounting', spread: 45, cases: '64 Vaka + %99,38 Açık', law: '4735 s.K. m.20, 24; 5018 m.71; 4483 s.K.', desc: 'İş artışında ek kesin teminat ve gecikme cezası almama; MİBMY 140 kamu zararını takip etmeme.', ex: 'Vakıflar GM, Pendik, Derecik, Kaynaşlı Bld.' }
+];
+
+function renderSkbCards() {
+  const query = document.getElementById('skbSearch').value.toLowerCase().trim();
+  const filter = document.getElementById('skbFilter').value;
+  const container = document.getElementById('skbGrid');
+
+  const filtered = skbTemplates.filter(item => {
+    const matchText = !query ||
+      item.code.toLowerCase().includes(query) ||
+      item.title.toLowerCase().includes(query) ||
+      item.law.toLowerCase().includes(query) ||
+      item.desc.toLowerCase().includes(query) ||
+      item.ex.toLowerCase().includes(query);
+
+    let matchCat = true;
+    if (filter === 'high') matchCat = item.spread > 500;
+    else if (filter === 'procurement') matchCat = item.cat === 'procurement';
+    else if (filter === 'accounting') matchCat = item.cat === 'accounting';
+
+    return matchText && matchCat;
+  });
+
+  container.innerHTML = filtered.map(item => `
+    <div class="p-4 rounded-xl bg-alabaster border border-stoneborder flex flex-col justify-between gap-2">
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <span class="text-xs font-mono font-bold text-forensic bg-white px-2 py-0.5 rounded border border-stoneborder">${item.code}</span>
+          <span class="text-xs font-mono font-semibold text-crimsonalert">${item.spread.toLocaleString('tr-TR')} Kurum • ${item.cases}</span>
+        </div>
+        <h4 class="text-sm font-bold text-ink">${item.title}</h4>
+        <p class="text-xs text-mutedink mt-1 leading-relaxed">${item.desc}</p>
+      </div>
+      <div class="pt-2 border-t border-stoneborder text-[11px] space-y-0.5">
+        <div><strong class="text-ink">Mevzuat/Hesap:</strong> <span class="font-mono text-forensic">${item.law}</span></div>
+        <div><strong class="text-ink">Doğrulanan Örnekler:</strong> <span class="text-mutedink">${item.ex}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('skbSearch').addEventListener('input', renderSkbCards);
+document.getElementById('skbFilter').addEventListener('change', renderSkbCards);
+renderSkbCards();
+
+const topoData = {
+  T1: {
+    name: 'Topoloji I: 15 Temmuz Öncesi Yatay Hücre Ağı (2004–2016 FETÖ Sızması)',
+    geom: 'Kriptografik yatay hücre ağı (Clandestine Horizontal Mesh); dağınık hücresel yapı.',
+    kadro: 'Sınav sorularının sızdırılmasıyla "kurallı sınav" görünümü altında sızma (T4 sınavsız atama yalnızca %11,87) ve Özel Kalem\'den Sayıştay/Mülkiye/Maliye\'ye geçiş.',
+    kanal: 'Adrese teslim teknik şartnameyle (N03) piyasa rayicinin 5–10 katına CBS/yazılım ihaleleri (MİBMY 260) ve 49 yıllık bedelsiz yurt/dershane intifası (MİBMY 990/992).',
+    yaptirim: '15 Temmuz 2016 sonrası 667/675 sayılı OHAL KHK\'ları ile ihraç, müsadere ve tasfiye.'
+  },
+  T2: {
+    name: 'Topoloji II: 15 Temmuz Sonrası Monosentrik Yıldız Ağı (2017–2026 Merkezi / AK Parti)',
+    geom: 'Tek merkezli yıldız ağı (Hub-and-Spoke); HHI = 898,83, ilk 3 düğüm payı %37,05.',
+    kadro: 'Görevde yükselme sınavlarının baypas edilmesi; merkezi kurumlarda T4 %65,84, belediyelerde Özel Kalem tüneli (kesintisiz AKP: %52,43; tüm AKP: %22,99 vs. CHP kontrol: %1,21).',
+    kanal: 'Merkezi akredite vakıf/dernek protokolleri (5393 m.75/c — merkezi kurumlar %82,12, kesintisiz AKP %78,38) + 21/b pazarlık (%40,18) + imar/doğrudan temin (J = 0,4938).',
+    yaptirim: 'Merkezi izin vesayeti + yargısal kalkan: 45–98 bulgulu belediyelerde (Pendik 98, Çorum 75, Sakarya BB 69, Düzce 59, Kayseri BB 51) sıfır tutuklama.'
+  },
+  T3: {
+    name: 'Topoloji III: Polisentrik Metropol İştirak Kümesi (2019–2026 Soruşturulan CHP)',
+    geom: 'Çok merkezli yerel SPV ağı (Multi-Hub SPV); HHI = 874,82 (genel CHP: 840,70), ilk 3 payı %36,50.',
+    kadro: '696 KHK ve belediye şirketleri üzerinden doğrudan personel istihdamı (N05: %44,78) ve Sosyal Denge Tazminatı sınır aşımı (N14: %63,43).',
+    kanal: 'Belediye A.Ş.\'lerine (N04 SPV: soruşturulan 27 raporda %62,96) sermaye/ihale devri, 22/d parçalama (%84,40) ve ihalesiz büfe/reklam/ecrimisil kümeleri (J = 0,6837).',
+    yaptirim: 'Merkezi şirket/kredi onay blokajı + asimetrik adli operasyon: Ortalama 30,60–33,76 bulgulu belediyelerde TCK m.220/235/257 tutuklama ve görevden alma.'
+  }
+};
+
+function renderTopo(key) {
+  const t = topoData[key];
+  document.getElementById('topoDetailPanel').innerHTML = `
+    <div class="font-bold text-forensic text-base border-b border-stoneborder pb-2">${t.name}</div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="bg-white p-3 rounded-lg border border-stoneborder"><strong class="text-ink">Ağ Geometrisi:</strong> <span class="text-mutedink">${t.geom}</span></div>
+      <div class="bg-white p-3 rounded-lg border border-stoneborder"><strong class="text-ink">Kadro Vektörü:</strong> <span class="text-mutedink">${t.kadro}</span></div>
+      <div class="bg-white p-3 rounded-lg border border-stoneborder"><strong class="text-ink">Kaynak Transfer Kanalı:</strong> <span class="text-mutedink">${t.kanal}</span></div>
+      <div class="bg-white p-3 rounded-lg border border-stoneborder"><strong class="text-ochre">İzin &amp; Adli Yaptırım:</strong> <span class="text-mutedink">${t.yaptirim}</span></div>
+    </div>
+  `;
+}
+
+document.querySelectorAll('.topo-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.getAttribute('data-topo');
+    document.querySelectorAll('.topo-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white', 'border-forensic');
+      b.classList.add('bg-alabaster', 'text-ink', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white', 'border-forensic');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border-stoneborder');
+    renderTopo(key);
+  });
+});
+renderTopo('T1');
+
+const efmiCtx = document.getElementById('efmiChart').getContext('2d');
+chartsRegistry.efmi = new Chart(efmiCtx, {
+  type: 'line',
+  data: {
+    labels: ['2005 (AB Çıpası)', '2013 (17-25 Ara)', '2016 (OHAL/İhraç)', '2024 (CPI 34)'],
+    datasets: [
+      {
+        label: 'Davranışsal Bozulma Endeksi (Bozulma Endeksi)',
+        data: [0.231, 0.400, 0.594, 0.676],
+        borderColor: '#B91C1C',
+        backgroundColor: 'rgba(185, 28, 28, 0.12)',
+        borderWidth: 2.5,
+        tension: 0.2,
+        fill: true
+      },
+      {
+        label: 'Söylem-Davranış Makası (Söylem-Gerçeklik Farkı_t)',
+        data: [-0.3635, -0.210, -0.085, -0.0223],
+        borderColor: '#1E3A5F',
+        borderWidth: 2.5,
+        borderDash: [5, 4],
+        tension: 0.2,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: commonTooltipConfig
+    },
+    scales: {
+      y: { min: -0.45, max: 0.80, grid: { color: '#E5DFD7' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+const valCtx = document.getElementById('valuationChart').getContext('2d');
+const valLabels = [
+  'Karayolları GM (2019)',
+  'SSM / SSDF (2017)',
+  'Milli Savunma Bak. (2015)',
+  'TÜBİTAK (2012)',
+  'Vakıflar GM (2018–21)',
+  '16 Belediye Vakası (2019–25)'
+].map(l => wrapLabel(l, 18));
+
+const valDataSets = {
+  adli: { label: '2026 Güncel Reel Kamu Zararı Karşılığı (Mr TL)', data: [439.59, 298.85, 132.54, 70.13, 28.77, 64.14], color: '#1E3A5F' },
+  tuik: { label: 'Saf TÜİK Yİ-ÜFE Ekim 2026 Karşılığı (Mr TL)', data: [492.07, 296.57, 128.48, 64.54, 28.50, 68.90], color: '#0F766E' },
+  nominal: { label: 'Orijinal Nominal Bulgu Tutarı (Mr TL)', data: [37.25, 15.65, 5.34, 2.23, 3.14, 43.08], color: '#B45309' }
+};
+
+chartsRegistry.valuation = new Chart(valCtx, {
+  type: 'bar',
+  data: {
+    labels: valLabels,
+    datasets: [{
+      label: valDataSets.adli.label,
+      data: valDataSets.adli.data,
+      backgroundColor: valDataSets.adli.color,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        ...commonTooltipConfig,
+        callbacks: { label: ctx => ` ${ctx.parsed.x.toLocaleString('tr-TR')} Mr TL` }
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#E5DFD7' } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+document.querySelectorAll('.val-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mode = btn.getAttribute('data-valmode');
+    document.querySelectorAll('.val-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white');
+      b.classList.add('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+
+    const ds = valDataSets[mode];
+    chartsRegistry.valuation.data.datasets[0].label = ds.label;
+    chartsRegistry.valuation.data.datasets[0].data = ds.data;
+    chartsRegistry.valuation.data.datasets[0].backgroundColor = ds.color;
+    chartsRegistry.valuation.update();
+  });
+});
+
+const dtRows = [
+  { katA: '2018-11-30: 7143 s.K. Varlık Barışı ilk başvuru son tarihi', katBC: '2018-12-05: Erzincan uygulama noktası tır eroin yakalaması (B)', dt: '+5 Gün', tight: true, type: 'narcotics', scale: '1.271 kg eroin; Ağustos 2018 kur şoku sonrası kesintisiz Varlık Barışı uzatmaları başlangıcı.' },
+  { katA: '2020-06-30: 7186 s.K. (GVK Geçici 90) Varlık Barışı son günü', katBC: '2020-06-30: Bataklık Operasyonu — 11 il suç gelirleri (B)', dt: '0 Gün', tight: true, type: 'narcotics', scale: 'Tam eşzamanlı; 91M TL mevduat/ziynet + 281 taşınmaz el koyma (120M EUR hawala trafiği).' },
+  { katA: '2021-06-09: 7326 s.K. Matrah/Stok Affı RG yayımı', katBC: '2021-06-16/18/23: Mersin Limanı muz konteyneri kokain (B)', dt: '+7 / -7 Gün', tight: true, type: 'narcotics', scale: 'Bir haftada toplam 1.763 kg kokain (63,88M USD); Ekim 2021 FATF Gri Liste öncesi zirve.' },
+  { katA: '2023-11-01: Kıymetli Maden Takip Sistemi (KMTS) ilk son tarihi', katBC: '2023-11-01: Polat (C) ve 2023-11-02: Kafes / Comanchero (B)', dt: '0 ve +1 Gün', tight: true, type: 'shadow', scale: 'Altın kotası boşluğunda fenomen/bahis el koymaları ve Comanchero 4,5 Mr TL el koyma.' },
+  { katA: '2024-03-27: HMB\'nin iki kamu bankasına altın ithalat kotası tahsisi', katBC: '2024-03-28: Habur Gümrük Kapısı tır eroin yakalaması (B)', dt: '+1 Gün', tight: true, type: 'narcotics', scale: 'Tek seferde gümrük rekoru düzeyinde 850 kg eroin yakalaması.' },
+  { katA: '2026-01-02: BIST işlenmemiş altın ithalat kotası yeni esasları', katBC: '2026-01-06: Kapalıçarşı kara para 5. Dalga operasyonu (C)', dt: '+4 Gün', tight: true, type: 'shadow', scale: '15 ilde 68 gözaltı, 44 tutuklama; ardından 30.01.2026 Veysel Şahin 460M EUR kripto dondurma.' },
+  { katA: '2026-06-04: 7582 s.K. (8. Varlık Barışı, KVK Geçici 19) yayımı', katBC: '2026-06-02: Bahis-kripto (C) & 2026-06-22: Mersin ilaç (B)', dt: '-2 ve +18 Gün', tight: false, type: 'narcotics', scale: '221 gözaltı kararı ve Mersin Limanı\'nda 7,06 Mr TL değerinde >12.000 kg tramadol/pregabalin.' },
+  { katA: '2026-07-29 / 08-12: KMTS dijital aktarım tebliği & stok esasları', katBC: '2026-07-10: Kapalıçarşı İddianamesi & 2026-08-25: Dinamikpay (C)', dt: '-19 ve +13 Gün', tight: false, type: 'shadow', scale: '504 şüpheli / 369 paravan şirket iddianamesi ve Dinamikpay\'de 17,9 Mr TL bahis transfer hacmi.' }
+];
+
+function renderDtTable(filter) {
+  const tbody = document.getElementById('dtTableBody');
+  const filtered = dtRows.filter(r => {
+    if (filter === 'tight') return r.tight;
+    if (filter === 'narcotics') return r.type === 'narcotics';
+    if (filter === 'shadow') return r.type === 'shadow';
+    return true;
+  });
+
+  tbody.innerHTML = filtered.map(r => `
+    <tr class="hover:bg-alabaster transition">
+      <td class="p-3 font-medium text-ink">${r.katA}</td>
+      <td class="p-3 text-mutedink">${r.katBC}</td>
+      <td class="p-3 text-center"><span class="font-mono font-bold px-2 py-0.5 rounded bg-forensic/10 text-forensic">${r.dt}</span></td>
+      <td class="p-3 text-mutedink">${r.scale}</td>
+    </tr>
+  `).join('');
+}
+
+document.querySelectorAll('.dt-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.getAttribute('data-dtfilter');
+    document.querySelectorAll('.dt-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white');
+      b.classList.add('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+    renderDtTable(f);
+  });
+});
+renderDtTable('all');
+
+const fundsCtx = document.getElementById('fundsChart').getContext('2d');
+chartsRegistry.funds = new Chart(fundsCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '31 Ara 2021 (Başlangıç)',
+      '31 Ara 2025 (Zirve: 49,09x)',
+      'Ağu 2026 (TEFAS Açık)',
+      'Eyl 2026 (1 Aylık Çıkış)',
+      '17 Eyl 2026 (131 Fon Tasfiye)'
+    ].map(l => wrapLabel(l, 16)),
+    datasets: [{
+      label: 'Büyüklük / İşlem Hacmi (Milyar TL)',
+      data: [101.46, 4980.0, 3600.0, 678.1, 800.0],
+      backgroundColor: ['#94A3B8', '#1E3A5F', '#B45309', '#DC2626', '#B91C1C'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        ...commonTooltipConfig,
+        callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString('tr-TR')} Milyar TL` }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#E5DFD7' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+const nhnCtx = document.getElementById('nhnChart').getContext('2d');
+chartsRegistry.nhn = new Chart(nhnCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '2021–2022 Kümülatif NHN',
+      'Kota Öncesi 29 Ay NHN',
+      'Kota Sonrası Ham NHN',
+      'Ağu 2026 Revizyon Sonrası NHN',
+      'Swap Hariç Net Rezerv (Eyl 26)',
+      'Swap Hariç Net Rezerv (20 Kas 26)'
+    ].map(l => wrapLabel(l, 16)),
+    datasets: [{
+      label: 'Milyar ABD Doları (Mr $)',
+      data: [26.2, 30.6, -57.8, -23.5, 28.49, 11.6],
+      backgroundColor: ctx => ctx.raw < 0 ? '#B91C1C' : '#0F766E',
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        ...commonTooltipConfig,
+        callbacks: { label: ctx => ` ${ctx.parsed.y > 0 ? '+' : ''}${ctx.parsed.y.toLocaleString('tr-TR')} Mr $` }
+      }
+    },
+    scales: {
+      y: { grid: { color: '#E5DFD7' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+const legData = {
+  leg1: {
+    title: 'Ayak 1: Elektronik Para Kuruluşları & ~300.000 Kiralık IBAN Ağı',
+    body: '11 Ekim 2025 tarihli Papara iddianamesindeki TCMB Denetim Raporu, 2021–2023 arasında sektörde yasa dışı bahis nedeniyle kapatılan tüm hesapların %94,4\'ünün (21.088 hesap) Papara\'da toplandığını, 26.012 hesap üzerinden 102 bahis sitesinde 12,88 milyar TL hacim üretildiğini ve fonların Veysel Şahin (30 Ocak 2026\'da 460M EUR kripto varlığı donduruldu) cüzdanlarına aktarıldığını belgeledi. Papara TMSF ihalesiyle Emlak Katılım Bankası\'na devredilirken; Pay Fix, İninal, Aypara (6,9 Mr TL el koyma), Ozan, Papel, PAYCO, Dinamikpay (17,9 Mr TL hacim), Parolapara ve Vezne24 dahil en az 18 kuruluşun faaliyet izni kalıcı olarak iptal edildi.'
+  },
+  leg2: {
+    title: 'Ayak 2: Kapalıçarşı Paravan Şirketler ("M80" Yazılımı) & TRC-20 USDT Köprüsü',
+    body: '10 Temmuz 2026 tarihli Kapalıçarşı Ana İddianamesi (504 şüpheli), dar gelirli kişiler ve öğrenciler adına kurulan 369 paravan şirketin para trafiğinin örgüte özel "M80" gölge muhasebe yazılımıyla yönetildiğini; nakdin Venüs Döviz, Özbey Altın ve Angun Döviz gibi yetkili müesseselerde fiziki altın ve dövize, oradan da Cointral gibi kripto ofisleri ve ~26 milyar TL hacimli OTC masaları üzerinden Tron ağındaki (TRC-20) USDT stabil kripto varlıklarına dönüştürülerek (Aynalama Defteri) yurt dışı soğuk cüzdanlara çıkarıldığını belgeledi. 4 Haziran 2026\'da yayımlanan 7582 s.K. 8. Varlık Barışı 31 Temmuz 2027\'ye kadar yeni bir vergi incelemesiz bildirim penceresi açtı.'
+  },
+  leg3: {
+    title: 'Ayak 3: Serbest Yatırım Fonları, "Bıyıklı Yabancı" Döngüsü & Kurumsal Sızma',
+    body: 'MASAK\'ın 21 Kasım 2026 raporu (2026/149004), Londra\'da kurulu Gildencrest Capital (%49 Emre Tezmen, %40 Oğuz Tezmen) üzerinden İsviçre\'deki Century City yapılarına ve oradan "yabancı yatırımcı" ("bıyıklı yabancı") görünümüyle Borsa İstanbul\'daki sığ 51 hisseye yönlendirilen emirleri belgeledi. TPP ve OTC ters repo kaldıracıyla şişirilen fonlarda (TLY %4.233 getiri) yurt dışı hesaplarda 7,8 milyar TL kâr biriktirilirken; düzenleyici kurumlara sızma (eski MASAK Başkanı Osman Dereli\'nin Bulls Yatırım\'da bağımsız YK üyeliği, eski MASAK Başkan Yrd. Dr. Ramazan Başak\'ın uyarıları sonrası gözaltına alınması, eski BDDK/SPK yöneticileri) erken uyarı mekanizmalarını felç etti.'
+  }
+};
+
+function renderLeg(key) {
+  const item = legData[key];
+  document.getElementById('legDetailBox').innerHTML = `
+    <div class="font-bold text-forensic text-base">${item.title}</div>
+    <p class="text-mutedink leading-relaxed">${item.body}</p>
+  `;
+}
+
+document.querySelectorAll('.leg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const k = btn.getAttribute('data-leg');
+    document.querySelectorAll('.leg-btn').forEach(b => {
+      b.classList.remove('bg-forensic', 'text-white');
+      b.classList.add('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+    });
+    btn.classList.add('bg-forensic', 'text-white');
+    btn.classList.remove('bg-alabaster', 'text-ink', 'border', 'border-stoneborder');
+    renderLeg(k);
+  });
+});
+renderLeg('leg1');
+
+const recoveryCtx = document.getElementById('recoveryChart').getContext('2d');
+chartsRegistry.recovery = new Chart(recoveryCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'Kasım 2026 Başlangıç',
+      'Adım 1: Aşama 1 (Hukuk ve İç Kontrol)',
+      'Adım 2: Ağ Bağışıklığı',
+      'Adım 3: Aşama 1 (Hukuk ve İç Kontrol)I',
+      'Adım 4: Aşama 1 (Hukuk ve İç Kontrol)II & IV'
+    ].map(l => wrapLabel(l, 15)),
+    datasets: [
+      {
+        label: 'Model Tam Sıralama Ufku (Gün)',
+        data: [14, 62, 108, 152, 195],
+        backgroundColor: 'rgba(148, 163, 184, 0.45)',
+        borderColor: '#64748B',
+        borderWidth: 1,
+        borderRadius: 6
+      },
+      {
+        label: 'Aktif Simülasyon Ufku (Gün)',
+        data: [14, 14, 14, 14, 14],
+        backgroundColor: '#B91C1C',
+        borderRadius: 6
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        ...commonTooltipConfig,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} Gün` }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 220, grid: { color: '#E5DFD7' }, ticks: { callback: v => v + 'g' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+function updateReformSimulation() {
+  const s1 = document.getElementById('step1Check').checked;
+  const s2 = document.getElementById('step2Check').checked;
+  const s3 = document.getElementById('step3Check').checked;
+  const s4 = document.getElementById('step4Check').checked;
+
+  let pfc = 0.053;
+  let horizon = 14;
+  const factor = s1 ? 1.0 : 0.35;
+
+  const h0 = 14;
+  if (s1) { pfc += 0.145; horizon += 48; }
+  const h1 = horizon;
+
+  if (s2) { pfc += 0.075 * factor; horizon += Math.round(46 * factor); }
+  const h2 = horizon;
+
+  if (s3) { pfc += 0.052 * factor; horizon += Math.round(44 * factor); }
+  const h3 = horizon;
+
+  if (s4) { pfc += 0.035 * factor; horizon += Math.round(43 * factor); }
+  const h4 = horizon;
+
+  const pfcEl = document.getElementById('simPfcBadge');
+  const horEl = document.getElementById('simHorizonBadge');
+  const regEl = document.getElementById('simRegimeBadge');
+  const warnEl = document.getElementById('simWarningNote');
+
+  pfcEl.textContent = pfc.toFixed(3).replace('.', ',');
+  horEl.textContent = horizon + ' Gün';
+
+  if (horizon >= 180) {
+    pfcEl.className = 'text-lg font-bold font-mono text-sage';
+    horEl.className = 'text-lg font-bold font-mono text-sage';
+    regEl.className = 'text-xs font-bold text-sage';
+    regEl.textContent = 'Güvenli Bölge (>180g)';
+    warnEl.textContent = 'Tam yapısal onarım sıralaması tamamlandı: Kriz geri sayım ufku 195 güne ulaşarak 180 günlük güvenli eşiği aştı.';
+    warnEl.className = 'text-xs text-sage font-medium mb-3';
+  } else if (!s1 && (s2 || s3 || s4)) {
+    pfcEl.className = 'text-lg font-bold font-mono text-ochre';
+    horEl.className = 'text-lg font-bold font-mono text-ochre';
+    regEl.className = 'text-xs font-bold text-ochre';
+    regEl.textContent = 'Vitrin Etkisi (Kırılgan)';
+    warnEl.textContent = 'Uyarı: Adım 1 (Aşama 1 (Hukuk ve İç Kontrol) Hukuk Devleti ve Gerçek Zamanlı İç Kontrol) aktive edilmeden yapılan üst katman müdahaleleri %65 verim kaybına uğrar.';
+    warnEl.className = 'text-xs text-ochre font-medium mb-3';
+  } else {
+    pfcEl.className = 'text-lg font-bold font-mono text-forensic';
+    horEl.className = 'text-lg font-bold font-mono text-forensic';
+    regEl.className = 'text-xs font-bold text-ochre';
+    regEl.textContent = 'Geçiş Süreci (<180g)';
+    warnEl.textContent = 'Mevcut Kasım 2026 başlangıç noktası (14 gün) ile seçilen reform adımlarının kümülatif etkisi karşılaştırılmaktadır.';
+    warnEl.className = 'text-xs text-mutedink mb-3';
+  }
+
+  const ch = chartsRegistry.recovery;
+  ch.data.datasets[1].data = [h0, h1, h2, h3, h4];
+  ch.data.datasets[1].backgroundColor = horizon >= 180 ? '#0F766E' : (!s1 && (s2 || s3 || s4) ? '#B45309' : '#1E3A5F');
+  ch.update();
+}
+
+document.querySelectorAll('.reform-step').forEach(cb => cb.addEventListener('change', updateReformSimulation));
+document.getElementById('activateAllSteps').addEventListener('click', () => {
+  document.querySelectorAll('.reform-step').forEach(cb => { cb.checked = true; });
+  updateReformSimulation();
+});
+document.getElementById('resetSteps').addEventListener('click', () => {
+  document.querySelectorAll('.reform-step').forEach(cb => { cb.checked = false; });
+  updateReformSimulation();
+});
+</script>
+</body>
+</html>
