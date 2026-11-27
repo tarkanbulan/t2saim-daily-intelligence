@@ -1,0 +1,53 @@
+{
+  "protocol": "LM-BIGA v1.2 + LM-4 Birlesik Medya & Adli Dilbilim",
+  "date": "2026-11-27",
+  "generated_utc": "2026-11-27T04:01:29Z",
+  "gdelt_attention_lock": {
+    "count": 0,
+    "mean": 0.0,
+    "std": 0.0,
+    "latest": 0.0,
+    "z_score": 0.0,
+    "attention_lock": false
+  },
+  "gdelt_timeline_tail": [],
+  "d08_coordinated_clusters": [],
+  "lm4_lf_scan": {
+    "lexicons_loaded": [
+      "core_manipulation_v1.json",
+      "feto_jargon_lexicon.json",
+      "erdoganizm_akp_propaganda_lexicon.json"
+    ],
+    "pattern_count": 130,
+    "total_articles_scanned": 135,
+    "total_pattern_hits": 2,
+    "weighted_manipulation_score": 1.45,
+    "hits_by_category": {
+      "Devlet-Beka & Milli İrade Çerçevelemesi": 2
+    },
+    "samples": [
+      {
+        "pattern_id": "ER-03",
+        "term": "yerli ve milli",
+        "category": "Devlet-Beka & Milli İrade Çerçevelemesi",
+        "risk_weight": 0.7,
+        "domain": "sabah.com.tr",
+        "title": "Bakan Memişoğlu: Yerli ve milli üretimi stratejik sorumluluk görüyoruz — Sağlık Bakanı Kemal Memişoğlu, Sağlık ve Sigorta Yöneticileri Derneği (SASDER) 13. Ulusal Kongresi'nde konuştu. Pandemi sürecinin, üretim kapasitesinin stratejik önemini ortaya koyduğunu belirten Memişoğlu,... Devamı için tıklayınız",
+        "url": "https://www.sabah.com.tr/gundem/2026/11/26/bakan-memisoglu-yerli-ve-milli-uretimi-stratejik-sorumluluk-goruyoruz",
+        "seendate": "Thu, 26 Nov 2026 22:14:43 +0300"
+      },
+      {
+        "pattern_id": "ER-02",
+        "term": "terörsüz türkiye",
+        "category": "Devlet-Beka & Milli İrade Çerçevelemesi",
+        "risk_weight": 0.75,
+        "domain": "yenisafak.com",
+        "title": "2026'nın son MGK’sı toplandı — Cumhurbaşkanı Tayyip Erdoğan başkanlığında 2026 yılının son MGK’sı toplandı. 2 saat 20 dakika süren toplantıda, Terörsüz Türkiye süreci ve Terörsüz Bölge hedefine ilişkin çalışmalarda kaydedilen somut ilerlemeler ve mevcut durum değerlendir",
+        "url": "https://www.yenisafak.com/gundem/2026nin-son-mgksi-toplandi-4876966",
+        "seendate": "Fri, 27 Nov 2026 04:00:00 +0300"
+      }
+    ]
+  },
+  "diplomatic_seismograph": [],
+  "boomerang_foreign_feed": []
+}
