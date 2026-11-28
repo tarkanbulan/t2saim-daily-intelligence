@@ -1,0 +1,43 @@
+{
+  "protocol": "LM-BIGA v1.2 + LM-4 Birlesik Medya & Adli Dilbilim",
+  "date": "2026-11-28",
+  "generated_utc": "2026-11-28T04:01:16Z",
+  "gdelt_attention_lock": {
+    "count": 0,
+    "mean": 0.0,
+    "std": 0.0,
+    "latest": 0.0,
+    "z_score": 0.0,
+    "attention_lock": false
+  },
+  "gdelt_timeline_tail": [],
+  "d08_coordinated_clusters": [],
+  "lm4_lf_scan": {
+    "lexicons_loaded": [
+      "core_manipulation_v1.json",
+      "feto_jargon_lexicon.json",
+      "erdoganizm_akp_propaganda_lexicon.json"
+    ],
+    "pattern_count": 130,
+    "total_articles_scanned": 135,
+    "total_pattern_hits": 1,
+    "weighted_manipulation_score": 0.75,
+    "hits_by_category": {
+      "Devlet-Beka & Milli İrade Çerçevelemesi": 1
+    },
+    "samples": [
+      {
+        "pattern_id": "ER-02",
+        "term": "terörsüz türkiye",
+        "category": "Devlet-Beka & Milli İrade Çerçevelemesi",
+        "risk_weight": 0.75,
+        "domain": "cumhuriyet.com.tr",
+        "title": "Terörsüz ve ana muhalefetsiz Türkiye! — 22 Ekim 2024’te Bahçeli’nin “Öcalan gelsin, DEM Parti Meclis grubunda konuşsun” çıkışıyla başlayan “terörsüz Türkiye” sürecinde yeni bir tura girildi. “Çok acele etmeliyiz, geç kalma lüksümüz yok, vakit kaybetmeyelim” söylemlerinin çok sık",
+        "url": "https://www.cumhuriyet.com.tr/yazarlar/mustafa-balbay/terorsuz-ve-ana-muhalefetsiz-turkiye-2560051",
+        "seendate": "Sat, 28 Nov 2026 04:00:00 +0300"
+      }
+    ]
+  },
+  "diplomatic_seismograph": [],
+  "boomerang_foreign_feed": []
+}
